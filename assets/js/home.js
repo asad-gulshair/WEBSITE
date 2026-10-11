@@ -2,6 +2,7 @@ import { CAPTURE, REDUCED } from './engine.js';
 import { $, $$ } from './common.js';
 import { PROJECTS, CATS, bySlug } from './data.js';
 import { featuredHTML, cardHTML, wireMedia, wireOpeners, routeFromHash } from './cards.js';
+import { xpMiniHTML, wireXP } from './explain.js';
 
 // ---- proof: best three results ----
 const proof = $('#proof');
@@ -11,7 +12,8 @@ $$('.reveal', proof).forEach((e) => e.classList.add('in'));
 wireMedia(proof);
 // ---- areas ----
 $('#areas').innerHTML = CATS.map((c) => { const n = PROJECTS.filter((p) => p.cat === c.id).length;
-  return `<a href="projects.html#${c.id}" data-cat="${c.id}"><span class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</span><h3>${c.h}</h3><p>${c.sub}</p><span class="go"><span data-count="${n}">${n}</span> project${n === 1 ? '' : 's'} →</span></a>`; }).join('');
+  return `<a href="projects.html#${c.id}" data-cat="${c.id}">${xpMiniHTML(c.id)}<span class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</span><h3>${c.h}</h3><p>${c.sub}</p><span class="go"><span data-count="${n}">${n}</span> project${n === 1 ? '' : 's'} →</span></a>`; }).join('');
+wireXP($('#areas'));
 wireOpeners(document);
 addEventListener('popstate', routeFromHash); addEventListener('hashchange', routeFromHash);
 if (location.hash.startsWith('#/work/')) routeFromHash();

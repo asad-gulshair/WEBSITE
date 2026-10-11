@@ -75,15 +75,26 @@ export function ytFacade(id, title, portrait) {
 }
 // year
 $$('[data-year]').forEach((e) => (e.textContent = new Date().getFullYear()));
+// "Start a project" (contact.html#start): scroll to the contact options and highlight them briefly.
+function showStart(smooth) {
+  const t = $('#start'); if (!t) return;
+  const y = Math.max(0, t.getBoundingClientRect().top + scrollY - (hdr ? hdr.offsetHeight : 0) - 24);
+  scrollTo({ top: y, behavior: smooth && !REDUCED ? 'smooth' : 'auto' });
+  t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true });
+  const cards = $$('.ccard', t); cards.forEach((c) => c.classList.add('hl'));
+  clearTimeout(t._hl); t._hl = setTimeout(() => cards.forEach((c) => c.classList.remove('hl')), 2200);
+}
+if (location.hash === '#start') requestAnimationFrame(() => showStart(false));
 // Links to the page you're already on never "do nothing": they scroll to the relevant spot and move focus there.
 const here = (location.pathname.split('/').pop() || 'index.html');
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const href = a.getAttribute('href'); if (/^(https?:|mailto:|#)/.test(href)) return;
-  const [file, hash] = href.split('#'); if ((file.replace(/^\.\/?/, '') || 'index.html') !== here || hash) return;
+  const [file, hash] = href.split('#'); if ((file.replace(/^\.\/?/, '') || 'index.html') !== here) return;
+  if (hash === 'start' && $('#start')) { e.preventDefault(); history.replaceState(history.state, '', '#start'); showStart(true); return; }
+  if (hash) return;
   e.preventDefault();
-  const target = (here === 'contact.html' && a.textContent.trim() === 'Start a project') ? $('.ccards .ccard') : $('main h1, main h2');
-  const y = target ? Math.max(0, target.getBoundingClientRect().top + scrollY - (hdr ? hdr.offsetHeight : 0) - 24) : 0;
-  scrollTo({ top: here === 'contact.html' && target && target.classList.contains('ccard') ? y : 0, behavior: REDUCED ? 'auto' : 'smooth' });
-  if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); if (target.classList.contains('ccard')) { target.style.borderColor = 'var(--accent)'; setTimeout(() => (target.style.borderColor = ''), 1600); } }
+  const target = $('main h1, main h2');
+  scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+  if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
 });

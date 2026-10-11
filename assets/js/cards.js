@@ -1,7 +1,7 @@
 // Project cards + case-study <dialog> with #/work/<slug> routing (REFINE_SPEC §4).
 import { PROJECTS, CATS, bySlug } from './data.js';
 import { ILLUS } from './illus.js';
-import { $, $$, wireVideo, ytFacade, MAIL_PROJECT } from './common.js';
+import { $, $$, wireVideo, ytFacade } from './common.js';
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const PORTRAIT_YT = new Set(['2M2n8RWnKWY', '9RqJkD2Xtv8']);
 export function mediaHTML(p, { inCard = false, eager = false } = {}) {
@@ -47,7 +47,7 @@ function caseHTML(p) {
   const cat = CATS.find((c) => c.id === p.cat); const sib = PROJECTS.filter((x) => x.cat === p.cat); const i = sib.indexOf(p);
   const prev = sib[(i - 1 + sib.length) % sib.length], next = sib[(i + 1) % sib.length];
   const links = [p.code && `<a class="btn sm" href="${p.code}" target="_blank" rel="noopener">View code ↗</a>`, p.paper && `<a class="btn sm" href="${p.paper}" target="_blank" rel="noopener">Read the paper ↗</a>`,
-    ...(p.more || []).map(([t, u]) => `<a class="tlink" href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`), `<a class="tlink" href="${MAIL_PROJECT}">Start a similar project</a>`].filter(Boolean).join('');
+    ...(p.more || []).map(([t, u]) => `<a class="tlink" href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`), `<a class="tlink" href="contact.html#start">Start a similar project</a>`].filter(Boolean).join('');
   const yt = p.youtube ? `<div class="blk"><div class="meta">Demo video</div><div data-yt-slot></div></div>` : '';
   const extra = p.extra ? `<figure style="margin:0"><div class="matte"><div class="frame" style="aspect-ratio:auto;background:#fff"><img src="${p.extra.src}" alt="${esc(p.extra.cap)}" loading="lazy"></div></div><figcaption>Fig. 2: ${esc(p.extra.cap)}</figcaption></figure>` : '';
   return `<div class="meta eyebrow"><span class="dot" style="background:${cat.dot}"></span>${esc(cat.label)}</div>

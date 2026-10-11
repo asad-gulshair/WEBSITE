@@ -3,6 +3,7 @@ import { REDUCED, CAPTURE } from './engine.js';
 import { $, $$ } from './common.js';
 import { PROJECTS, CATS } from './data.js';
 import { featuredHTML, cardHTML, wireMedia, wireOpeners, routeFromHash, isCaseOpen, closeCase } from './cards.js';
+import { xpHTML, wireXP } from './explain.js';
 const C = window.SITE_CONFIG || {};
 const SUBS = [['all', 'All'], ['detection', 'Detection'], ['measurement', 'Measurement']];
 const MAX = 6;
@@ -13,10 +14,10 @@ $('#cats').innerHTML = CATS.map((c) => {
   const more = list.length > MAX ? `<button class="btn showall" type="button" data-showall aria-expanded="false">Show all (${list.length})</button>` : '';
   return `<section class="cat-sec" id="${c.id}" aria-labelledby="${c.id}-h" tabindex="-1"><div class="wrap">
     <div class="sec-head"><p class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</p><h2 id="${c.id}-h">${c.h}</h2><p class="lead">${c.sub}</p></div>
-    ${featuredHTML(feat)}${c.id === 'recruitment' && C.recruitmentVideo ? '<div id="rv-recruitment"></div>' : ''}${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}</div></section>`;
+    ${xpHTML(c.id)}${featuredHTML(feat)}${c.id === 'recruitment' && C.recruitmentVideo ? '<div id="rv-recruitment"></div>' : ''}${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}</div></section>`;
 }).join('');
 $$('.reveal').forEach((e) => e.classList.add('in'));
-wireMedia(document);
+wireMedia(document); wireXP(document);
 // recruitment demo video (config): shown only when set
 if (C.recruitmentVideo) {
   const slot = $('#rv-recruitment'); const u = C.recruitmentVideo; const yt = u.match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/);

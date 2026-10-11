@@ -52,10 +52,10 @@ def header(active):
 <header class="hdr"><div class="wrap hdr-in">
   <a class="brand" href="./" aria-label="Asad Gulshair, home">{IRIS}<span>Asad Gulshair</span></a>
   <nav class="nav" aria-label="Primary">{links}</nav>
-  <div class="hdr-cta"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a><a class="btn btn-primary sm" href="contact.html">Start a project</a></div>
+  <div class="hdr-cta"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a><a class="btn btn-primary sm" href="contact.html#start">Start a project</a></div>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav">Menu</button>
 </div>
-<nav id="mnav" class="mnav" aria-label="Mobile" hidden><a href="./"{' aria-current="page"' if active is None else ''}>Home</a>{links}<a class="btn btn-primary" href="contact.html">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a></nav>
+<nav id="mnav" class="mnav" aria-label="Mobile" hidden><a href="./"{' aria-current="page"' if active is None else ''}>Home</a>{links}<a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a></nav>
 </header>
 '''
 FOOT = f'''<footer class="ftr"><div class="wrap">
@@ -65,9 +65,25 @@ FOOT = f'''<footer class="ftr"><div class="wrap">
 '''
 CTA_BAND = f'''<section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
   <div style="display:grid;gap:20px"><p class="meta">Contact</p><h2 id="cta-h">Have a problem worth automating?</h2><p class="lead">Send a short description and what a good result looks like. I usually reply within a day.</p></div>
-  <div class="cta-row"><a class="btn btn-primary" data-mail="project" href="{MAIL_PROJECT}">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div>
+  <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div>
 </div></section>
 '''
+# small line icons (32px grid, currentColor + one accent detail) for the "How it works" guide
+def ICON(body): return f'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">{body}</svg>'
+AC = 'stroke="#E8743B"'
+STEPS = [
+ (ICON(f'<rect x="4" y="9" width="19" height="15" rx="2"/><path d="M4 21l5-5 4 4 3-3 7 7"/><circle cx="17" cy="14" r="1.6"/><path d="M21 4h7v7M28 4l-9 9" {AC}/>'),
+  'Share your problem', 'Describe what you need detected, measured or automated, and send a few sample images, videos or documents.'),
+ (ICON(f'<rect x="5" y="4" width="16" height="22" rx="2"/><path d="M9 10h8M9 14h6M9 18h4"/><circle cx="21" cy="21" r="5" {AC}/><path d="M24.6 24.6L28 28" {AC}/>'),
+  'Feasibility check and plan', 'I check whether your data can support a reliable result, then we agree the scope, success metric and milestones.'),
+ (ICON(f'<rect x="9" y="9" width="14" height="14" rx="2"/><path d="M13 5v4M19 5v4M13 23v4M19 23v4M5 13h4M5 19h4M23 13h4M23 19h4"/><path d="M13 16l2 2 4-4" {AC}/>'),
+  'Build and test on your data', 'An early prototype on your own samples, then a hardened pipeline evaluated on data the model has not seen.'),
+ (ICON(f'<path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13"/><path d="M10.5 6.8l11 5.5" {AC}/>'),
+  'Deploy and hand over', 'The model, an API or dashboard, documentation and a walkthrough, so your team can run it without me.'),
+]
+IC_MAIL = ICON(f'<rect x="4" y="7" width="24" height="18" rx="2"/><path d="M5 9l11 8 11-8" {AC}/>')
+IC_CAL = ICON(f'<rect x="4" y="7" width="24" height="20" rx="2"/><path d="M4 13h24M10 4v6M22 4v6"/><path d="M12 20l3 3 5-6" {AC}/>')
+IC_CODE = ICON(f'<path d="M11 10l-6 6 6 6M21 10l6 6-6 6"/><path d="M18 7l-4 18" {AC}/>')
 STACK = ['Python', 'PyTorch', 'TensorFlow', 'YOLOv8', 'OpenCV', 'FastAPI', 'LangChain', 'LangGraph', 'n8n', 'Whisper', 'Docker']
 def page_index():
     return f'''<main id="main">
@@ -76,7 +92,7 @@ def page_index():
     <p class="meta">AI Engineer · Computer Vision · LLM Agents</p>
     <h1 id="hero-h">Computer vision and AI agents that work in real operations.</h1>
     <p class="lead">I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API.</p>
-    <div class="cta-row"><a class="btn btn-primary" href="#work" id="cta-work">View selected work</a><a class="btn" data-mail="project" href="{MAIL_PROJECT}">Start a project</a><a class="tlink" data-book href="{MAIL_MEET}">Book a meeting</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
+    <div class="cta-row"><a class="btn btn-primary" href="#work" id="cta-work">View selected work</a><a class="btn" href="contact.html#start">Start a project</a><a class="tlink" data-book href="{MAIL_MEET}">Book a meeting</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <nav class="practice" aria-label="Practice areas">
       <a href="projects.html#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a>
@@ -98,16 +114,17 @@ def page_index():
   <div class="sec-head reveal"><p class="meta">Selected work by area</p><h2 id="areas-h">Four areas where I've designed, trained and deployed systems.</h2></div>
   <div class="areas reveal" id="areas"></div>
 </div></section>
-<section aria-labelledby="how-h" style="padding-top:0"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">How I work</p><h2 id="how-h">How a project runs.</h2><p class="lead">Clear scope, early demos on your data, and a handover you can run without me.</p></div>
-  <div class="steps reveal">
-    <div class="step"><span class="meta">01</span><h3>Scope</h3><p>We define what "working" means: the success metric, the data available and where the system runs.</p></div>
-    <div class="step"><span class="meta">02</span><h3>Prototype</h3><p>A demo on your own data early on, so you can judge real output before committing further.</p></div>
-    <div class="step"><span class="meta">03</span><h3>Build</h3><p>A hardened pipeline, an API and evaluation on held-out data.</p></div>
-    <div class="step"><span class="meta">04</span><h3>Hand over</h3><p>Documentation, a deployment guide and a walkthrough call.</p></div>
-  </div>
+<section id="how" aria-labelledby="how-h" style="padding-top:0"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">How it works</p><h2 id="how-h">Working together, in four steps.</h2><p class="lead">Clear scope, early results on your own data, and a handover you can run without me.</p></div>
+  <ol class="steps reveal">{''.join(f'<li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true">{ic}</span><span class="meta">{n:02d}</span></div><h3>{t}</h3><p>{d}</p></li>' for n, (ic, t, d) in enumerate(STEPS, 1))}</ol>
   <div class="deliver reveal"><div style="display:grid;gap:12px;align-content:start"><p class="meta">What you get</p><h3>Everything needed to run it without me.</h3></div>
     <ul class="checks"><li>Source code in your repository</li><li>A REST API (FastAPI) or a workflow export</li><li>An evaluation report with real metrics</li><li>Setup and run documentation</li><li>A recorded walkthrough</li><li>Fixed scope and milestones agreed up front</li></ul></div>
+  <div class="connect reveal"><div class="conn-head"><p class="meta">How to connect</p><h3>Pick whichever is easiest for you.</h3></div>
+    <div class="conn">
+      <div><span class="step-ic" aria-hidden="true">{IC_MAIL}</span><h4>Email</h4><p class="v" data-email-text>{EMAIL}</p><div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn sm" data-mail="project" href="{MAIL_PROJECT}" title="Opens your default email app">Email me</a></div></div>
+      <div><span class="step-ic" aria-hidden="true">{IC_CAL}</span><h4>Book a meeting</h4><p>A short call to talk through your project. Share a few times that suit you.</p><div class="acts"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a></div></div>
+      <div><span class="step-ic" aria-hidden="true">{IC_CODE}</span><h4>GitHub</h4><p>Code for the public projects on this site.</p><div class="acts"><a class="btn sm" href="{GH}" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
+    </div></div>
 </div></section>
 {CTA_BAND}</main>
 '''
@@ -127,7 +144,7 @@ def page_about():
     return f'''<main id="main">
 <div class="page-head"><div class="wrap"><p class="meta">About</p><h1 style="font-size:clamp(40px,5vw,72px);max-width:20ch">AI engineer where models meet operations.</h1></div></div>
 <section style="padding-top:24px" aria-label="About"><div class="wrap about-grid">
-  <div><p class="meta" style="margin-bottom:16px">Asad Gulshair</p><div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-primary" href="contact.html">Start a project</a><a class="btn" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div></div>
+  <div><p class="meta" style="margin-bottom:16px">Asad Gulshair</p><div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div></div>
   <div style="display:grid;gap:20px"><p class="lead">I'm an AI engineer who works where models meet operations: cameras on production lines, documents in HR pipelines, agents inside business tools.</p>
   <p style="color:var(--text-2);max-width:64ch">I care about systems that are measurable, maintainable and handed over properly. Most of my work starts with a messy real-world input (a line camera, a pile of applications, a weekly report) and ends with an API or workflow a team uses every day. I'm a co-author of a peer-reviewed IEEE Access paper (2025) on AI for smart agriculture.</p></div>
 </div></section>
@@ -166,9 +183,9 @@ def page_contact():
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <div class="panel"><p class="meta">Useful to include</p><ul class="checks" style="grid-template-columns:1fr"><li>What you want detected, measured or automated</li><li>A few sample images, videos or documents</li><li>Where it needs to run (line PC, cloud, existing tool)</li><li>Timeline and any fixed constraints</li></ul></div>
   </div>
-  <div class="ccards">
-    <div class="ccard"><div class="k"><span class="meta">Email</span><span class="v" data-email-text>{EMAIL}</span><span class="d">Best for project briefs and files.</span></div>
-      <div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy</span></button><a class="btn btn-primary sm" data-mail="project" href="{MAIL_PROJECT}">Email me</a></div></div>
+  <div class="ccards" id="start">
+    <div class="ccard"><div class="k"><span class="meta">Email</span><span class="v" data-email-text>{EMAIL}</span><span class="d">Best for project briefs and files. “Email me” opens your default mail app; or copy the address.</span></div>
+      <div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn btn-primary sm" data-mail="project" href="{MAIL_PROJECT}" title="Opens your default email app">Email me</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">Book a meeting</span><span class="d">A short call to talk through your project. Share a few times that suit you, with your timezone.</span></div>
       <div class="acts"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">GitHub</span><span class="v">github.com/asad-gulshair</span><span class="d">Code for the public projects on this site.</span></div>
@@ -183,8 +200,8 @@ SCRIPTS = {'index.html': 'home.js', 'projects.html': 'projects.js', 'about.html'
 BODIES = {'index.html': page_index, 'projects.html': page_projects, 'about.html': page_about, 'contact.html': page_contact}
 for fn, (title, desc, active) in PAGES.items():
     html = head(fn, title, desc) + header(active) + BODIES[fn]() + FOOT + f'<script type="module" src="assets/js/{SCRIPTS[fn]}"></script>\n</body>\n</html>\n'
-    (ROOT / fn).write_text(html)
+    (ROOT / fn).write_text(html, encoding='utf-8')
 # 404
 nf = head('404.html', 'Page not found · Asad Gulshair', 'Page not found.') + header('x') + '<main id="main"><div class="page-head"><div class="wrap"><p class="meta">404</p><h1 style="font-size:56px">Page not found.</h1><p class="lead">The link may be old. Try the work page or get in touch.</p><div class="cta-row"><a class="btn btn-primary" href="./">Home</a><a class="btn" href="projects.html">Work</a><a class="btn" href="contact.html">Contact</a></div></div></div></main>' + FOOT + '<script type="module" src="assets/js/common.js"></script>\n</body>\n</html>\n'
-(ROOT / '404.html').write_text(nf)
+(ROOT / '404.html').write_text(nf, encoding='utf-8')
 print('built')
