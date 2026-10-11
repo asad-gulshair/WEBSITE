@@ -58,6 +58,21 @@ It appears above the recruitment cards on the Work page.
 - **GitHub Pages:** push to `asad-gulshair/WEBSITE` (`main`, root). Pages serves it at https://asad-gulshair.github.io/WEBSITE/.
   `.nojekyll` is included. If Pages becomes the main URL, change `SITE` in `tools/build_pages.py` and re-run it (canonical/OG tags).
 
+### GitHub Pages, exact commands (once `gh auth login` has run as asad-gulshair)
+```bash
+cd /workspace/WEBSITE            # or your clone of this repo
+git push -u origin main
+gh api -X POST repos/asad-gulshair/WEBSITE/pages -f 'source[branch]=main' -f 'source[path]=/'
+gh repo edit asad-gulshair/WEBSITE --description "Asad Gulshair, AI Engineer: computer vision & AI agents portfolio" --homepage "https://asad-gulshair.github.io/WEBSITE/"
+curl -sI https://asad-gulshair.github.io/WEBSITE/ | head -1   # expect 200 after 1-2 min
+```
+
+## Editing workflow
+1. Change shared head/header/footer or page copy in `tools/build_pages.py`, then run `python3 tools/build_pages.py`.
+   It regenerates index/projects/about/contact/404.html.
+2. Change project content in `assets/js/data.js` and links/booking/availability in `assets/js/config.js`. No rebuild is needed.
+3. Do not commit the private spec files (DESIGN_SPEC*.md, REFINE_SPEC.md); they are not part of the site.
+
 ## Media (what is real and where it came from)
 | Asset | Source |
 |---|---|
@@ -96,3 +111,15 @@ Re-record: serve the site, `python showcase/record.py http://localhost:8000/ 192
 
 ## Credits
 Footage: Pexels (free licence) and the Ultra Vision YouTube channel. Fonts: Geist, Geist Mono (OFL). 3D: Three.js (MIT).
+
+## QA (Oct 11, 2026)
+- Playwright click audit (`/tmp/audit.py`, desktop 1440×900 and mobile 390×844): 316 checks, 292 pass, 0 fail.
+  The 24 skipped items are duplicates hidden by design on that device: the mobile Menu button on desktop, and the
+  desktop header links on mobile, which are covered through the mobile menu instead.
+  The audit covers every a/button/[role=button] on all 4 pages, every case-study modal (close by button, Esc, Back
+  and backdrop), prev/next, the YouTube facade, the deep link `projects.html#agents`, and Back/Forward between categories.
+- Fixes from the audit:
+  - Same-page links now scroll to the top and move focus.
+  - Closing a modal because of a category hash no longer restores the old scroll position.
+  - The catnav underline bar now lives inside the scrolling list, so it can't widen the page on mobile. That widening had made the CTA and footer links unclickable.
+- No console errors on any page, live, at desktop or mobile size.
