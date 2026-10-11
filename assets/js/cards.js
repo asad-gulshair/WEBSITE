@@ -3,7 +3,7 @@ import { PROJECTS, CATS, bySlug } from './data.js';
 import { ILLUS } from './illus.js';
 import { $, $$, wireVideo, ytFacade, MAIL_PROJECT } from './common.js';
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const PORTRAIT_YT = new Set(['2M2n8RWnKWY', '3IUCS8Nltlc', '9RqJkD2Xtv8']);
+const PORTRAIT_YT = new Set(['2M2n8RWnKWY', '9RqJkD2Xtv8']);
 export function mediaHTML(p, { inCard = false, eager = false } = {}) {
   const m = p.media; const alt = esc(m.cap.replace(/\s*\(Illustration\)/, ''));
   if (m.type === 'illus') return `<div class="frame" data-illus="${m.key}">${ILLUS[m.key]()}<span class="illus-tag">Illustration</span></div>`;

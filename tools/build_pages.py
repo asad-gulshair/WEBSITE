@@ -50,17 +50,17 @@ def header(active):
     links = n('projects.html', 'Work', 'projects') + n('about.html', 'About', 'about') + n('contact.html', 'Contact', 'contact')
     return f'''<a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap hdr-in">
-  <a class="brand" href="index.html" aria-label="Asad Gulshair, home">{IRIS}<span>Asad Gulshair</span></a>
+  <a class="brand" href="./" aria-label="Asad Gulshair, home">{IRIS}<span>Asad Gulshair</span></a>
   <nav class="nav" aria-label="Primary">{links}</nav>
   <div class="hdr-cta"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a><a class="btn btn-primary sm" href="contact.html">Start a project</a></div>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav">Menu</button>
 </div>
-<nav id="mnav" class="mnav" aria-label="Mobile" hidden><a href="index.html"{' aria-current="page"' if active is None else ''}>Home</a>{links}<a class="btn btn-primary" href="contact.html">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a></nav>
+<nav id="mnav" class="mnav" aria-label="Mobile" hidden><a href="./"{' aria-current="page"' if active is None else ''}>Home</a>{links}<a class="btn btn-primary" href="contact.html">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a></nav>
 </header>
 '''
 FOOT = f'''<footer class="ftr"><div class="wrap">
   <span>© <span data-year>2026</span> Asad Gulshair</span>
-  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a><a href="{YT}" data-yt target="_blank" rel="noopener">YouTube demos ↗</a><a href="https://github.com/asad-gulshair/WEBSITE" data-repo target="_blank" rel="noopener">Site source ↗</a></nav>
+  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a><a href="{YT}" data-yt target="_blank" rel="noopener">YouTube demos ↗</a></nav>
 </div></footer>
 '''
 CTA_BAND = f'''<section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
@@ -81,7 +81,7 @@ def page_index():
     <nav class="practice" aria-label="Practice areas">
       <a href="projects.html#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a>
       <a href="projects.html#recruitment" data-cat="recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a>
-      <a href="projects.html#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents</a>
+      <a href="projects.html#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a>
       <a href="projects.html#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a>
     </nav>
   </div>
@@ -117,7 +117,7 @@ def page_projects():
 <nav class="catnav" aria-label="Work categories"><div class="wrap" style="position:relative"><ul id="catlist">
   <li><a href="#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a></li>
   <li><a href="#recruitment" data-cat="recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a></li>
-  <li><a href="#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents</a></li>
+  <li><a href="#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a></li>
   <li><a href="#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a></li>
 <li class="bar" aria-hidden="true"></li></ul></div></nav>
 <div id="cats"></div>
@@ -134,24 +134,24 @@ def page_about():
 <section style="padding-top:0" aria-labelledby="cap-h"><div class="wrap">
   <div class="sec-head reveal"><h2 id="cap-h">Capabilities</h2></div>
   <div class="caps reveal">
-    <div><h3>Computer vision</h3><ul><li>Object detection and tracking (YOLOv8, ByteTrack)</li><li>Defect and anomaly detection</li><li>Measurement with ArUco markers and depth estimation</li><li>Image classification (CNNs, transfer learning)</li><li>OpenCV pipelines on CPU and edge</li></ul></div>
-    <div><h3>LLMs and agents</h3><ul><li>LangChain and LangGraph workflows</li><li>Retrieval-augmented generation (FAISS, ChromaDB)</li><li>Whisper transcription and translation</li><li>n8n and Apps Script automation</li><li>Prompting and evaluation</li></ul></div>
-    <div><h3>Delivery</h3><ul><li>FastAPI and REST APIs</li><li>Docker</li><li>Dashboards and reporting</li><li>Python, SQL, TensorFlow, PyTorch, scikit-learn</li><li>Documentation and handover</li></ul></div>
+    <div><h3>Computer vision</h3><ul><li>Object detection and tracking (YOLOv8, ByteTrack)</li><li>Defect and anomaly detection</li><li>Measurement with ArUco markers and depth estimation</li><li>Image classification (CNNs, transfer learning)</li><li>OpenCV pipelines that run on CPU</li></ul></div>
+    <div><h3>LLMs and agents</h3><ul><li>LangChain and LangGraph workflows</li><li>Retrieval-augmented generation (FAISS, LlamaIndex)</li><li>Whisper transcription and translation</li><li>n8n and Apps Script automation</li><li>Prompting and evaluation</li></ul></div>
+    <div><h3>Delivery</h3><ul><li>FastAPI and REST APIs</li><li>Docker</li><li>Power BI and Looker dashboards</li><li>Python, SQL, TensorFlow, PyTorch, scikit-learn</li><li>Documentation and handover</li></ul></div>
   </div>
 </div></section>
 <section style="padding-top:0" aria-labelledby="exp-h"><div class="wrap">
   <div class="sec-head reveal"><h2 id="exp-h">Experience</h2></div>
   <ol class="timeline reveal">
-    <li><span class="meta">2026 to present</span><div><h3>AI Engineer, manufacturing sector <span class="cur">Current</span></h3><p>LLM workflow for recruitment and onboarding, bubble detection for bottle production and mushroom defect classification for quality control.</p></div></li>
-    <li><span class="meta">2025 to 2026</span><div><h3>Data Scientist, digital media</h3><p>Whisper-based subtitle and transcription SaaS, n8n and Apps Script automations, dashboards and KPI reporting.</p></div></li>
-    <li><span class="meta">2025</span><div><h3>AI Intern, applied industrial AI</h3><p>Weld, coating and flange inspection systems with YOLOv8, CNNs and OpenCV, deployed as FastAPI services.</p></div></li>
+    <li><span class="meta">2026 to present</span><div><h3>AI Engineer, manufacturing sector <span class="cur">Current</span></h3><p>LLM-powered HR workflow automation for recruitment and onboarding with LangChain and LangGraph, rolled out with the operations team. Currently also working on bottle bubble detection and mushroom defect classification for production quality control.</p></div></li>
+    <li><span class="meta">2025 to 2026</span><div><h3>Data Scientist, digital media</h3><p>Shipped a multilingual subtitle and transcription SaaS (OpenAI, Whisper, FFmpeg) that cut manual translation effort by about 40%. Power BI and Looker dashboards; workflow automation with n8n, Apps Script and APIs.</p></div></li>
+    <li><span class="meta">2025</span><div><h3>AI Intern, applied industrial AI</h3><p>Computer-vision inspection systems for manufacturing QA with YOLOv8 and CNNs, served through FastAPI. OpenCV/ArUco dimension measurement and monocular depth estimation.</p></div></li>
   </ol>
 </div></section>
 <section style="padding-top:0" aria-labelledby="edu-h"><div class="wrap">
   <div class="sec-head reveal"><h2 id="edu-h">Education and research</h2></div>
   <div class="two reveal">
-    <div class="panel"><p class="meta">Degree · 2021 to 2025</p><h3>B.S. Data Science</h3><p>Machine learning, deep learning, statistics and data engineering.</p></div>
-    <div class="panel"><p class="meta">Final-year project · Published in IEEE Access, 2025</p><h3>AI-driven smart agriculture</h3><p>IoT soil sensors and a weather API feeding models for soil analysis, irrigation advice and crop-fertilizer recommendations, with explainable AI and a farmer chatbot. Reported accuracies: irrigation 99.13%, crop 98.75%, fertilizer 99.3%.</p>
+    <div class="panel"><p class="meta">Degree · 2021 to 2025</p><h3>B.S. Data Science</h3><p>Statistics, machine learning, databases, data visualisation and applied Python.</p></div>
+    <div class="panel"><p class="meta">Final-year project · Published in IEEE Access, 2025</p><h3>AI-driven smart agriculture</h3><p>IoT soil sensors and a weather API feeding models for soil analysis, irrigation advice and crop-fertilizer recommendations, with explainable AI and a farmer chatbot. </p><div class="stats" aria-label="Accuracies reported in the paper"><div><b data-count="99.13" data-suffix="%">99.13%</b><span>Irrigation advice</span></div><div><b data-count="98.75" data-suffix="%">98.75%</b><span>Crop recommendation</span></div><div><b data-count="99.3" data-suffix="%">99.3%</b><span>Fertilizer recommendation</span></div></div>
       <div style="display:flex;flex-wrap:wrap;gap:12px 20px;margin-top:6px"><a class="tlink" href="https://ieeexplore.ieee.org/document/11104235" target="_blank" rel="noopener">Read the paper ↗</a><a class="tlink" href="projects.html#/work/smart-farming-ieee">View case study →</a><a class="tlink" href="https://github.com/asad-gulshair/Agro-high-AI-powered-Forming-Project" target="_blank" rel="noopener">View code ↗</a></div></div>
   </div>
 </div></section>
@@ -185,6 +185,6 @@ for fn, (title, desc, active) in PAGES.items():
     html = head(fn, title, desc) + header(active) + BODIES[fn]() + FOOT + f'<script type="module" src="assets/js/{SCRIPTS[fn]}"></script>\n</body>\n</html>\n'
     (ROOT / fn).write_text(html)
 # 404
-nf = head('404.html', 'Page not found · Asad Gulshair', 'Page not found.') + header('x') + '<main id="main"><div class="page-head"><div class="wrap"><p class="meta">404</p><h1 style="font-size:56px">Page not found.</h1><p class="lead">The link may be old. Try the work page or get in touch.</p><div class="cta-row"><a class="btn btn-primary" href="index.html">Home</a><a class="btn" href="projects.html">Work</a><a class="btn" href="contact.html">Contact</a></div></div></div></main>' + FOOT + '<script type="module" src="assets/js/common.js"></script>\n</body>\n</html>\n'
+nf = head('404.html', 'Page not found · Asad Gulshair', 'Page not found.') + header('x') + '<main id="main"><div class="page-head"><div class="wrap"><p class="meta">404</p><h1 style="font-size:56px">Page not found.</h1><p class="lead">The link may be old. Try the work page or get in touch.</p><div class="cta-row"><a class="btn btn-primary" href="./">Home</a><a class="btn" href="projects.html">Work</a><a class="btn" href="contact.html">Contact</a></div></div></div></main>' + FOOT + '<script type="module" src="assets/js/common.js"></script>\n</body>\n</html>\n'
 (ROOT / '404.html').write_text(nf)
 print('built')

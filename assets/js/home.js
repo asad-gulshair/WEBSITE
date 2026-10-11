@@ -11,7 +11,7 @@ $$('.reveal', proof).forEach((e) => e.classList.add('in'));
 wireMedia(proof);
 // ---- areas ----
 $('#areas').innerHTML = CATS.map((c) => { const n = PROJECTS.filter((p) => p.cat === c.id).length;
-  return `<a href="projects.html#${c.id}" data-cat="${c.id}"><span class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</span><h3>${c.h}</h3><p>${c.sub}</p><span class="go">${n} projects →</span></a>`; }).join('');
+  return `<a href="projects.html#${c.id}" data-cat="${c.id}"><span class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</span><h3>${c.h}</h3><p>${c.sub}</p><span class="go"><span data-count="${n}">${n}</span> project${n === 1 ? '' : 's'} →</span></a>`; }).join('');
 wireOpeners(document);
 addEventListener('popstate', routeFromHash); addEventListener('hashchange', routeFromHash);
 if (location.hash.startsWith('#/work/')) routeFromHash();

@@ -1,5 +1,6 @@
 // Shared behaviour for every page: header, mobile menu, mailto/booking/copy, reveals, lazy videos, YouTube facades.
 import { CAPTURE, REDUCED } from './engine.js';
+import './motion.js';
 const C = window.SITE_CONFIG || {};
 export const EMAIL = C.email || 'asadgulshair6767@gmail.com';
 export const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -79,7 +80,7 @@ const here = (location.pathname.split('/').pop() || 'index.html');
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const href = a.getAttribute('href'); if (/^(https?:|mailto:|#)/.test(href)) return;
-  const [file, hash] = href.split('#'); if ((file || 'index.html') !== here || hash) return;
+  const [file, hash] = href.split('#'); if ((file.replace(/^\.\/?/, '') || 'index.html') !== here || hash) return;
   e.preventDefault();
   const target = (here === 'contact.html' && a.textContent.trim() === 'Start a project') ? $('.ccards .ccard') : $('main h1, main h2');
   const y = target ? Math.max(0, target.getBoundingClientRect().top + scrollY - (hdr ? hdr.offsetHeight : 0) - 24) : 0;

@@ -4,16 +4,16 @@ import { $, $$ } from './common.js';
 import { PROJECTS, CATS } from './data.js';
 import { featuredHTML, cardHTML, wireMedia, wireOpeners, routeFromHash, isCaseOpen, closeCase } from './cards.js';
 const C = window.SITE_CONFIG || {};
-const SUBS = [['all', 'All'], ['detection', 'Detection'], ['measurement', 'Measurement'], ['counting', 'Counting']];
+const SUBS = [['all', 'All'], ['detection', 'Detection'], ['measurement', 'Measurement']];
 const MAX = 6;
 // ---- render ----
 $('#cats').innerHTML = CATS.map((c) => {
   const list = PROJECTS.filter((p) => p.cat === c.id), feat = list.find((p) => p.featured) || list[0], rest = list.filter((p) => p !== feat);
-  const subf = c.id === 'industrial' ? `<div class="subf" role="group" aria-label="Filter industrial projects">${SUBS.map(([k, l]) => `<button type="button" data-sub="${k}" aria-pressed="${k === 'all'}">${l}</button>`).join('')}</div>` : '';
+  const subf = c.id === 'industrial' && rest.length > 4 ? `<div class="subf" role="group" aria-label="Filter industrial projects">${SUBS.map(([k, l]) => `<button type="button" data-sub="${k}" aria-pressed="${k === 'all'}">${l}</button>`).join('')}</div>` : '';
   const more = list.length > MAX ? `<button class="btn showall" type="button" data-showall aria-expanded="false">Show all (${list.length})</button>` : '';
   return `<section class="cat-sec" id="${c.id}" aria-labelledby="${c.id}-h" tabindex="-1"><div class="wrap">
     <div class="sec-head"><p class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</p><h2 id="${c.id}-h">${c.h}</h2><p class="lead">${c.sub}</p></div>
-    ${featuredHTML(feat)}<div id="rv-${c.id}"></div>${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}</div></section>`;
+    ${featuredHTML(feat)}${c.id === 'recruitment' && C.recruitmentVideo ? '<div id="rv-recruitment"></div>' : ''}${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}</div></section>`;
 }).join('');
 $$('.reveal').forEach((e) => e.classList.add('in'));
 wireMedia(document);
