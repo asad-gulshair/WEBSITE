@@ -87,7 +87,7 @@ export function openCase(slug, { trigger = null, push = true } = {}) {
 }
 export function closeCase({ fromPop = false, restore = true } = {}) {
   if (!dlg || !dlg.open || closeTimer) return; // closed, or already closing (button + the popstate it causes)
-  const finish = () => { closeTimer = 0; dlg.classList.remove('closing'); dlg.close(); document.documentElement.classList.remove('lock'); if (restore) scrollTo(0, savedY); $$('video', dlg).forEach((v) => v.pause()); dlg.querySelector('.case-scroll').innerHTML = ''; curSlug = null;
+  const finish = () => { closeTimer = 0; dlg.classList.remove('closing'); dlg.close(); document.documentElement.classList.remove('lock'); if (restore) { const y = savedY; requestAnimationFrame(() => { scrollTo(0, y); requestAnimationFrame(() => scrollTo(0, y)); }); } $$('video', dlg).forEach((v) => v.pause()); dlg.querySelector('.case-scroll').innerHTML = ''; curSlug = null;
     if (restore && lastTrigger && document.contains(lastTrigger)) lastTrigger.focus({ preventScroll: true }); };
   dlg.classList.add('closing'); closeTimer = setTimeout(finish, 190);
   if (!fromPop) { if (pushed) { pushed = false; history.back(); } else history.replaceState(null, '', location.pathname + location.search); }

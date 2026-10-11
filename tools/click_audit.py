@@ -41,6 +41,7 @@ async def run(dev):
         if not await el.is_visible(): res.append(dict(dev=dev,page=pgname,**it,ok=None,why='not visible on this device')); continue
         await el.scroll_into_view_if_needed(); await pg.wait_for_timeout(150)
         before=await pg.evaluate(SNAP); errs.clear(); popup=None; why=''
+        pressed_before=await pg.evaluate("i=>{const e=[...document.querySelectorAll('a,button,[role=button]')][i];return e ? e.getAttribute('aria-pressed') : null}", it['i'])
         href=it['href'] or ''
         try:
           if 'mail.google.com' in href: raise Exception('Gmail URL')
@@ -66,7 +67,6 @@ async def run(dev):
             await el.click(timeout=3000); await pg.wait_for_timeout(1300)
             after=await pg.evaluate(SNAP)
             ch=[k for k in before if before[k]!=after[k]]
-            pressed_before=await pg.evaluate("i=>{const e=[...document.querySelectorAll('a,button,[role=button]')][i];return e.getAttribute('aria-pressed')}", it['i'])
             ok=bool(ch) or pressed_before=='true'; why=('already active (no-op by design) ' if not ch and pressed_before=='true' else '')+'changed: '+','.join(ch) + (' -> '+after['url'].replace(B,'') if 'url' in ch else '')
         except Exception as e:
           ok=False; why='ERR '+str(e)[:100]

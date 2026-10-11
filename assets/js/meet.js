@@ -51,7 +51,7 @@ function cleanup() {
 function close() {
   if (!dlg || !dlg.open || closing) return;
   dlg.classList.add('closing');
-  closing = setTimeout(() => { closing = 0; dlg.classList.remove('closing'); dlg.close(); }, STILL ? 0 : 180); // 'close' runs cleanup()
+  closing = setTimeout(() => { closing = 0; dlg.classList.remove('closing'); if (dlg.open) dlg.close(); else cleanup(); }, STILL ? 0 : 180); // 'close' runs cleanup()
 }
 function ensure() {
   if (dlg) return;
@@ -60,7 +60,7 @@ function ensure() {
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
   dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.closest('.meet-x')) close(); });
   // every way of closing ends here, including the browser closing it on its own (e.g. a repeated Esc)
-  dlg.addEventListener('close', () => { if (!closing && !dlg.open) cleanup(); });
+  dlg.addEventListener('close', () => { if (closing) { clearTimeout(closing); closing = 0; dlg.classList.remove('closing'); } cleanup(); });
   // keep Tab inside the dialog (the page behind is inert, this also stops focus escaping to the browser UI mid-dialog)
   dlg.addEventListener('keydown', (e) => {
     if (e.key !== 'Tab') return;
