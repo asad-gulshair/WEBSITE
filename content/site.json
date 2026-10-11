@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "eyebrow": "AI Engineer · Computer Vision · LLM Agents",
+    "headline": "Computer vision and AI agents that work in real operations.",
+    "subline": "I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API."
+  },
+  "home": {
+    "featuredProject": "tomato-ripeness-grading",
+    "highlightProjects": ["flange-dimension-compliance", "potato-disease-cnn"]
+  },
+  "about": {
+    "headline": "AI engineer where models meet operations.",
+    "intro": "I'm an AI engineer who works where models meet operations: cameras on production lines, documents in HR pipelines, agents inside business tools.",
+    "body": "I care about systems that are measurable, maintainable and handed over properly. Most of my work starts with a messy real-world input (a line camera, a pile of applications, a weekly report) and ends with an API or workflow a team uses every day. I'm a co-author of a peer-reviewed IEEE Access paper (2025) on AI for smart agriculture."
+  },
+  "skills": [
+    {
+      "title": "Computer vision",
+      "items": [
+        "Object detection and tracking (YOLOv8, ByteTrack)",
+        "Defect and anomaly detection",
+        "Measurement with ArUco markers and depth estimation",
+        "Image classification (CNNs, transfer learning)",
+        "OpenCV pipelines that run on CPU"
+      ]
+    },
+    {
+      "title": "LLMs and agents",
+      "items": [
+        "LangChain and LangGraph workflows",
+        "Retrieval-augmented generation (FAISS, LlamaIndex)",
+        "Whisper transcription and translation",
+        "n8n and Apps Script automation",
+        "Prompting and evaluation"
+      ]
+    },
+    {
+      "title": "Delivery",
+      "items": [
+        "FastAPI and REST APIs",
+        "Docker",
+        "Power BI and Looker dashboards",
+        "Python, SQL, TensorFlow, PyTorch, scikit-learn",
+        "Documentation and handover"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "period": "2026 to present",
+      "title": "AI Engineer, manufacturing sector",
+      "current": true,
+      "description": "LLM-powered HR workflow automation for recruitment and onboarding with LangChain and LangGraph, rolled out with the operations team. Currently also working on bottle bubble detection and mushroom defect classification for production quality control."
+    },
+    {
+      "period": "2025 to 2026",
+      "title": "Data Scientist, digital media",
+      "current": false,
+      "description": "Shipped a multilingual subtitle and transcription SaaS (OpenAI, Whisper, FFmpeg) that cut manual translation effort by about 40%. Power BI and Looker dashboards; workflow automation with n8n, Apps Script and APIs."
+    },
+    {
+      "period": "2025",
+      "title": "AI Intern, applied industrial AI",
+      "current": false,
+      "description": "Computer-vision inspection systems for manufacturing QA with YOLOv8 and CNNs, served through FastAPI. OpenCV/ArUco dimension measurement and monocular depth estimation."
+    }
+  ],
+  "contact": {
+    "email": "asadgulshair6767@gmail.com",
+    "linkedinUrl": "https://www.linkedin.com/in/asad-gulshair",
+    "githubUrl": "https://github.com/asad-gulshair",
+    "youtubeUrl": "https://www.youtube.com/@Ultra_Vison20",
+    "bookingUrl": "",
+    "availability": "Available for new projects"
+  },
+  "recruitmentVideo": ""
+}

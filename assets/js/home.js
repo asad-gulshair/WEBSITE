@@ -1,22 +1,35 @@
 import { CAPTURE, REDUCED } from './engine.js';
-import { $, $$ } from './common.js';
-import { PROJECTS, CATS, bySlug } from './data.js';
+import { $, $$, esc, site } from './common.js';
+import { scan } from './motion.js';
+import { PROJECTS, CATS, bySlug, loadProjects } from './data.js';
 import { featuredHTML, cardHTML, wireMedia, wireOpeners, routeFromHash } from './cards.js';
 import { xpMiniHTML, wireXP } from './explain.js';
 
-// ---- proof: best three results ----
-const proof = $('#proof');
-const main = bySlug('tomato-ripeness-grading'), side = ['flange-dimension-compliance', 'potato-disease-cnn'].map(bySlug);
-proof.innerHTML = `<div class="p-main">${featuredHTML(main, { hrefBase: 'projects.html' })}</div>` + side.map((p) => `<div class="p-side reveal in">${cardHTML(p, { hrefBase: 'projects.html' })}</div>`).join('');
-$$('.reveal', proof).forEach((e) => e.classList.add('in'));
-wireMedia(proof);
-// ---- areas ----
-$('#areas').innerHTML = CATS.map((c) => { const n = PROJECTS.filter((p) => p.cat === c.id).length;
-  return `<a href="projects.html#${c.id}" data-cat="${c.id}">${xpMiniHTML(c.id)}<span class="meta eyebrow"><span class="dot" style="background:${c.dot}"></span>${c.label}</span><h3>${c.h}</h3><p>${c.sub}</p><span class="go"><span data-count="${n}">${n}</span> project${n === 1 ? '' : 's'} →</span></a>`; }).join('');
-wireXP($('#areas'));
+// ---- proof (best three results) + areas, from content/projects.json; picks from content/site.json → home ----
+function render(home = {}) {
+  const proof = $('#proof');
+  const main = bySlug(home.featuredProject) || bySlug('tomato-ripeness-grading') || PROJECTS.find((p) => p.featured) || PROJECTS[0];
+  const pref = Array.isArray(home.highlightProjects) && home.highlightProjects.length ? home.highlightProjects : ['flange-dimension-compliance', 'potato-disease-cnn'];
+  const side = pref.map(bySlug).filter((p) => p && p !== main).slice(0, 2);
+  proof.innerHTML = (main ? `<div class="p-main">${featuredHTML(main, { hrefBase: 'projects.html' })}</div>` : '') + side.map((p) => `<div class="p-side reveal in">${cardHTML(p, { hrefBase: 'projects.html' })}</div>`).join('');
+  $$('.reveal', proof).forEach((e) => e.classList.add('in'));
+  wireMedia(proof);
+  const areas = $('#areas');
+  areas.innerHTML = CATS.map((c) => { const n = PROJECTS.filter((p) => p.cat === c.id).length; if (!n) return '';
+    return `<a href="projects.html#${c.id}" data-cat="${c.id}">${xpMiniHTML(c.id)}<span class="meta eyebrow"><span class="dot" style="background:${esc(c.dot)}"></span>${esc(c.label)}</span><h3>${esc(c.h)}</h3><p>${esc(c.sub)}</p><span class="go"><span data-count="${n}">${n}</span> project${n === 1 ? '' : 's'} →</span></a>`; }).join('');
+  wireXP(areas); scan(proof); scan(areas);
+  $$('.practice a').forEach((a) => { const c = CATS.find((x) => x.id === a.dataset.cat); if (c && a.lastChild.textContent !== c.label) a.lastChild.textContent = c.label; });
+}
 wireOpeners(document);
-addEventListener('popstate', routeFromHash); addEventListener('hashchange', routeFromHash);
-if (location.hash.startsWith('#/work/')) routeFromHash();
+Promise.all([loadProjects(), site]).then(([, d]) => {
+  render(d.home);
+  addEventListener('popstate', routeFromHash); addEventListener('hashchange', routeFromHash);
+  if (location.hash.startsWith('#/work/')) routeFromHash();
+}).catch((err) => {
+  console.error('Projects not loaded:', err);
+  $('#proof').innerHTML = `<div class="load-err" role="alert" style="grid-column:1/-1"><p>The project highlights didn’t load. <a class="tlink" href="projects.html">Open the work page</a></p></div>`;
+  $('#areas').closest('section').hidden = true;
+});
 
 // ---- in-page CTA scroll with header offset ----
 $('#cta-work')?.addEventListener('click', (e) => {

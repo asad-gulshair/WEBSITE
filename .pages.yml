@@ -1,0 +1,310 @@
+# Pages CMS (https://pagescms.org) admin panel for this site.
+# Open https://app.pagescms.org, sign in with GitHub, pick this repository and branch "main". Every Save is a commit;
+# GitHub Pages republishes the site 1-2 minutes later. Nothing here is loaded by the public site.
+media:
+  input: assets/media
+  output: assets/media
+
+content:
+  # ---------------------------------------------------------------- projects
+  - name: projects
+    label: Projects
+    type: file
+    path: content/projects.json
+    format: json
+    fields:
+      - name: projects
+        label: Projects
+        description: Cards on the Work page and their case studies. Order here is the order on the site.
+        type: object
+        list: true
+        fields:
+          - name: slug
+            label: Slug
+            description: "Short id used in links (projects.html#/work/<slug>). Lowercase letters, numbers and dashes. Don't change it once shared."
+            type: string
+            required: true
+            pattern:
+              regex: "^[a-z0-9-]+$"
+              message: Use lowercase letters, numbers and dashes only.
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: category
+            label: Category
+            type: select
+            required: true
+            options:
+              values:
+                - { value: industrial, label: Industrial Vision }
+                - { value: recruitment, label: Recruitment Automation }
+                - { value: agents, label: "AI Agents & Automation" }
+                - { value: agriculture, label: Agriculture }
+          - name: subcategory
+            label: Industrial sub-filter
+            description: Only used for Industrial Vision (the Detection / Measurement filter appears once that section has more than 5 projects).
+            type: select
+            options:
+              values:
+                - { value: "", label: None }
+                - { value: detection, label: Detection }
+                - { value: measurement, label: Measurement }
+          - name: featured
+            label: Featured in its section
+            description: The first featured project of a category is shown large at the top of that section.
+            type: boolean
+            default: false
+          - name: status
+            label: Status badge
+            description: "Keep it truthful: PRODUCTION (used day to day), PROTOTYPE, CURRENT ROLE (current job, details private), DEMO, RESEARCH, PUBLISHED."
+            type: select
+            required: true
+            options:
+              values: [PRODUCTION, PROTOTYPE, CURRENT ROLE, DEMO, RESEARCH, PUBLISHED]
+          - name: year
+            label: Year
+            description: e.g. 2025 or 2025–26
+            type: string
+          - name: role
+            label: My role
+            type: string
+          - name: summary
+            label: Summary
+            description: One line shown on the card and at the top of the case study.
+            type: text
+            required: true
+          - name: problem
+            label: Problem
+            type: text
+          - name: approach
+            label: Approach
+            description: One step per item.
+            type: text
+            list: true
+          - name: result
+            label: Result
+            description: Real, verifiable results only.
+            type: text
+          - name: stack
+            label: Stack
+            description: Tools and models. The first four appear on the card.
+            type: string
+            list: true
+          - name: links
+            label: Links
+            description: '"Code" shows as "View code" on the card and case study; "Paper" as "Read the paper"; "Other" shows its own label.'
+            type: object
+            list: true
+            fields:
+              - name: type
+                label: Type
+                type: select
+                required: true
+                options:
+                  values:
+                    - { value: code, label: Code (GitHub) }
+                    - { value: paper, label: Paper }
+                    - { value: other, label: Other }
+              - name: label
+                label: Label
+                description: e.g. "Disk version ↗"
+                type: string
+              - name: url
+                label: URL
+                type: string
+                required: true
+          - name: media
+            label: Main media
+            type: object
+            fields:
+              - name: type
+                label: Type
+                type: select
+                required: true
+                options:
+                  values:
+                    - { value: image, label: Image }
+                    - { value: video, label: Video loop (mp4) }
+                    - { value: illustration, label: Built-in illustration }
+              - name: src
+                label: File
+                description: The image, or the .mp4 for a video loop. Not used for illustrations.
+                type: file
+              - name: poster
+                label: Video poster image
+                description: Still frame shown before a video loads. Video only.
+                type: image
+              - name: illustration
+                label: Illustration
+                description: Only used when Type is "Built-in illustration".
+                type: select
+                options:
+                  values:
+                    - { value: "", label: None }
+                    - { value: weld, label: Weld line }
+                    - { value: recruit, label: Recruitment pipeline }
+                    - { value: resume, label: Resume screening }
+                    - { value: rag, label: RAG pipeline }
+                    - { value: subs, label: Subtitles waveform }
+                    - { value: n8n, label: n8n workflow }
+                    - { value: farm, label: Smart-farming overview }
+              - name: caption
+                label: Caption
+                description: End illustration captions with "(Illustration)".
+                type: text
+              - name: portrait
+                label: Portrait (tall) video
+                type: boolean
+                default: false
+          - name: youtube
+            label: YouTube demo
+            description: Video id or link. Adds a click-to-load "Watch demo" player to the case study. Leave empty for none.
+            type: string
+          - name: youtubePortrait
+            label: YouTube demo is a Short (portrait)
+            type: boolean
+            default: false
+          - name: extra
+            label: Second figure (optional)
+            type: object
+            fields:
+              - name: src
+                label: Image
+                type: image
+              - name: caption
+                label: Caption
+                type: text
+      - name: categories
+        label: Categories
+        description: The four sections of the Work page. Edit the wording only; the ids are fixed.
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Id (do not change)
+            type: select
+            required: true
+            options:
+              values: [industrial, recruitment, agents, agriculture]
+          - name: label
+            label: Name
+            type: string
+            required: true
+          - name: color
+            label: Dot colour
+            description: "Hex colour, e.g. #E8743B"
+            type: string
+          - name: headline
+            label: Section headline
+            type: string
+          - name: subline
+            label: Section intro
+            type: text
+
+  # ---------------------------------------------------------------- site copy + contact settings
+  - name: site
+    label: Site settings
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - name: contact
+        label: Contact
+        type: object
+        fields:
+          - name: email
+            label: Email
+            type: string
+            required: true
+          - name: linkedinUrl
+            label: LinkedIn URL
+            type: string
+          - name: githubUrl
+            label: GitHub URL
+            type: string
+          - name: youtubeUrl
+            label: YouTube URL
+            type: string
+          - name: bookingUrl
+            label: Booking page URL
+            description: 'Calendly / Cal.com / Google Calendar appointment page. Empty: "Book a Google Meet call" opens a pre-filled email asking for 2-3 times instead.'
+            type: string
+          - name: availability
+            label: Availability line
+            description: The green line in the hero and on Contact. Empty hides it.
+            type: string
+      - name: hero
+        label: Home hero
+        type: object
+        fields:
+          - name: eyebrow
+            label: Small line above the headline
+            type: string
+          - name: headline
+            label: Headline
+            type: text
+          - name: subline
+            label: Subline
+            type: text
+      - name: home
+        label: Home "Selected work"
+        type: object
+        fields:
+          - name: featuredProject
+            label: Large project (slug)
+            description: Slug of a project, e.g. tomato-ripeness-grading
+            type: string
+          - name: highlightProjects
+            label: Two smaller projects (slugs)
+            type: string
+            list: true
+      - name: about
+        label: About page
+        type: object
+        fields:
+          - name: headline
+            label: Headline
+            type: text
+          - name: intro
+            label: Intro (large)
+            type: text
+          - name: body
+            label: Body
+            type: text
+      - name: skills
+        label: Capabilities
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Group
+            type: string
+          - name: items
+            label: Items
+            type: string
+            list: true
+      - name: experience
+        label: Experience
+        description: No employer names, cities or phone numbers.
+        type: object
+        list: true
+        fields:
+          - name: period
+            label: Period
+            description: e.g. 2025 to 2026
+            type: string
+          - name: title
+            label: Role, sector
+            type: string
+          - name: current
+            label: Current role
+            type: boolean
+            default: false
+          - name: description
+            label: Description
+            type: text
+      - name: recruitmentVideo
+        label: Recruitment demo video
+        description: 'Empty hides it. A YouTube link, or a self-hosted file such as "assets/media/recruitment-demo.mp4".'
+        type: string

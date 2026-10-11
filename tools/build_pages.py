@@ -1,24 +1,29 @@
 # Generates the 4 static pages with a shared header/footer. Run: python3 tools/build_pages.py
 import json, re, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SITE = "https://12dd260da5ed4fad.flypod.page/"
+SITE = "https://asad-gulshair.github.io/"
+# Contact defaults baked into the HTML (work without JS). The live values come from content/site.json (admin panel).
 EMAIL = "asadgulshair6767@gmail.com"
 GH = "https://github.com/asad-gulshair"
 YT = "https://www.youtube.com/@Ultra_Vison20"
+LI = "https://www.linkedin.com/in/asad-gulshair"
 from urllib.parse import quote
 MAIL_PROJECT = f"mailto:{EMAIL}?subject={quote('Project enquiry')}"
-MAIL_MEET = f"mailto:{EMAIL}?subject={quote('Meeting request – project discussion')}&body={quote('Hi Asad,\n\nI would like to book a call about a project.\n\nPreferred times (with timezone):\n- \n- \n\nShort project summary:\n\n')}"
+MAIL_MEET = f"mailto:{EMAIL}?subject={quote('Meeting request - project discussion')}&body={quote('Hi Asad,\n\nI would like to book a Google Meet call about a project.\n\nPreferred times (2-3 options, with your timezone):\n1. \n2. \n3. \n\nShort project summary:\n\n')}"
 IRIS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.5"/><g stroke="#A3A7AB" stroke-width="1.3" stroke-linecap="round">' + ''.join(f'<path d="M12 12 L12 2.2" transform="rotate({a} 12 12) translate(3.2 0)"/>' for a in range(0, 360, 60)) + '</g><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg>'
 PAGES = {
  'index.html': ('Asad Gulshair, AI Engineer · Computer Vision & AI Agents', 'AI engineer building visual inspection systems for production lines and LLM workflows for document-heavy teams, from prototype to deployed API.', None),
  'projects.html': ('Work · Asad Gulshair, AI Engineer', 'Case studies in industrial computer vision, recruitment automation, AI agents and agriculture, with honest status labels and real model output.', 'projects'),
  'about.html': ('About · Asad Gulshair, AI Engineer', 'About Asad Gulshair: AI engineer, capabilities, experience, education and IEEE publication.', 'about'),
- 'contact.html': ('Contact · Asad Gulshair, AI Engineer', 'Start a project or book a meeting with Asad Gulshair. Email and GitHub.', 'contact'),
+ 'contact.html': ('Contact · Asad Gulshair, AI Engineer', 'Start a project or book a meeting with Asad Gulshair. Email, LinkedIn and GitHub.', 'contact'),
 }
 def head(fn, title, desc):
     url = SITE + ('' if fn == 'index.html' else fn)
-    ld = {"@context": "https://schema.org", "@type": "Person", "name": "Asad Gulshair", "jobTitle": "AI Engineer", "url": SITE, "email": "mailto:" + EMAIL, "sameAs": [GH, YT]}
+    ld = {"@context": "https://schema.org", "@type": "Person", "name": "Asad Gulshair", "jobTitle": "AI Engineer", "url": SITE, "email": "mailto:" + EMAIL, "sameAs": [GH, YT, LI]}
     pre = '<link rel="modulepreload" href="assets/js/home.js">' if fn == 'index.html' else ''
+    # content files are fetched by the page scripts; preloading starts them with the HTML
+    data = '<link rel="preload" href="content/site.json" as="fetch" crossorigin>'
+    if fn in ('index.html', 'projects.html'): data += '<link rel="preload" href="content/projects.json" as="fetch" crossorigin>'
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -36,10 +41,9 @@ def head(fn, title, desc):
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css">
-{pre}
+{data}{pre}
 <script type="application/ld+json">{json.dumps(ld)}</script>
 <script type="importmap">{{"imports":{{"three":"./assets/vendor/three.module.min.js"}}}}</script>
-<script src="assets/js/config.js"></script>
 </head>
 <body>
 '''
@@ -60,7 +64,7 @@ def header(active):
 '''
 FOOT = f'''<footer class="ftr"><div class="wrap">
   <span>© <span data-year>2026</span> Asad Gulshair</span>
-  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a><a href="{YT}" data-yt target="_blank" rel="noopener">YouTube demos ↗</a></nav>
+  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{LI}" data-li target="_blank" rel="noopener">LinkedIn ↗</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a><a href="{YT}" data-yt target="_blank" rel="noopener">YouTube demos ↗</a></nav>
 </div></footer>
 '''
 CTA_BAND = f'''<section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
@@ -89,9 +93,9 @@ def page_index():
     return f'''<main id="main">
 <section class="hero" aria-labelledby="hero-h"><div class="wrap">
   <div class="hero-copy">
-    <p class="meta">AI Engineer · Computer Vision · LLM Agents</p>
-    <h1 id="hero-h">Computer vision and AI agents that work in real operations.</h1>
-    <p class="lead">I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API.</p>
+    <p class="meta" data-site="hero.eyebrow">AI Engineer · Computer Vision · LLM Agents</p>
+    <h1 id="hero-h" data-site="hero.headline">Computer vision and AI agents that work in real operations.</h1>
+    <p class="lead" data-site="hero.subline">I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API.</p>
     <div class="cta-row"><a class="btn btn-primary" href="#work" id="cta-work">View selected work</a><a class="btn" href="contact.html#start">Start a project</a><a class="tlink" data-book href="{MAIL_MEET}">Book a meeting</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <nav class="practice" aria-label="Practice areas">
@@ -142,15 +146,15 @@ def page_projects():
 '''
 def page_about():
     return f'''<main id="main">
-<div class="page-head"><div class="wrap"><p class="meta">About</p><h1 style="font-size:clamp(40px,5vw,72px);max-width:20ch">AI engineer where models meet operations.</h1></div></div>
+<div class="page-head"><div class="wrap"><p class="meta">About</p><h1 style="font-size:clamp(40px,5vw,72px);max-width:20ch" data-site="about.headline">AI engineer where models meet operations.</h1></div></div>
 <section style="padding-top:24px" aria-label="About"><div class="wrap about-grid">
   <div><p class="meta" style="margin-bottom:16px">Asad Gulshair</p><div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div></div>
-  <div style="display:grid;gap:20px"><p class="lead">I'm an AI engineer who works where models meet operations: cameras on production lines, documents in HR pipelines, agents inside business tools.</p>
-  <p style="color:var(--text-2);max-width:64ch">I care about systems that are measurable, maintainable and handed over properly. Most of my work starts with a messy real-world input (a line camera, a pile of applications, a weekly report) and ends with an API or workflow a team uses every day. I'm a co-author of a peer-reviewed IEEE Access paper (2025) on AI for smart agriculture.</p></div>
+  <div style="display:grid;gap:20px"><p class="lead" data-site="about.intro">I'm an AI engineer who works where models meet operations: cameras on production lines, documents in HR pipelines, agents inside business tools.</p>
+  <p style="color:var(--text-2);max-width:64ch" data-site="about.body">I care about systems that are measurable, maintainable and handed over properly. Most of my work starts with a messy real-world input (a line camera, a pile of applications, a weekly report) and ends with an API or workflow a team uses every day. I'm a co-author of a peer-reviewed IEEE Access paper (2025) on AI for smart agriculture.</p></div>
 </div></section>
 <section style="padding-top:0" aria-labelledby="cap-h"><div class="wrap">
   <div class="sec-head reveal"><h2 id="cap-h">Capabilities</h2></div>
-  <div class="caps reveal">
+  <div class="caps reveal" data-site-list="skills">
     <div><h3>Computer vision</h3><ul><li>Object detection and tracking (YOLOv8, ByteTrack)</li><li>Defect and anomaly detection</li><li>Measurement with ArUco markers and depth estimation</li><li>Image classification (CNNs, transfer learning)</li><li>OpenCV pipelines that run on CPU</li></ul></div>
     <div><h3>LLMs and agents</h3><ul><li>LangChain and LangGraph workflows</li><li>Retrieval-augmented generation (FAISS, LlamaIndex)</li><li>Whisper transcription and translation</li><li>n8n and Apps Script automation</li><li>Prompting and evaluation</li></ul></div>
     <div><h3>Delivery</h3><ul><li>FastAPI and REST APIs</li><li>Docker</li><li>Power BI and Looker dashboards</li><li>Python, SQL, TensorFlow, PyTorch, scikit-learn</li><li>Documentation and handover</li></ul></div>
@@ -158,7 +162,7 @@ def page_about():
 </div></section>
 <section style="padding-top:0" aria-labelledby="exp-h"><div class="wrap">
   <div class="sec-head reveal"><h2 id="exp-h">Experience</h2></div>
-  <ol class="timeline reveal">
+  <ol class="timeline reveal" data-site-list="experience">
     <li><span class="meta">2026 to present</span><div><h3>AI Engineer, manufacturing sector <span class="cur">Current</span></h3><p>LLM-powered HR workflow automation for recruitment and onboarding with LangChain and LangGraph, rolled out with the operations team. Currently also working on bottle bubble detection and mushroom defect classification for production quality control.</p></div></li>
     <li><span class="meta">2025 to 2026</span><div><h3>Data Scientist, digital media</h3><p>Shipped a multilingual subtitle and transcription SaaS (OpenAI, Whisper, FFmpeg) that cut manual translation effort by about 40%. Power BI and Looker dashboards; workflow automation with n8n, Apps Script and APIs.</p></div></li>
     <li><span class="meta">2025</span><div><h3>AI Intern, applied industrial AI</h3><p>Computer-vision inspection systems for manufacturing QA with YOLOv8 and CNNs, served through FastAPI. OpenCV/ArUco dimension measurement and monocular depth estimation.</p></div></li>
@@ -188,6 +192,8 @@ def page_contact():
       <div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn btn-primary sm" data-mail="project" href="{MAIL_PROJECT}" title="Opens your default email app">Email me</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">Book a meeting</span><span class="d">A short call to talk through your project. Share a few times that suit you, with your timezone.</span></div>
       <div class="acts"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a></div></div>
+    <div class="ccard"><div class="k"><span class="meta">LinkedIn</span><span class="v" data-li-text>linkedin.com/in/asad-gulshair</span><span class="d">Send a message or connect, whichever you prefer.</span></div>
+      <div class="acts"><a class="btn sm" href="{LI}" data-li target="_blank" rel="noopener">Open LinkedIn ↗</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">GitHub</span><span class="v">github.com/asad-gulshair</span><span class="d">Code for the public projects on this site.</span></div>
       <div class="acts"><a class="btn sm" href="{GH}" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">YouTube</span><span class="v">Ultra Vision</span><span class="d">Short computer-vision demos on real footage.</span></div>

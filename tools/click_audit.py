@@ -9,7 +9,7 @@ SNAP="""()=>({url:location.href,y:Math.round(scrollY),dlg:!!document.querySelect
  hid:[...document.querySelectorAll('.card')].filter(c=>c.classList.contains('hide')).length, toast:!!document.querySelector('.toast.on'),
  copied:[...document.querySelectorAll('[data-copied]')].length, yt:document.querySelectorAll('iframe').length, focus:document.activeElement&&(document.activeElement.tagName+document.activeElement.id+(document.activeElement.textContent||'').slice(0,20))})"""
 LIST="""()=>[...document.querySelectorAll('a,button,[role=button]')].map((e,i)=>{const r=e.getBoundingClientRect();const cs=getComputedStyle(e);
- return {i,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim().slice(0,40),href:e.getAttribute('href'),target:e.target||'',
+ return {i,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim().slice(0,40),href:e.getAttribute('href'),target:e.target||'',book:e.hasAttribute('data-book'),
  vis:!!(r.width&&r.height)&&cs.visibility!=='hidden'&&!e.closest('[hidden]')&&!e.closest('.hide'),inMnav:!!e.closest('#mnav'),inHide:!!e.closest('.hide')}})"""
 async def run(dev):
   res=[]; 
@@ -43,7 +43,15 @@ async def run(dev):
         before=await pg.evaluate(SNAP); errs.clear(); popup=None; why=''
         href=it['href'] or ''
         try:
-          if href.startswith('mailto:'):
+          if 'mail.google.com' in href: raise Exception('Gmail URL')
+          if it['book']:
+            # every "Book a meeting" opens the "Let's talk" guide; Esc closes it and focus goes back
+            await el.click(timeout=3000); await pg.wait_for_timeout(500)
+            o=await pg.evaluate("({open:!!document.querySelector('dialog.meet[open]'),n:document.querySelectorAll('dialog.meet .mw').length,f:document.activeElement.id})")
+            await pg.keyboard.press('Escape'); await pg.wait_for_timeout(400)
+            c=await pg.evaluate("!!document.querySelector('dialog.meet[open]')")
+            ok=o['open'] and o['n']==3 and o['f']=='meet-h' and not c; why=f"meet dialog open={o['open']} ways={o['n']} focus={o['f']} closed-by-Esc={not c}"
+          elif href.startswith('mailto:'):
             ok='asadgulshair6767@gmail.com' in href and ('subject=' in href or it['text'] in ('asadgulshair6767@gmail.com',) or href=='mailto:asadgulshair6767@gmail.com')
             # click must not throw and must not navigate away
             await el.click(timeout=3000); await pg.wait_for_timeout(300)
@@ -67,10 +75,10 @@ async def run(dev):
       await pg.close()
     # modal pass (projects page)
     pg=await ctx.new_page(); errs=[]; pg.on("pageerror",lambda e: errs.append(str(e)))
-    await pg.goto(B+"projects.html"); await pg.wait_for_timeout(1000)
+    await pg.goto(B+"projects.html"); await pg.wait_for_selector('[data-open]'); await pg.wait_for_timeout(600)
     slugs=await pg.evaluate("[...document.querySelectorAll('[data-open]')].map(a=>a.dataset.open)")
     for s in dict.fromkeys(slugs):
-      await pg.goto(B+"projects.html"); await pg.wait_for_timeout(600)
+      await pg.goto(B+"projects.html"); await pg.wait_for_selector('[data-open]'); await pg.wait_for_timeout(400)
       a=await pg.query_selector(f'.card-open[data-open="{s}"], .featured a[data-open="{s}"]')
       if not await a.is_visible():
         sa=await pg.query_selector('[data-showall]'); await sa.click(); await pg.wait_for_timeout(200)
@@ -88,7 +96,8 @@ async def run(dev):
       ok=o['open'] and o['h']==f'#/work/{s}' and not c['open'] and abs(c['y']-y0)<2 and not c['h'].startswith('#/work')
       res.append(dict(dev=dev,page='projects.html (modal)',text=s,ok=ok,why=f"open={o['open']} hash={o['h']} close-by={meth} closed={not c['open']} scroll-restored={abs(c['y']-y0)<2} {errs[:1]}"))
     # modal inner controls: prev/next, YouTube facade, links
-    await pg.goto(B+"projects.html#/work/flange-dimension-compliance"); await pg.wait_for_timeout(1500)
+    await pg.goto(B+"about.html"); await pg.goto(B+"projects.html#/work/flange-dimension-compliance"); await pg.wait_for_timeout(800)
+    await pg.wait_for_selector('dialog.case[open] .pn button', timeout=8000)  # content loads from content/projects.json first
     t1=await pg.evaluate("document.querySelector('#case-title')?.textContent")
     await pg.click('.pn button:last-child'); await pg.wait_for_timeout(300)
     t2=await pg.evaluate("[document.querySelector('#case-title')?.textContent,location.hash]")
@@ -113,6 +122,27 @@ async def run(dev):
     await pg.go_forward(); await pg.wait_for_timeout(1500)
     r=await pg.evaluate("({h:location.hash,cur:document.querySelector('#catlist a[aria-current]')?.dataset.cat})")
     res.append(dict(dev=dev,page='projects.html (nav)',text='Forward',ok=r['h']=='#industrial' and r['cur']=='industrial',why=str(r)))
+    # "Book a meeting" guide: the three ways, copy feedback, Tab loop, close button and backdrop
+    await pg.goto(B+"contact.html"); await pg.wait_for_timeout(800)
+    await pg.click('.ccard [data-book]'); await pg.wait_for_selector('dialog.meet[open] .mw')
+    m=await pg.evaluate("[...document.querySelectorAll('dialog.meet .mw a')].map(a=>[a.textContent.trim(),a.getAttribute('href'),a.target])")
+    meet,li,mail=m[0],m[1],m[2]
+    ok=(meet[1].startswith('mailto:asadgulshair6767@gmail.com?subject=Meeting%20request%20-%20project%20discussion') or meet[2]=='_blank') and li[1]=='https://www.linkedin.com/in/asad-gulshair' and li[2]=='_blank' and mail[1].startswith('mailto:asadgulshair6767@gmail.com')
+    res.append(dict(dev=dev,page='contact.html (meet)',text='three ways',ok=ok,why=str(m)[:200]))
+    await pg.click('dialog.meet [data-copy-email]'); await pg.wait_for_timeout(200)
+    t=await pg.evaluate("document.querySelector('dialog.meet [data-copy-email]').textContent")
+    res.append(dict(dev=dev,page='contact.html (meet)',text='Copy email',ok=t.strip()=='Copied',why=t))
+    for _ in range(8): await pg.keyboard.press('Tab')
+    inside=await pg.evaluate("!!document.activeElement.closest('dialog.meet')")
+    res.append(dict(dev=dev,page='contact.html (meet)',text='Tab stays inside',ok=inside,why=str(inside)))
+    await pg.click('dialog.meet .meet-x'); await pg.wait_for_timeout(400)
+    c1=await pg.evaluate("!!document.querySelector('dialog.meet[open]')")
+    await pg.click('.ccard [data-book]'); await pg.wait_for_selector('dialog.meet[open]')
+    if mob: await pg.mouse.click(195,30)
+    else: await pg.mouse.click(5,400)
+    await pg.wait_for_timeout(400)
+    c2=await pg.evaluate("!!document.querySelector('dialog.meet[open]')")
+    res.append(dict(dev=dev,page='contact.html (meet)',text='close button + backdrop',ok=not c1 and not c2,why=f'after close button open={c1}, after backdrop open={c2}'))
     await b.close()
   return res
 async def main():

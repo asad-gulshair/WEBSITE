@@ -193,6 +193,44 @@ dialog.case.closing{animation:dlgout .2s ease forwards}
 .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt.v916{aspect-ratio:9/16;max-height:70vh;width:auto;margin:0 auto}
 html.lock{overflow:hidden}
+/* "Book a meeting" guide (assets/js/meet.js) */
+dialog.meet{width:min(640px,calc(100vw - 32px));max-height:min(88vh,760px);padding:0;border:1px solid var(--border-strong);border-radius:16px;background:var(--surface-2);color:var(--text);overflow:hidden}
+dialog.meet::backdrop{background:rgba(5,6,7,.72);backdrop-filter:blur(4px)}
+dialog.meet[open]{animation:dlg .28s var(--ease)}
+dialog.meet.closing{animation:dlgout .18s ease forwards}
+.meet-in{position:relative;max-height:inherit;overflow-y:auto;overscroll-behavior:contain;padding:32px 32px 28px;display:grid;gap:10px}
+.meet-in h2{font-size:clamp(28px,3vw,36px);margin-bottom:2px}
+.meet-lead{color:var(--text-2);max-width:48ch}
+.meet-art{margin:0 52px 12px 0;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#0d0f11}
+.meet-art svg{width:100%;height:auto}
+.meet-ways{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.mw{display:grid;grid-template-columns:auto 1fr auto;gap:14px 16px;align-items:center;padding:16px 18px;border:1px solid var(--border);border-radius:12px;background:var(--surface-1);transition:border-color .16s}
+.mw:hover{border-color:var(--border-strong)}
+.mw .step-ic{width:44px;height:44px}
+.mw .step-ic svg{width:26px;height:26px}
+.mw h3{font-size:17px}
+.mw p{color:var(--text-2);font-size:14px;margin-top:2px}
+.mw p.v{font:400 14px/1.4 var(--mono);color:var(--text);overflow-wrap:anywhere}
+.mw .acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+dialog.meet[open] .mw{animation:mw-in .5s var(--ease) calc(var(--i) * 80ms + 120ms) both}
+@keyframes mw-in{from{opacity:0;translate:0 10px}}
+.mt-dash{animation:xp-dash 1.1s linear infinite}
+.mt-chip{animation:mw-in .5s var(--ease) calc(var(--i) * 140ms + 200ms) both}
+.mt-ping{transform-box:fill-box;transform-origin:center;animation:xp-ping 3.6s ease-out 1.6s infinite both}
+.capture dialog.meet *{animation:none!important}.capture .mt-ping{display:none}
+@media (prefers-reduced-motion:reduce){dialog.meet,dialog.meet *{animation:none!important}.mt-ping{display:none}}
+@media (max-width:640px){
+  dialog.meet{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:16px 16px 0 0;border-bottom:0;max-height:92dvh}
+  dialog.meet[open]{animation:sheet .3s var(--ease)}
+  .meet-in{padding:24px 20px calc(20px + env(safe-area-inset-bottom))}
+  .mw{grid-template-columns:auto 1fr}.mw .acts{grid-column:1/-1;justify-content:flex-start}
+}
+@keyframes sheet{from{transform:translateY(40px);opacity:0}}
+/* content failed to load (projects.json) */
+.load-err{display:grid;gap:14px;padding:32px;border:1px solid var(--border);border-radius:14px;background:var(--surface-1)}
+.load-err h2{font-size:clamp(24px,2.4vw,32px)}
+.load-err p:not(.meta){color:var(--text-2)}
+.avail[hidden]{display:none}
 /* ---------- about ---------- */
 .about-grid{display:grid;grid-template-columns:5fr 7fr;gap:64px}
 .about-grid .lead{font-size:22px;color:var(--text)}

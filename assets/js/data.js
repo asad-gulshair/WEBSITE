@@ -1,137 +1,37 @@
-// All projects are real. Badges are truthful: PRODUCTION (used day to day), PROTOTYPE (working system, not deployed at scale),
-// CURRENT ROLE (work in my current job; details private), DEMO (open/pretrained model on real footage), RESEARCH (notebook / study), PUBLISHED (peer-reviewed).
+// Content loader. Projects live in content/projects.json, site copy and contact settings in content/site.json; both are
+// edited in the Pages CMS admin (.pages.yml, see README). They are normalised here into the shape the renderers use.
+// Badges are truthful: PRODUCTION (used day to day), PROTOTYPE (working system, not deployed at scale), CURRENT ROLE (work in
+// my current job; details private), DEMO (open/pretrained model on real footage), RESEARCH (notebook / study), PUBLISHED (peer-reviewed).
 // media.type: 'video' (self-hosted loop), 'img', 'illus' (in-browser SVG illustration, captioned "(Illustration)").
-const GH = 'https://github.com/asad-gulshair/';
-export const YT_CHANNEL = 'https://www.youtube.com/@Ultra_Vison20';
-export const CATS = [
-  { id: 'industrial', label: 'Industrial Vision', dot: '#E8743B', h: 'Visual inspection for production lines.', sub: 'Defect detection and dimension checks on standard cameras, with results your team can act on.' },
-  { id: 'recruitment', label: 'Recruitment Automation', dot: '#D2B06A', h: 'Screening and onboarding, automated.', sub: 'LLM pipelines that parse applications, shortlist against your criteria and keep candidates moving.' },
-  { id: 'agents', label: 'AI Agents & Automation', dot: '#8EA2E8', h: 'LLM apps and workflow automation.', sub: 'LLM, speech and workflow automation connected to the tools your team already uses: Whisper, OpenAI, LangChain, n8n.' },
-  { id: 'agriculture', label: 'Agriculture', dot: '#8DB86A', h: 'Crop grading and plant health.', sub: 'Image models that grade ripeness and flag disease early, plus the peer-reviewed smart-farming system.' },
-];
-export const PROJECTS = [
-  // ---------------- Industrial ----------------
-  { slug: 'weld-line-inspection', cat: 'industrial', sub: 'detection', featured: true, badge: 'PROTOTYPE', year: '2025', title: 'Weld line inspection system',
-    outcome: 'One dashboard for weld defects, coating defects and flange dimensions, served from a FastAPI backend.',
-    role: 'End-to-end: models, API, dashboard',
-    media: { type: 'illus', key: 'weld', cap: 'Weld bead with flagged findings, drawn in the site style. (Illustration)' },
-    problem: 'Weld, coating and dimension checks were separate manual steps. Inspectors needed one place to run them on images or a live camera and export a record.',
-    approach: ['YOLOv8 detector for weld defects (porosity, spatter, undercut, lack of fusion, burn-through)', 'Second detector for coating defects such as orange peel', 'ArUco marker for real-world scale, plus monocular depth estimation, to measure flange OD/ID, bolt circle and holes against a standard table', 'FastAPI service with a browser dashboard: upload, live camera, annotated downloads, CSV/Excel export'],
-    result: 'Working prototype demonstrated end to end on images and live camera input, with per-defect results and exportable reports. Code and a recorded walkthrough are in the repository.',
-    stack: ['YOLOv8', 'OpenCV', 'ArUco', 'FastAPI'], code: GH + 'End-to-End-Complete-Inspection-system-for-Welding-Line' },
-  { slug: 'weld-defect-detection', cat: 'industrial', sub: 'detection', badge: 'PROTOTYPE', year: '2025', title: 'Weld defect detection',
-    outcome: 'Finds porosity, undercut and lack of fusion on weld seams and returns boxes through an API.',
-    role: 'Dataset, training, API',
-    media: { type: 'img', src: 'assets/media/weld-outputs.webp', cap: 'Model output on weld samples from the project repository: porosity, lack of fusion, undercut.' },
-    problem: 'Visual weld inspection is slow and inconsistent between inspectors, and small pores are easy to miss.',
-    approach: ['Annotated weld images for porosity, spatter, undercut, lack of fusion and good welds', 'Trained a custom YOLOv8 model with augmentation', 'FastAPI endpoint returns boxes, labels and confidences for any uploaded image'],
-    result: 'About 90% mAP on the project validation set, as reported in the repository.',
-    stack: ['YOLOv8', 'Python', 'FastAPI'], code: GH + 'Weld-Defect-Detection-using-Deep-Learning' },
-  { slug: 'flange-dimension-compliance', cat: 'industrial', sub: 'measurement', badge: 'PROTOTYPE', year: '2025', title: 'Flange and disk dimension check',
-    outcome: 'Measures a part with one camera and an ArUco marker, then checks it against tolerance.',
-    role: 'Measurement pipeline, API',
-    media: { type: 'img', src: 'assets/media/aruco-measure.webp', cap: 'Live measurement: the ArUco marker sets scale (mm per pixel); outer and inner diameters are read off the part.' },
-    youtube: '2M2n8RWnKWY',
-    problem: 'Checking flange and disk dimensions with calipers is slow and does not leave a record.',
-    approach: ['ArUco marker of known size gives a mm-per-pixel scale for the frame', 'Contour and circle detection for outer/inner diameter, bolt circle and hole count', 'Values compared with a tolerance table to return PASS or FAIL', 'Depth-estimation variant tested for tilted camera angles'],
-    result: 'Working measurement demo on real parts (see video). PASS/FAIL against a tolerance table in the full system.',
-    stack: ['OpenCV', 'ArUco', 'FastAPI'], code: GH + 'Flange-Dimension-Compliance-System',
-    more: [['Disk version ↗', GH + 'Dimension-Compliance-Using-Computer-Vision'], ['Depth experiment ↗', GH + 'AI-Flange-Dimension-Measurement-with-Depth-estimation-model']] },
-  { slug: 'wall-paint-defects', cat: 'industrial', sub: 'detection', badge: 'PROTOTYPE', year: '2025', title: 'Paint surface defect detection',
-    outcome: 'Flags peeling paint, pin holes, stains and rough areas so inspectors go straight to problem spots.',
-    role: 'Annotation, training',
-    media: { type: 'img', src: 'assets/media/paint-defects.webp', cap: 'Model output from the project: peeling paint (0.94) and dense pin-hole detection.' },
-    problem: 'Surface inspection of painted walls and panels relies on someone walking the whole area.',
-    approach: ['Annotated classes: stain marks, pin holes, rough/pitted surface, peeling paint', 'YOLO detector trained on the annotated set', 'Runs on images and video'],
-    result: 'Detects all four classes on test images; dense small defects such as pin holes are picked out individually.',
-    stack: ['YOLO', 'OpenCV', 'Python'], code: GH + '-Wall-Paint-Defect-Detection-YOLO-' },
-  // ---------------- Recruitment ----------------
-  { slug: 'hr-workflow-automation', cat: 'recruitment', featured: true, badge: 'CURRENT ROLE', year: '2026', title: 'HR recruitment and onboarding workflow',
-    outcome: 'An LLM workflow that takes applications through screening, shortlisting and onboarding.',
-    role: 'Workflow design and LLM pipeline',
-    media: { type: 'illus', key: 'recruit', cap: 'Pipeline as designed: applications in, screening against criteria, shortlist, onboarding. (Illustration)' },
-    problem: 'Recruiters spend most of their time reading applications and moving candidates between steps by hand.',
-    approach: ['Parse applications into structured candidate profiles', 'Score each profile against the role criteria with an LLM and keep the reasoning', 'Shortlist for a human decision; nothing is rejected automatically', 'Hand accepted candidates into an onboarding checklist'],
-    result: 'Being rolled out with the operations team at a manufacturer, as part of my current role. Implementation details are private.',
-    stack: ['LangChain', 'LangGraph', 'LLMs'] },
-  { slug: 'resume-screening', cat: 'recruitment', badge: 'RESEARCH', year: '2025', title: 'Resume screening and job matching',
-    outcome: 'Classifies resumes by role and recommends matching jobs.',
-    role: 'Data cleaning, models',
-    media: { type: 'illus', key: 'resume', cap: 'Resume text to role prediction. (Illustration)' },
-    problem: 'Large resume pools need a first pass that sorts candidates by role.',
-    approach: ['Cleaning and visualising the resume dataset', 'Text features plus classical ML and deep learning models', 'Job recommendation from the predicted role'],
-    result: 'Notebook study comparing models for resume-to-role classification.',
-    stack: ['scikit-learn', 'Deep learning', 'NLP'], code: GH + 'Resume-Screening-and-job-recommendation-system' },
-  // ---------------- Agents ----------------
-  { slug: 'rag-pipeline', cat: 'agents', badge: 'RESEARCH', year: '2025', title: 'RAG pipeline (FAISS + FLAN-T5)',
-    outcome: 'A small, readable retrieval-augmented generation pipeline.',
-    role: 'Implementation',
-    media: { type: 'illus', key: 'rag', cap: 'Documents to embeddings to FAISS search to grounded answer. (Illustration)' },
-    problem: 'Language models answer confidently without sources.',
-    approach: ['MPNet sentence embeddings', 'FAISS vector index for search', 'FLAN-T5 answers only from the retrieved passages'],
-    result: 'End-to-end pipeline written to be easy to read and extend.',
-    stack: ['FAISS', 'Sentence Transformers', 'FLAN-T5'], code: GH + 'Python-RAG-System-Embeddings-FAISS-T5-Pipeline' },
-  { slug: 'subtitle-saas', cat: 'agents', featured: true, badge: 'PRODUCTION', year: '2025–26', title: 'Subtitle and transcription SaaS',
-    outcome: 'Multilingual subtitles, transcription and translation for a media team.',
-    role: 'Pipeline and app',
-    media: { type: 'illus', key: 'subs', cap: 'Waveform with timed subtitle segments. (Illustration)' },
-    problem: 'Manual transcription and translation of video was slow and expensive.',
-    approach: ['Whisper for transcription with timestamps', 'LLM translation of segments', 'FFmpeg to export subtitle files and burn-ins'],
-    result: 'Used in production at a digital media company, cutting manual translation effort by about 40%. Code is private.',
-    stack: ['Whisper', 'OpenAI API', 'FFmpeg'] },
-  { slug: 'n8n-automations', cat: 'agents', badge: 'PRODUCTION', year: '2025–26', title: 'n8n reporting automations',
-    outcome: 'Scheduled workflows that pull data, build reports and notify the team.',
-    role: 'Workflow automation',
-    media: { type: 'illus', key: 'n8n', cap: 'Trigger, fetch, transform, report, notify. (Illustration)' },
-    problem: 'Weekly reporting meant copying numbers between tools by hand.',
-    approach: ['n8n workflows on a schedule', 'APIs and Google Apps Script for data', 'Feeds Power BI / Looker dashboards; reports and notifications sent automatically'],
-    result: 'Used day to day at a digital media company. Code is private.',
-    stack: ['n8n', 'Apps Script', 'REST APIs'] },
-  // ---------------- Agriculture ----------------
-  { slug: 'tomato-ripeness-grading', cat: 'agriculture', featured: true, badge: 'DEMO', year: '2026', title: 'Tomato ripeness grading',
-    outcome: 'Grades each tomato on the vine as ripe, turning or unripe in real time.',
-    role: 'Detection, tracking, rendering',
-    media: { type: 'video', src: 'assets/media/tomato-grading.mp4', poster: 'assets/media/tomato-grading.webp', cap: 'Real-time ripeness grading on greenhouse footage. Open YOLOv8 tomato model on CPU; boxes from the actual run.' },
-    problem: 'Harvest planning needs to know how much fruit is ripe now and how much is close.',
-    approach: ['YOLOv8 tomato model with three ripeness classes', 'ByteTrack keeps one ID per fruit so counts do not double', 'Class-aware duplicate suppression'],
-    result: 'Runs at roughly 75–85 ms per frame on CPU on real footage.',
-    stack: ['YOLOv8', 'ByteTrack', 'OpenCV'] },
-  { slug: 'smart-farming-ieee', cat: 'agriculture', badge: 'PUBLISHED', year: '2025', title: 'AI-driven smart farming system (IEEE Access)',
-    outcome: 'Final-year project: soil analysis, irrigation advice and crop-fertilizer recommendations, published in IEEE Access.',
-    role: 'Co-author; models and app',
-    media: { type: 'illus', key: 'farm', cap: 'System overview with the accuracies reported in the paper. (Illustration)' },
-    problem: 'Farmers lack personalised, data-driven advice on soil health, irrigation and which crop and fertilizer to use.',
-    approach: ['IoT soil sensors (moisture, temperature, NPK) plus a weather API', 'Transformer-based tabular learning (TTL) for irrigation advice', 'TabNet with explainable-AI for soil analysis and fertilizer; SwiFT transformer for crop recommendation', 'Web app with a chatbot for farmers'],
-    result: 'Reported in the paper: irrigation advice 99.13% accuracy, crop recommendation 98.75%, fertilizer recommendation 99.3%, soil analysis R² 0.987.',
-    stack: ['TabNet', 'Transformers', 'XAI', 'IoT'], paper: 'https://ieeexplore.ieee.org/document/11104235',
-    code: GH + 'Agro-high-AI-powered-Forming-Project',
-    more: [['Soil analysis ↗', GH + 'Soil-analysis-Model'], ['Irrigation (TTL) ↗', GH + 'Soil-Irrigation-Advice-based-on-Transformer-based-Tabular-Learning-TTLL-'], ['Crop rec. (SWiFT) ↗', GH + 'Crop-Recommandation-with-SWiFT-Self-weighted-Transformer-Fusion-']] },
-  { slug: 'potato-disease-cnn', cat: 'agriculture', badge: 'RESEARCH', year: '2025', title: 'Potato leaf disease CNN',
-    outcome: 'Classifies potato leaves as early blight, late blight or healthy.',
-    role: 'Data pipeline, CNN, evaluation',
-    media: { type: 'img', src: 'assets/media/potato-predictions.webp', cap: 'Predictions on held-out leaves, with true labels. From the project notebook.' },
-    extra: { src: 'assets/media/potato-curves.webp', cap: 'Training and validation accuracy and loss over 25 epochs, from the notebook.' },
-    problem: 'Blight spreads quickly; early identification from a phone photo helps growers act in time.',
-    approach: ['Leaf image dataset with three classes', 'Preprocessing and augmentation', 'Convolutional network in TensorFlow/Keras', 'Evaluation on held-out images'],
-    result: 'Validation accuracy above 95% by the final epochs (see training curves); correct, high-confidence predictions on held-out leaves.',
-    stack: ['TensorFlow', 'Keras', 'CNN'], code: GH + 'Potato-Disease-Detection-model' },
-  { slug: 'orange-detection', cat: 'agriculture', badge: 'DEMO', year: '2026', title: 'Fruit detection on trees',
-    outcome: 'Live orange detection on orchard footage for yield estimates.',
-    role: 'Detection demo',
-    media: { type: 'img', src: 'assets/media/orange-detect.webp', cap: 'Live orange detection on real orchard footage.' },
-    youtube: '9RqJkD2Xtv8',
-    problem: 'Yield estimates usually come from manual sampling.',
-    approach: ['YOLO detector on orchard video', 'Per-frame detections with confidences'],
-    result: 'Demo on real footage; see the video.',
-    stack: ['YOLO', 'OpenCV'] },
-  { slug: 'poultry-crowding-monitor', cat: 'agriculture', badge: 'DEMO', year: '2026', title: 'Poultry count and crowding alarm',
-    outcome: 'Counts birds live and raises an alarm when they crowd.',
-    role: 'Detection and alert logic',
-    media: { type: 'img', src: 'assets/media/chicken-count.webp', cap: 'Live count and close-pair check on real farm footage.' },
-    youtube: 'LZNu74alOVY',
-    problem: 'Crowding causes stress and losses, and nobody watches the camera all day.',
-    approach: ['YOLOv8 detection of each bird', 'Distance check between birds to find close pairs', 'Alarm when crowding passes a threshold'],
-    result: 'Demo on real footage; see the video.',
-    stack: ['YOLOv8', 'OpenCV'] },
-];
+export let PROJECTS = [], CATS = [];
 export const bySlug = (s) => PROJECTS.find((p) => p.slug === s);
+const getJSON = (url) => fetch(url).then((r) => { if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`); return r.json(); });
+const str = (v) => (typeof v === 'string' ? v.trim() : v == null ? '' : String(v));
+const strs = (a) => (Array.isArray(a) ? a.map(str).filter(Boolean) : []);
+// YouTube: accepts a video id or any youtube.com / youtu.be link
+export const ytId = (v) => { v = str(v); if (/^[\w-]{11}$/.test(v)) return v; const m = v.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/); return m ? m[1] : ''; };
+const MEDIA = { image: 'img', img: 'img', video: 'video', illustration: 'illus', illus: 'illus' };
+function project(p) {
+  const links = Array.isArray(p.links) ? p.links.filter((l) => l && str(l.url)) : [];
+  const m = p.media || {}, type = MEDIA[str(m.type)] || 'illus', ex = p.extra || {};
+  return {
+    slug: str(p.slug), title: str(p.title), cat: str(p.category), sub: str(p.subcategory), featured: !!p.featured,
+    badge: str(p.status) || 'PROTOTYPE', year: str(p.year), role: str(p.role), outcome: str(p.summary),
+    media: { type, src: str(m.src), poster: str(m.poster), key: str(m.illustration) || 'weld', cap: str(m.caption), portrait: !!m.portrait },
+    youtube: ytId(p.youtube), ytPortrait: !!p.youtubePortrait,
+    problem: str(p.problem), approach: strs(p.approach), result: str(p.result), stack: strs(p.stack),
+    code: str(links.find((l) => l.type === 'code')?.url), paper: str(links.find((l) => l.type === 'paper')?.url),
+    more: links.filter((l) => l.type !== 'code' && l.type !== 'paper').map((l) => [str(l.label) || 'Link ↗', str(l.url)]),
+    extra: str(ex.src) ? { src: str(ex.src), cap: str(ex.caption) } : null,
+  };
+}
+const category = (c) => ({ id: str(c.id), label: str(c.label), dot: str(c.color) || '#E8743B', h: str(c.headline), sub: str(c.subline) });
+let projP, siteP;
+export function loadProjects() {
+  return (projP ||= getJSON('content/projects.json').then((d) => {
+    CATS = (d.categories || []).map(category).filter((c) => c.id);
+    PROJECTS = (d.projects || []).filter((p) => p && str(p.slug) && str(p.title)).map(project).filter((p) => CATS.some((c) => c.id === p.cat));
+    return { PROJECTS, CATS };
+  }));
+}
+export const loadSite = () => (siteP ||= getJSON('content/site.json'));
