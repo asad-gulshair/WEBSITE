@@ -8,7 +8,7 @@ import { initGuide } from './guide.js';
 
 // ---- industry guide: pick an industry, see its outcomes and best projects (from content/projects.json) ----
 const OUT = {
-  industrial: ['Catches defects the eye misses', 'Same pass or fail standard on every part', 'Works with standard cameras'],
+  industrial: ['Catches defects the eye misses', 'Counts and measures parts automatically', 'Same pass or fail standard on every part'],
   recruitment: ['Every CV scored on evidence', 'A person makes the final call', 'Screening, interviews and hiring in one place'],
   agents: ['Documents in, answers and actions out', 'Reports and updates run on a schedule', 'About 40% less manual translation work, in production'],
   agriculture: ['Grades ripeness and flags disease early', 'Counts and monitors from ordinary camera footage', 'Peer-reviewed in IEEE Access, 2025'],

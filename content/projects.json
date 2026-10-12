@@ -4,8 +4,8 @@
       "id": "industrial",
       "label": "Industrial Vision",
       "color": "#E8743B",
-      "headline": "Visual inspection for production lines.",
-      "subline": "Defect detection and dimension checks on standard cameras, with results your team can act on."
+      "headline": "Computer vision inspection and detection for industry.",
+      "subline": "Defect detection, object counting and dimension checks on standard cameras, with results your team can act on."
     },
     {
       "id": "recruitment",
