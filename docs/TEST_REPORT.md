@@ -29,3 +29,6 @@ Home performance is dominated by WebGL drawn on the CPU in this sandbox: the sam
 
 ## Needs manual testing
 Real iPhone/Android, Safari, Firefox; real GPU performance; screen readers (VoiceOver, NVDA); a real form submission and FormSubmit activation; LinkedIn and Streamlit links (not reachable from here).
+
+## Third pass (robot moves, new visuals)
+7 automated checks passed with a controlled clock: hover wave, clicking the robot opens the guide, falls asleep after ~30 s idle, wakes on activity and greets, celebrates a sent enquiry, no page errors. Main robot suite re-run: 42 of 42 passed. Industrial Vision now shows only original renders on home and Work.

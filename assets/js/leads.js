@@ -105,7 +105,7 @@ function mount(host) {
       <h3>${mode === 'mailto' ? 'Almost there, ' + first + '.' : 'Thanks, ' + first + '.'}</h3>
       <p>${mode === 'mailto' ? `Your email app should have opened with the message filled in. Press send there. If nothing opened, write to <a class="tlink" href="mailto:${esc(S.email)}">${esc(S.email)}</a>.` : `I have your enquiry and will reply to <b>${esc(d.email)}</b> within a day.`}</p>
       <p class="lf-next">Want to talk sooner? <a class="tlink" data-book href="${esc(S.bookingUrl || 'mailto:' + S.email)}">Book a meeting</a></p></div>`;
-    host.classList.add('sent'); const dn = host.querySelector('.lf-done'); dn?.setAttribute('tabindex', '-1'); dn?.focus({ preventScroll: true }); dn?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    host.classList.add('sent'); if (!silent && mode !== 'mailto') dispatchEvent(new CustomEvent('lead:sent')); const dn = host.querySelector('.lf-done'); dn?.setAttribute('tabindex', '-1'); dn?.focus({ preventScroll: true }); dn?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 }
 

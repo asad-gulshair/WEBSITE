@@ -22,13 +22,15 @@ const LINES = {
   agents: ['Manual workflows, automated.', 'ok'],
   agriculture: ['Models for crops and farms.', 'ok'],
   robotics: ['A robot that maps, plans and avoids obstacles.', 'ok'],
+  sent: ['Thanks! Asad will reply within a day.', 'happy'],
+  wake: ['Oh, hello again.', 'happy'],
 };
 // interests: problem -> solution -> proof -> next step. Slugs must exist in content/projects.json (missing ones are skipped).
 const TOPICS = [
   { k: 'mfg', label: 'Manufacturing and inspection', topic: 'Industrial vision', mood: 'ok',
     problem: 'Manual inspection misses small defects and changes from shift to shift.',
     answer: 'A camera and a trained detector flag defects and measure parts on every item, with results sent to your system through an API.',
-    work: ['weld-defect-detection', 'flange-dimension-compliance', 'wall-paint-defects'] },
+    work: ['weld-line-inspection', 'weld-defect-detection', 'flange-dimension-compliance'] },
   { k: 'hr', label: 'HR and recruitment', topic: 'Recruitment automation', mood: 'ok',
     problem: 'Recruiters spend hours reading CVs and chasing candidates between steps.',
     answer: 'Every CV is parsed and scored against the role with the reasons shown. A person decides, and interviews are tracked in one place.',
@@ -60,8 +62,9 @@ export function initGuide() {
   let bot = null, figure = canvas;
   try { const t = document.createElement('canvas'); if (t.getContext('webgl2') || t.getContext('webgl')) bot = createCompanion(canvas, { size: 260 }); } catch (_) {}
   // no WebGL: a drawn face stands in, the guide panel still works
-  if (!bot) { figure = Object.assign(document.createElement('div'), { className: 'guide-face', innerHTML: '<i></i><i></i>' }); canvas.replaceWith(figure); bot = { setMood() {}, nod() {}, look() {}, resize() {}, scan() {}, wave() {} }; }
+  if (!bot) { figure = Object.assign(document.createElement('div'), { className: 'guide-face', innerHTML: '<i></i><i></i>' }); canvas.replaceWith(figure); bot = { setMood() {}, nod() {}, look() {}, resize() {}, scan() {}, wave() {}, hop() {}, spin() {}, point() {}, celebrate() {}, lookAround() {}, sleep() {}, lean() {}, sleeping: false }; }
   home.classList.add('on');
+  window.__scout = bot; // handy for debugging in the console
 
   // docked button (wide) and a small launcher (narrow screens, sits above the quick-contact bar)
   const dock = document.createElement('button'); dock.type = 'button'; dock.className = 'guide-dock'; dock.setAttribute('aria-label', 'Open the portfolio guide'); dock.setAttribute('aria-controls', 'guide-panel'); dock.setAttribute('aria-expanded', 'false');
@@ -74,6 +77,8 @@ export function initGuide() {
   const seen = new Set(); let hideT = 0, docked = false, open = false, opener = null;
   function speak(key, force) {
     const l = LINES[key]; if (!l || open || (!force && seen.has(key))) return; seen.add(key);
+    if (bot.sleeping) bot.sleep(false);
+    if (docked && !['hello', 'sent', 'wake'].includes(key)) bot.point(1, 1.4);
     // lines only where they cannot cover content: in the hero, or docked on very wide screens
     if (muted || (docked && !roomy.matches) || (!docked && !state.hero)) { bot.setMood(l[1], 2); if (l[1] === 'ok') bot.nod(); return; }
     $('span', say).textContent = l[0]; say.classList.add('show'); bot.setMood(l[1], 2.4); if (l[1] === 'ok') bot.nod();
@@ -97,7 +102,7 @@ export function initGuide() {
       <div class="gp-a" tabindex="-1"><p class="gp-k">The problem</p><p>${esc(t.problem)}</p><p class="gp-k">What I build</p><p>${esc(t.answer)}</p></div>
       ${work.length ? `<p class="gp-k">Related case studies</p><ul class="gp-work">${work.map((p) => `<li><a href="projects.html#/work/${p.slug}"><b>${esc(p.title)}</b><span>${esc(p.badge)} · ${esc(p.year)}</span></a></li>`).join('')}</ul>` : ''}
       <div class="gp-acts"><a class="btn btn-primary sm" href="contact.html?topic=${encodeURIComponent(t.topic)}#start">Discuss this with Asad</a>${t.jump ? `<a class="btn sm" href="${t.jump[0]}" data-jump>${esc(t.jump[1])}</a>` : ''}<button type="button" class="btn sm ghost" data-back>Other topics</button></div>`;
-    bot.setMood(t.mood, 3); bot.nod();
+    bot.setMood(t.mood, 3); bot.nod(); bot.point(1, 1.2);
     $('.gp-a', panel)?.focus?.();
   }
   panel.addEventListener('click', (e) => {
@@ -112,7 +117,7 @@ export function initGuide() {
     if (open) return close(); open = true; opener = from || document.activeElement;
     menu(); panel.hidden = false; requestAnimationFrame(() => panel.classList.add('show'));
     say.classList.remove('show'); setExpanded(true); document.documentElement.classList.add('guide-open');
-    if (wide.matches) place(true); bot.setMood('happy', 1.6); bot.look(.4, .1);
+    if (wide.matches) place(true); if (bot.sleeping) bot.sleep(false); bot.setMood('happy', 1.6); bot.look(.4, .1); bot.hop();
     setTimeout(() => $('.gp-chips button', panel)?.focus(), 30);
   }
   function close() {
@@ -142,7 +147,23 @@ export function initGuide() {
   // ---- section lines ----
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (!e.isIntersecting) return; const k = e.target.dataset.guide; speak(k); if (!open) k === 'contact' ? bot.look(.55, .12) : bot.look(); }), { threshold: .35 });
   [['#work', 'work'], ['#services', 'services'], ['#how', 'how'], ['.cta-band', 'contact']].forEach(([s, k]) => { const el = $(s); if (el) { el.dataset.guide = k; io.observe(el); } });
-  document.addEventListener('click', (e) => { const b = e.target.closest('.ind-tab[data-cat]'); if (b) speak(b.dataset.cat, true); });
+  document.addEventListener('click', (e) => { const b = e.target.closest('.ind-tab[data-cat]'); if (b) { speak(b.dataset.cat, true); bot.hop(); } });
+
+  // ---- life: hover wave, click, idle look-around, sleep and wake, scroll lean, celebrate a sent enquiry ----
+  let lastWave = 0, lastAct = performance.now(), looked = false;
+  const waveOnce = () => { const n = performance.now(); if (n - lastWave > 4000 && !bot.sleeping) { lastWave = n; bot.wave(); } };
+  figure.addEventListener('pointerenter', waveOnce); dock.addEventListener('pointerenter', waveOnce);
+  figure.addEventListener('click', () => openPanel(ask));
+  const active = () => { lastAct = performance.now(); looked = false; if (bot.sleeping) { bot.sleep(false); speak('wake', true); } };
+  ['pointermove', 'keydown', 'touchstart', 'wheel'].forEach((ev) => addEventListener(ev, active, { passive: true }));
+  if (!REDUCED) setInterval(() => {
+    if (document.hidden || open) return; const idle = (performance.now() - lastAct) / 1000;
+    if (idle > 12 && !looked) { looked = true; bot.lookAround(); }
+    if (idle > 30 && !bot.sleeping) bot.sleep(true);
+  }, 1000);
+  let lastY = scrollY, lastS = performance.now();
+  addEventListener('scroll', () => { const n = performance.now(), dt = Math.max(16, n - lastS), v = (scrollY - lastY) / dt; lastY = scrollY; lastS = n; lastAct = n; if (bot.sleeping) bot.sleep(false); if (!REDUCED) bot.lean(-v * .6); }, { passive: true });
+  addEventListener('lead:sent', () => { bot.celebrate(); speak('sent', true); });
   setTimeout(() => speak('hello'), REDUCED ? 300 : 1600);
   setTimeout(() => { if (state.hero) speak('nudge'); }, 8500);
 }

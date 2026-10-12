@@ -429,3 +429,6 @@ html:not(.no-intro) .hero-copy>*{animation-delay:calc(var(--d,0s) + 1.05s)}
 .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
 .stats div{min-width:0}
 @media (max-width:400px){.stats{gap:10px}.stats b{font-size:18px}.stats span{font-size:12px}}
+
+/* the robot itself is clickable in the hero */
+.guide-home .guide-bot,.guide-home .guide-face{pointer-events:auto;cursor:pointer}

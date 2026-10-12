@@ -59,7 +59,7 @@
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/End-to-End-Complete-Inspection-system-for-Welding-Line" }
       ],
-      "media": { "type": "video", "src": "assets/media/inspection-demo.mp4", "poster": "assets/media/inspection-demo.webp", "illustration": "weld", "caption": "Screen recording of the platform: weld, coating and flange modules, including a live-camera flange measurement. Trimmed and sped up, no audio.", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "Inspection station with a camera over the weld seam; the platform runs weld, coating and flange checks. (Illustration)", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }
@@ -85,7 +85,7 @@
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/Weld-Defect-Detection-using-Deep-Learning" }
       ],
-      "media": { "type": "image", "src": "assets/media/weld-outputs.webp", "poster": "", "illustration": "", "caption": "Model output on weld samples from the project repository: porosity, lack of fusion, undercut.", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/insp-weld.webp", "poster": "", "illustration": "", "caption": "Weld bead with porosity and undercut marked, the defect types the model detects. (Illustration)", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }
@@ -114,8 +114,8 @@
         { "type": "other", "label": "Disk version ↗", "url": "https://github.com/asad-gulshair/Dimension-Compliance-Using-Computer-Vision" },
         { "type": "other", "label": "Depth experiment ↗", "url": "https://github.com/asad-gulshair/AI-Flange-Dimension-Measurement-with-Depth-estimation-model" }
       ],
-      "media": { "type": "image", "src": "assets/media/aruco-measure.webp", "poster": "", "illustration": "", "caption": "Live measurement: the ArUco marker sets scale (mm per pixel); outer and inner diameters are read off the part.", "portrait": false },
-      "youtube": "2M2n8RWnKWY",
+      "media": { "type": "image", "src": "assets/media/insp-flange.webp", "poster": "", "illustration": "", "caption": "Flange with OD, ID and bolt circle measured against a scale marker. (Illustration)", "portrait": false },
+      "youtube": "",
       "youtubePortrait": true,
       "extra": { "src": "", "caption": "" }
     },
@@ -140,7 +140,7 @@
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/-Wall-Paint-Defect-Detection-YOLO-" }
       ],
-      "media": { "type": "image", "src": "assets/media/paint-defects.webp", "poster": "", "illustration": "", "caption": "Model output from the project: peeling paint (0.94) and dense pin-hole detection.", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/insp-paint.webp", "poster": "", "illustration": "", "caption": "Wall surface with peeling paint, a crack and pin holes marked. (Illustration)", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }

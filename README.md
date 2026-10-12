@@ -150,10 +150,8 @@ Use a local server, not `file://`: the pages fetch `content/*.json`.
 | Asset | Source |
 |---|---|
 | `tomato-grading.mp4/.webp` | Pexels greenhouse footage (free licence) re-rendered with thin overlays from the actual YOLOv8 tomato-model run (det JSON) |
-| `aruco-measure.webp` | Frame from the Ultra Vision YouTube short "Object Detection & Real-Time Measurement Using ArUco Marker" |
 | `orange-detect.webp`, `chicken-count.webp` | Frames from Ultra Vision YouTube demos |
-| `paint-defects.webp` | Model outputs from the `-Wall-Paint-Defect-Detection-YOLO-` repo, borders trimmed, set on a dark matte |
-| `weld-outputs.webp` | Model outputs from the `Weld-Defect-Detection-using-Deep-Learning` repo |
+| `insp-station/weld/flange/paint.webp` | Original 3D renders made for this site (Three.js, offline), with detection overlays. Captioned "(Illustration)". Industrial company visuals are not used |
 | `potato-predictions.webp`, `potato-curves.webp` | Predictions and training curves from the `Potato-Disease-Detection-model` repo, re-typeset labels |
 | Illustrations | Clean SVG diagrams for projects whose code/data is private or text-based: weld line, recruitment pipeline, resume screening, RAG, subtitles, n8n, smart-farming overview (always captioned "(Illustration)") |
 

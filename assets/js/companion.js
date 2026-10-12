@@ -66,23 +66,27 @@ export function createCompanion(canvas, { size = 240, interactive = true, still 
   // ---- face drawing ----
   let mood = 'idle', blink = 0, gx = 0, gy = 0, lastFace = '';
   function drawFace() {
-    const key = `${mood}|${blink.toFixed(2)}|${gx.toFixed(2)}|${gy.toFixed(2)}`; if (key === lastFace) return; lastFace = key;
+    const key = `${mood}|${(mood === 'sleep' ? 0 : blink).toFixed(2)}|${gx.toFixed(2)}|${gy.toFixed(2)}`; if (key === lastFace) return; lastFace = key;
     g.clearRect(0, 0, 512, 192); const col = MOOD_EYE[mood] || MOOD_EYE.idle;
     g.shadowColor = col; g.shadowBlur = 22; g.fillStyle = col; g.strokeStyle = col; g.lineCap = 'round';
     const cx = 256 + gx * 34, cy = 92 + gy * 18, dx = 92, open = Math.max(.08, 1 - blink);
     for (const s of [-1, 1]) {
       const x = cx + s * dx;
       if (mood === 'happy' || (mood === 'wink' && s > 0)) { g.lineWidth = 14; g.beginPath(); g.arc(x, cy + 14, 26, Math.PI * 1.12, Math.PI * 1.88); g.stroke(); }
+      else if (mood === 'sleep') { g.lineWidth = 10; g.beginPath(); g.arc(x, cy - 6, 22, Math.PI * .15, Math.PI * .85); g.stroke(); }
+      else if (mood === 'surprised') { g.beginPath(); g.arc(x, cy, 30, 0, Math.PI * 2); g.fill(); }
       else if (mood === 'think') { g.lineWidth = 12; g.beginPath(); g.moveTo(x - 26, cy); g.lineTo(x + 26, cy); g.stroke(); }
       else if (mood === 'low') { g.lineWidth = 12; g.beginPath(); g.moveTo(x - 24, cy - s * 8 - 4); g.lineTo(x + 24, cy + s * 8 - 4); g.stroke(); g.beginPath(); g.ellipse(x, cy + 12, 16, 16 * open, 0, 0, Math.PI * 2); g.fill(); }
       else { const w = mood === 'ok' ? 24 : 21, h = (mood === 'warn' ? 30 : 36) * open; g.beginPath(); g.roundRect(x - w, cy - h, w * 2, h * 2, Math.min(w, h)); g.fill(); }
     }
+    if (mood === 'sleep') { g.font = '700 34px sans-serif'; g.fillText('z', cx + 150, cy - 34); g.font = '700 24px sans-serif'; g.fillText('z', cx + 182, cy - 62); }
+    if (mood === 'surprised') { g.beginPath(); g.arc(cx, cy + 46, 12, 0, Math.PI * 2); g.stroke(); }
     if (mood === 'ok' || mood === 'happy') { g.lineWidth = 8; g.globalAlpha = .7; g.beginPath(); g.arc(cx, cy + 42, 20, Math.PI * .15, Math.PI * .85); g.stroke(); g.globalAlpha = 1; }
     faceTex.needsUpdate = true;
   }
 
   // ---- state ----
-  const S = { tx: 0, ty: 0, ax: 0, ay: 0, intro: REDUCED ? 1 : 0, wave: -1, nod: -1, shake: -1, tilt: -1, scan: false, look: null, glow: new THREE.Color(COL.cyan), glowT: new THREE.Color(COL.cyan) };
+  const S = { tx: 0, ty: 0, ax: 0, ay: 0, intro: REDUCED ? 1 : 0, wave: -1, nod: -1, shake: -1, tilt: -1, scan: false, look: null, hop: -1, spin: -1, point: 0, pointDir: 1, cheer: -1, sleep: false, around: -1, lean: 0, leanT: 0, glow: new THREE.Color(COL.cyan), glowT: new THREE.Color(COL.cyan) };
   if (interactive) addEventListener('pointermove', (e) => { const b = canvas.getBoundingClientRect(); if (!b.width) return; S.tx = Math.max(-1, Math.min(1, (e.clientX - (b.left + b.width / 2)) / (innerWidth * .45))); S.ty = Math.max(-1, Math.min(1, (e.clientY - (b.top + b.height / 2)) / (innerHeight * .45))); }, { passive: true });
 
   let W = 0, H = 0;
@@ -104,11 +108,20 @@ export function createCompanion(canvas, { size = 240, interactive = true, still 
     if (S.nod >= 0) { S.nod += s; pitch += Math.sin(S.nod * 10) * .22 * Math.max(0, 1 - S.nod / 1); if (S.nod > 1) S.nod = -1; }
     if (S.shake >= 0) { S.shake += s; yaw += Math.sin(S.shake * 16) * .28 * Math.max(0, 1 - S.shake / .9); if (S.shake > .9) S.shake = -1; }
     if (S.tilt >= 0) { S.tilt += s; roll = Math.sin(Math.min(1, S.tilt / .9) * Math.PI) * .3; if (S.tilt > 1) S.tilt = -1; }
+    if (S.around >= 0) { S.around += s; yaw = Math.sin(S.around * 2.2) * .6; pitch = -.05; if (S.around > 2.9) S.around = -1; }
+    if (S.sleep) { yaw *= .2; pitch = .32 + Math.sin(time * 1.2) * .03; roll = .12; }
     head.rotation.set(pitch, yaw, roll);
-    bot.position.y = Math.sin(time * 1.5) * .06; bot.rotation.y = S.ax * .18 + Math.sin(time * .6) * .05; bot.rotation.z = -S.ax * .04;
-    handL.position.set(-.58, -.7 + Math.sin(time * 1.8 + 1) * .04, .05);
+    // body: idle bob, hop arc, spin, and a lean that follows scroll speed
+    S.lean += (S.leanT - S.lean) * (1 - Math.exp(-5 * s)); S.leanT *= Math.exp(-3 * s);
+    let hopY = 0; if (S.hop >= 0) { S.hop += s; const h = Math.min(1, S.hop / .55); hopY = Math.sin(h * Math.PI) * .38; if (S.hop > .55) S.hop = -1; }
+    let spinY = 0; if (S.spin >= 0) { S.spin += s; spinY = ease(Math.min(1, S.spin / .9)) * Math.PI * 2; if (S.spin > .9) S.spin = -1; }
+    bot.position.y = (S.sleep ? Math.sin(time * 1.2) * .03 - .05 : Math.sin(time * 1.5) * .06) + hopY;
+    bot.rotation.y = S.ax * .18 + Math.sin(time * .6) * .05 + spinY; bot.rotation.z = -S.ax * .04 + S.lean * .22; bot.rotation.x = -S.lean * .1;
+    const cheer = S.cheer >= 0 ? (S.cheer += s, S.cheer > 1.3 ? (S.cheer = -1, 0) : Math.sin(Math.min(1, S.cheer / 1.3) * Math.PI)) : 0;
+    handL.position.set(-.58 - cheer * .1, -.7 + Math.sin(time * 1.8 + 1) * .04 + cheer * .75 + S.lean * .06, .05 + cheer * .1);
     if (S.wave >= 0) { S.wave += s; const w = S.wave; handR.position.set(.62 + Math.sin(w * 11) * .1, -.25 + Math.min(1, w * 3) * .18 - Math.max(0, w - 1.4) * .9, .15); if (w > 1.7) S.wave = -1; }
-    else handR.position.set(.58, -.7 + Math.sin(time * 1.8) * .04, .05);
+    else if (S.point > 0) { S.point -= s; const p = Math.min(1, S.point * 3, (1.6 - S.point) * 4 + .2); handR.position.set(.58 + S.pointDir * .5 * p, -.7 + .45 * p, .1 + .25 * p); }
+    else handR.position.set(.58 + cheer * .1, -.7 + Math.sin(time * 1.8) * .04 + cheer * .75 + S.lean * .06, .05 + cheer * .1);
     pad.scale.setScalar(1 + Math.sin(time * 2) * .04); pad.material.emissiveIntensity = 1.2 + Math.sin(time * 2) * .4;
     shadow.material.opacity = .8 - bot.position.y * 2;
     // eyes: gaze + blink
@@ -124,7 +137,7 @@ export function createCompanion(canvas, { size = 240, interactive = true, still 
   // still mode (reduced motion): draw a settled pose once, and again only when something changes
   if (still) { S.intro = 1; }
   let lastT = 0;
-  const busy = () => S.intro < 1 || S.wave >= 0 || S.nod >= 0 || S.shake >= 0 || S.tilt >= 0 || S.scan;
+  const busy = () => S.intro < 1 || S.wave >= 0 || S.nod >= 0 || S.shake >= 0 || S.tilt >= 0 || S.scan || S.hop >= 0 || S.spin >= 0 || S.cheer >= 0 || S.point > 0 || S.around >= 0 || Math.abs(S.lean) > .02;
   const stop = still ? (() => {}) : onTick((t, dt) => { if (!vis || document.hidden) return; if (!busy() && t - lastT < 31) return; frame(t, t - lastT || dt); lastT = t; });
   frame(performance.now(), 16);
   const redraw = () => { if (still) requestAnimationFrame(() => frame(performance.now(), 16)); };
@@ -132,6 +145,14 @@ export function createCompanion(canvas, { size = 240, interactive = true, still 
     canvas, setMood: (m, s) => { setMood(m, s); redraw(); }, scan: (on) => { S.scan = on; setMood(on ? 'think' : 'idle'); },
     wave: () => { S.wave = 0; setMood('happy', 1.6); }, nod: () => { S.nod = 0; }, shake: () => { S.shake = 0; }, tilt: () => { S.tilt = 0; },
     look: (yaw, pitch) => { S.look = yaw == null ? null : [yaw, pitch || 0]; },
+    hop: () => { if (S.hop < 0) S.hop = 0; },
+    spin: () => { if (S.spin < 0) S.spin = 0; },
+    point: (dir = 1, secs = 1.6) => { S.pointDir = dir; S.point = secs; },
+    celebrate: () => { S.hop = 0; S.spin = 0; S.cheer = 0; setMood('happy', 2); },
+    lookAround: () => { if (S.around < 0 && !S.sleep) S.around = 0; },
+    sleep: (on) => { if (on === S.sleep) return; S.sleep = on; if (on) setMood('sleep'); else { setMood('surprised', .9); S.hop = 0; } redraw(); },
+    lean: (v) => { S.leanT = Math.max(-1, Math.min(1, v)); },
+    get sleeping() { return S.sleep; },
     resize: () => { W = 0; resize(); redraw(); },
     destroy: () => { stop(); io.disconnect(); ro?.disconnect(); r.dispose(); },
   };
