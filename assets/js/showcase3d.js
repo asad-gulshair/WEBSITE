@@ -1,4 +1,4 @@
-// "AI recruiting platform" scroll story (home page). Four real screens (company branding + candidate data removed)
+// "AI recruiting platform" scroll story (home page). Four recreated screens (own design, made-up data; the real system is private)
 // sit in a 3D stack: scrolling through the pinned section flies them past one at a time, the cursor tilts the whole scene,
 // and the text on the left follows. Narrow screens, reduced motion and no-JS get a plain stacked layout (same content).
 // Clicking a screen opens it full size.

@@ -166,10 +166,10 @@
       "result": "Being rolled out with the operations team at a manufacturer, as part of my current role. Implementation details are private.",
       "stack": ["LangChain", "LangGraph", "LLMs"],
       "links": [],
-      "media": { "type": "image", "src": "assets/media/hr-card.webp", "poster": "", "illustration": "", "caption": "Recruiter dashboard, live funnel and AI scorecard from the platform. Company branding and candidate details removed.", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/hr-card.webp", "poster": "", "illustration": "", "caption": "Hiring overview, live funnel and AI scorecard, recreated with made-up data. The real platform is private.", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
-      "extra": { "src": "assets/media/hr-extra.webp", "caption": "Interview tracker: every candidate, their round (L1 to L3), interviewer forms and the panel's view on one list. Names blurred." }
+      "extra": { "src": "assets/media/hr-extra.webp", "caption": "Interview tracker: every candidate, their round (L1 to L3) and interviewer forms on one list. Recreated with made-up data." }
     },
     {
       "slug": "resume-screening",

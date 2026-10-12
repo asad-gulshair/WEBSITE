@@ -11,7 +11,7 @@
 | `potato-*.webp`, `orange-detect.webp` | Asad's model outputs | Own work |
 | `tomato-grading.webm` | WebM copy of the existing tomato video | as above |
 | `robot-slam.webp` | Drawn from the real map file `turtlebot3-fleet-nav2/maps/warehouse_map.pgm` | Own work |
-| `hr-*.webp` | Screenshots of the recruiter platform supplied by Asad; company name, logo, people's names, BMI and age cards removed | Asad's work in his current role; publish only with employer consent |
+| `hr-*.webp` | Recreated recruiter screens: own UI design rendered from HTML, made-up data; not screenshots of the employer's system | Own work |
 | SVG illustrations (`assets/js/illus.js`, `explain.js`) | Original, captioned "(Illustration)" on the site | Own work |
 
 No stock photos were downloaded: the build environment cannot reach stock sites, and generic stock images would not show real work.

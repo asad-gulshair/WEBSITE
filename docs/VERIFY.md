@@ -16,7 +16,7 @@
 - "2 systems in daily production use" and "about 40% less manual translation work" (subtitle SaaS, n8n automations): no public evidence; they come from your earlier site copy.
 - About: "Currently also working on bottle bubble detection and mushroom defect classification" and "rolled out with the operations team".
 - Smart-farming accuracies (99.13%, 98.75%, 99.3%, R² 0.987): the IEEE page could not be opened from here; check against the paper.
-- HR platform screens and the "built for a manufacturer" wording: confirm your employer is fine with showing them (name, logo, people, age and BMI are removed).
+- HR platform: the real screenshots were replaced by recreated screens (own design, made-up data). Only the "built for a manufacturer" wording remains; confirm you are fine with it.
 - Invoice to Excel: the Streamlit link could not be opened from here (blocked network); open it once to confirm it works.
 - CV scoring section: the four criteria and the plain-average overall are inferred from your screenshots.
 
