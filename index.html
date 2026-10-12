@@ -14,12 +14,14 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Asad Gulshair, AI Engineer · Computer Vision & AI Agents"><meta name="twitter:description" content="AI engineer building visual inspection systems for production lines and LLM workflows for document-heavy teams, from prototype to deployed API."><meta name="twitter:image" content="https://asad-gulshair.github.io/assets/og.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css"><link rel="stylesheet" href="assets/css/fx.css">
 <link rel="preload" href="content/site.json" as="fetch" crossorigin><link rel="preload" href="content/projects.json" as="fetch" crossorigin><link rel="modulepreload" href="assets/js/home.js">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Asad Gulshair", "jobTitle": "AI Engineer", "url": "https://asad-gulshair.github.io/", "email": "mailto:asadgulshair6767@gmail.com", "sameAs": ["https://github.com/asad-gulshair", "https://www.youtube.com/@Ultra_Vison20", "https://www.linkedin.com/in/asad-gulshair"]}</script>
 <script type="importmap">{"imports":{"three":"./assets/vendor/three.module.min.js"}}</script>
+<script>try{if(sessionStorage.getItem('intro')||/[?&]capture/.test(location.search))document.documentElement.classList.add('no-intro');else sessionStorage.setItem('intro','1')}catch(e){document.documentElement.classList.add('no-intro')}</script>
 </head>
 <body>
+<div class="intro" aria-hidden="true"><div class="intro-in"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.2"/><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg><span>Asad Gulshair</span><i></i></div></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap hdr-in">
   <a class="brand" href="./" aria-label="Asad Gulshair, home"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.5"/><g stroke="#A3A7AB" stroke-width="1.3" stroke-linecap="round"><path d="M12 12 L12 2.2" transform="rotate(0 12 12) translate(3.2 0)"/><path d="M12 12 L12 2.2" transform="rotate(60 12 12) translate(3.2 0)"/><path d="M12 12 L12 2.2" transform="rotate(120 12 12) translate(3.2 0)"/><path d="M12 12 L12 2.2" transform="rotate(180 12 12) translate(3.2 0)"/><path d="M12 12 L12 2.2" transform="rotate(240 12 12) translate(3.2 0)"/><path d="M12 12 L12 2.2" transform="rotate(300 12 12) translate(3.2 0)"/></g><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg><span>Asad Gulshair</span></a>
@@ -32,10 +34,10 @@
 <main id="main">
 <section class="hero" aria-labelledby="hero-h"><div class="wrap">
   <div class="hero-copy">
-    <p class="meta" data-site="hero.eyebrow">AI Engineer · Computer Vision · LLM Agents</p>
-    <h1 id="hero-h" data-site="hero.headline">Computer vision and AI agents that work in real operations.</h1>
-    <p class="lead" data-site="hero.subline">I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API.</p>
-    <div class="cta-row"><a class="btn btn-primary" href="#work" id="cta-work">View selected work</a><a class="btn" href="contact.html#start">Start a project</a><a class="tlink" data-book href="mailto:asadgulshair6767@gmail.com?subject=Meeting%20request%20-%20project%20discussion&body=Hi%20Asad%2C%0A%0AI%20would%20like%20to%20book%20a%20Google%20Meet%20call%20about%20a%20project.%0A%0APreferred%20times%20%282-3%20options%2C%20with%20your%20timezone%29%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AShort%20project%20summary%3A%0A%0A">Book a meeting</a><a class="tlink" href="https://github.com/asad-gulshair" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
+    <p class="meta" data-site="hero.eyebrow">Asad Gulshair · AI Engineer</p>
+    <h1 id="hero-h" data-site="hero.headline">Turning complex problems into intelligent systems.</h1>
+    <p class="lead" data-site="hero.subline">I build computer vision, AI agents and automation that inspect products, read documents and take repetitive work off your team, from first prototype to a deployed system.</p>
+    <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Discuss a project</a><a class="btn" href="#work" id="cta-work">Explore my work</a><a class="tlink" href="https://github.com/asad-gulshair" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <nav class="practice" aria-label="Practice areas">
       <a href="projects.html#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a>
@@ -44,40 +46,95 @@
       <a href="projects.html#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a>
     </nav>
   </div>
-  <div class="hero-media" id="hero-media" aria-hidden="true"><div class="hero-backdrop"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture"></canvas></div>
-</div></section>
+  <div class="hero-media" id="hero-media" aria-hidden="true"><div class="hero-backdrop"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture"></canvas><div class="guide-home" id="guide-home"></div></div>
+</div><a class="scroll-cue" href="#work" aria-label="Scroll to my work"><i></i><span>Scroll</span></a></section>
 <section class="facts" aria-label="Track record"><div class="wrap"><ul>
-  <li><b data-count="14">14</b><span>projects across 4 areas</span></li>
+  <li><b data-count="17">17</b><span>projects across 5 areas</span></li>
   <li><b data-count="2">2</b><span>systems in daily production use</span></li>
   <li><b data-count="40" data-suffix="%">40%</b><span>less manual translation work, in production</span></li>
   <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set)</span></li>
 </ul></div></section>
 <div class="stack-strip" aria-label="Tools used in shipped or published work"><div class="wrap"><ul><li>Python</li><li>PyTorch</li><li>TensorFlow</li><li>YOLOv8</li><li>OpenCV</li><li>FastAPI</li><li>LangChain</li><li>LangGraph</li><li>n8n</li><li>Whisper</li><li>Docker</li></ul></div></div>
 <section id="work" aria-labelledby="work-h"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">Selected work</p><h2 id="work-h">Results, not mockups.</h2><p class="lead">Three projects with real model output. Every project on this site is labelled honestly: production, prototype, demo or research.</p></div>
-  <div class="proof" id="proof"></div>
+  <div class="sec-head reveal"><p class="meta">Selected work</p><h2 id="work-h">Pick an industry. See what I built.</h2></div>
+  <div class="ind reveal" id="ind">
+    <div class="ind-tabs" role="tablist" aria-label="Industries"><a class="ind-tab" href="projects.html#industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a><a class="ind-tab" href="projects.html#recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a><a class="ind-tab" href="projects.html#agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a><a class="ind-tab" href="projects.html#agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a><a class="ind-tab" href="projects.html#robotics"><span class="dot" style="background:var(--c-robotics)"></span>Robotics</a></div>
+    <div class="ind-panel" id="ind-panel" role="tabpanel"></div>
+  </div>
   <div class="pub reveal"><span class="meta">Peer-reviewed · IEEE Access · 2025</span><p><b style="color:var(--text);font-weight:500">AI-Driven Smart Agriculture:</b> an integrated approach for soil analysis, irrigation and crop-fertilizer recommendations. Co-author; built as my final-year project.</p><a class="tlink" href="https://ieeexplore.ieee.org/document/11104235" target="_blank" rel="noopener">Read the paper ↗</a></div>
   <p style="margin-top:32px"><a class="btn" href="projects.html">See all projects →</a></p>
 </div></section>
-<section aria-labelledby="areas-h" style="padding-top:0"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">Selected work by area</p><h2 id="areas-h">Four areas where I've designed, trained and deployed systems.</h2></div>
-  <div class="areas reveal" id="areas"></div>
-</div></section>
-<section id="how" aria-labelledby="how-h" style="padding-top:0"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">How it works</p><h2 id="how-h">Working together, in four steps.</h2><p class="lead">Clear scope, early results on your own data, and a handover you can run without me.</p></div>
-  <ol class="steps reveal"><li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="19" height="15" rx="2"/><path d="M4 21l5-5 4 4 3-3 7 7"/><circle cx="17" cy="14" r="1.6"/><path d="M21 4h7v7M28 4l-9 9" stroke="#E8743B"/></svg></span><span class="meta">01</span></div><h3>Share your problem</h3><p>Describe what you need detected, measured or automated, and send a few sample images, videos or documents.</p></li><li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="16" height="22" rx="2"/><path d="M9 10h8M9 14h6M9 18h4"/><circle cx="21" cy="21" r="5" stroke="#E8743B"/><path d="M24.6 24.6L28 28" stroke="#E8743B"/></svg></span><span class="meta">02</span></div><h3>Feasibility check and plan</h3><p>I check whether your data can support a reliable result, then we agree the scope, success metric and milestones.</p></li><li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="14" height="14" rx="2"/><path d="M13 5v4M19 5v4M13 23v4M19 23v4M5 13h4M5 19h4M23 13h4M23 19h4"/><path d="M13 16l2 2 4-4" stroke="#E8743B"/></svg></span><span class="meta">03</span></div><h3>Build and test on your data</h3><p>An early prototype on your own samples, then a hardened pipeline evaluated on data the model has not seen.</p></li><li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13"/><path d="M10.5 6.8l11 5.5" stroke="#E8743B"/></svg></span><span class="meta">04</span></div><h3>Deploy and hand over</h3><p>The model, an API or dashboard, documentation and a walkthrough, so your team can run it without me.</p></li></ol>
-  <div class="deliver reveal"><div style="display:grid;gap:12px;align-content:start"><p class="meta">What you get</p><h3>Everything needed to run it without me.</h3></div>
-    <ul class="checks"><li>Source code in your repository</li><li>A REST API (FastAPI) or a workflow export</li><li>An evaluation report with real metrics</li><li>Setup and run documentation</li><li>A recorded walkthrough</li><li>Fixed scope and milestones agreed up front</li></ul></div>
-  <div class="connect reveal"><div class="conn-head"><p class="meta">How to connect</p><h3>Pick whichever is easiest for you.</h3></div>
-    <div class="conn">
-      <div><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="24" height="18" rx="2"/><path d="M5 9l11 8 11-8" stroke="#E8743B"/></svg></span><h4>Email</h4><p class="v" data-email-text>asadgulshair6767@gmail.com</p><div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn sm" data-mail="project" href="mailto:asadgulshair6767@gmail.com?subject=Project%20enquiry" title="Opens your default email app">Email me</a></div></div>
-      <div><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="24" height="20" rx="2"/><path d="M4 13h24M10 4v6M22 4v6"/><path d="M12 20l3 3 5-6" stroke="#E8743B"/></svg></span><h4>Book a meeting</h4><p>A short call to talk through your project. Share a few times that suit you.</p><div class="acts"><a class="btn sm" data-book href="mailto:asadgulshair6767@gmail.com?subject=Meeting%20request%20-%20project%20discussion&body=Hi%20Asad%2C%0A%0AI%20would%20like%20to%20book%20a%20Google%20Meet%20call%20about%20a%20project.%0A%0APreferred%20times%20%282-3%20options%2C%20with%20your%20timezone%29%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AShort%20project%20summary%3A%0A%0A">Book a meeting</a></div></div>
-      <div><span class="step-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 10l-6 6 6 6M21 10l6 6-6 6"/><path d="M18 7l-4 18" stroke="#E8743B"/></svg></span><h4>GitHub</h4><p>Code for the public projects on this site.</p><div class="acts"><a class="btn sm" href="https://github.com/asad-gulshair" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
+<section id="recruiter" class="rs" data-rs aria-labelledby="rs-h">
+  <div class="rs-pin"><div class="wrap rs-grid">
+    <div class="rs-copy">
+      <p class="meta eyebrow"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment automation · Current role</p>
+      <h2 id="rs-h">An AI recruiting platform, built for a manufacturer.</h2>
+      <p class="lead">AI screens each CV, a person shortlists, and interview rounds carry candidates through to hire. These are the screens HR works in.</p>
+      <ol class="rs-tabs" aria-label="Platform screens">
+        <li><button class="rs-tab" type="button" data-i="0"><span class="meta">01</span><b>Hiring overview</b><span class="d">Jobs, applications and every interview round.</span></button></li>
+        <li><button class="rs-tab" type="button" data-i="1"><span class="meta">02</span><b>Live funnel</b><span class="d">Where each candidate stands, step by step.</span></button></li>
+        <li><button class="rs-tab" type="button" data-i="2"><span class="meta">03</span><b>AI scorecard</b><span class="d">Each CV scored against the role, with the working shown.</span></button></li>
+        <li><button class="rs-tab" type="button" data-i="3"><span class="meta">04</span><b>Interview tracker</b><span class="d">L1 to L3 rounds, scheduling and forms.</span></button></li>
+      </ol>
+      <p class="rs-hint meta" aria-hidden="true"><i></i>Scroll to move through the screens</p>
+      <p class="rs-note meta">From the platform I'm building in my current role. Branding and candidate details removed.</p>
+    </div>
+    <div class="rs-stage"><div class="rs-scene">
+      <figure class="rs-win" data-title="Hiring overview" data-desc="Jobs, applications and every interview round."><div class="rs-shot"><img src="assets/media/hr-dashboard.webp" alt="Recruiting platform overview: published jobs, applications, shortlisted candidates and interview counts per round" width="1362" height="676" loading="lazy" decoding="async"></div><span class="rs-open" aria-hidden="true">Enlarge</span><span class="rs-chip">One screen for jobs, applications and every round</span><figcaption class="rs-cap"><b>Hiring overview</b>Jobs, applications and every interview round.</figcaption></figure>
+      <figure class="rs-win" data-title="Live funnel" data-desc="Where each candidate stands, step by step."><div class="rs-shot"><img src="assets/media/hr-funnel.webp" alt="Live hiring funnel from sourced to hired, with weekly volume and applicants by department" width="1365" height="671" loading="lazy" decoding="async"></div><span class="rs-open" aria-hidden="true">Enlarge</span><span class="rs-chip">Live funnel: sourced, screened, L1, L2, L3, hired</span><figcaption class="rs-cap"><b>Live funnel</b>Where each candidate stands, step by step.</figcaption></figure>
+      <figure class="rs-win" data-title="AI scorecard" data-desc="Each CV scored against the role, with the working shown."><div class="rs-shot"><img src="assets/media/hr-scorecard.webp" alt="AI scorecard: skill and experience match, total experience, sector and job-switch history for a candidate (two cards hidden)" width="1366" height="628" loading="lazy" decoding="async"></div><span class="rs-open" aria-hidden="true">Enlarge</span><span class="rs-chip">AI scores the CV against the role. A person decides.</span><figcaption class="rs-cap"><b>AI scorecard</b>Each CV scored against the role, with the working shown.</figcaption></figure>
+      <figure class="rs-win" data-title="Interview tracker" data-desc="L1 to L3 rounds, scheduling and forms."><div class="rs-shot"><img src="assets/media/hr-tracker.webp" alt="Interview tracker listing candidates (names blurred) with job, level, form status and panel view" width="1362" height="621" loading="lazy" decoding="async"></div><span class="rs-open" aria-hidden="true">Enlarge</span><span class="rs-chip">Rounds, forms and panel view per candidate</span><figcaption class="rs-cap"><b>Interview tracker</b>L1 to L3 rounds, scheduling and forms.</figcaption></figure>
     </div></div>
+  </div></div>
+</section>
+<section id="scoring" class="sc" data-sc aria-labelledby="sc-h"><div class="wrap">
+  <div class="sec-head sc-head reveal"><p class="meta eyebrow"><span class="dot" style="background:var(--c-recruitment)"></span>How the AI scores a CV</p><h2 id="sc-h">Scored on evidence. Decided by a person.</h2><p class="lead">Four criteria, the working shown, and nothing rejected automatically.</p></div>
+      <div class="sc-demo reveal">
+      <div class="sc-top"><canvas class="sc-bot" width="132" height="132" aria-hidden="true"></canvas><p class="sc-say" aria-live="off"><i></i><span>Ready for human review</span></p></div>
+      <div class="sc-stage">
+        <div class="sc-cv" aria-hidden="true">
+          <div class="sc-cv-h"><b>CV</b><span>Maintenance engineer</span></div>
+          <div class="sc-ln w9"></div><div class="sc-ln w6"></div>
+          <div class="sc-ln w8 hl"><em>PLC, SCADA</em></div><div class="sc-ln w7"></div><div class="sc-ln w5"></div>
+          <div class="sc-ln w9 hl"><em>6 years, manufacturing</em></div><div class="sc-ln w6"></div><div class="sc-ln w8"></div>
+          <div class="sc-ln w7 hl"><em>Food and beverage</em></div><div class="sc-ln w5"></div><div class="sc-ln w8"></div>
+          <i class="sc-beam"></i>
+        </div>
+        <div class="sc-card">
+          <div class="sc-card-h"><span class="meta">AI scorecard</span><span class="sc-role">Maintenance engineer · role needs 3 to 5 years</span></div>
+          <ul class="sc-crit">
+            <li data-v="82" style="--v:82;--bc:#16a34a"><div><b>Skill match</b><span class="sc-val">82</span></div><i class="sc-bar"><u></u></i><small>PLC, SCADA and preventive maintenance found. CMMS not found.</small></li>
+            <li data-v="78" style="--v:78;--bc:#16a34a"><div><b>Relevant experience</b><span class="sc-val">78</span></div><i class="sc-bar"><u></u></i><small>6 years in manufacturing plants.</small></li>
+            <li data-v="90" style="--v:90;--bc:#16a34a"><div><b>Sector fit</b><span class="sc-val">90</span></div><i class="sc-bar"><u></u></i><small>Food and beverage, same sector as the role.</small></li>
+            <li data-v="70" style="--v:70;--bc:#d99a06"><div><b>Career stability</b><span class="sc-val">70</span></div><i class="sc-bar"><u></u></i><small>2 job changes in 5 years.</small></li>
+          </ul>
+          <div class="sc-sum"><div class="sc-ring" style="--p:80;--rc:#16a34a"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27"/><circle class="v" cx="32" cy="32" r="27" pathLength="100"/></svg><b>80</b></div><p class="sc-verdict"><b>Recommend: shortlist</b><span>Strong on skills, experience and sector.</span></p></div>
+        </div>
+        <div class="sc-review">
+          <p class="meta">Human review</p>
+          <p class="sc-rv-t">HR reads the scores and the reasons, then decides.</p>
+          <div class="sc-btns" role="group" aria-label="Example decisions"><span class="sc-b acc on">Accept</span><span class="sc-b hold">Hold</span><span class="sc-b ovr">Move forward anyway</span></div>
+          <p class="sc-result">Accepted by HR. L1 interview is scheduled.</p>
+        </div>
+      </div>
+      <ol class="sc-pipe" aria-label="Recruitment stages">
+        <li class="on">Intake</li><li class="on">Parse</li><li class="on">AI score</li><li class="on">Human review</li><li class="on">Interviews L1 to L3</li><li>Hire</li>
+      </ol>
+      <div class="sc-foot"><div class="sc-dots" role="group" aria-label="Example candidates"><button type="button" class="on" data-i="0" aria-label="Example 1: strong match">1</button><button type="button" data-i="1" aria-label="Example 2: partial match">2</button><button type="button" data-i="2" aria-label="Example 3: low score, HR decides">3</button></div><p class="meta">Illustrative example with made-up candidates</p></div>
+    </div>
+  <ul class="sc-pills reveal"><li><b>4 criteria</b><span>Skills, experience, sector, stability</span></li><li><b>Working shown</b><span>Every score comes with its reasons</span></li><li><b>A person decides</b><span>Shortlist, hold or move forward</span></li></ul>
+</div></section>
+<section id="services" class="svc" aria-labelledby="svc-h"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">Services</p><h2 id="svc-h">What I can build for you.</h2><p class="lead">For manufacturers, HR teams and operations teams who want repetitive work done reliably by software.</p></div>
+  <ul class="svc-grid reveal"><li class="svc-card" style="--c:#E8743B"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="19" height="15" rx="2"/><circle cx="13.5" cy="16.5" r="4"/><path d="M21 4h7v7M28 4l-9 9" stroke="#E8743B"/></svg></span><h3>Computer vision and quality inspection</h3><p>Defect detection, counting and measurement on standard cameras.</p><a class="svc-go" href="projects.html#industrial">Inspection work →</a></li><li class="svc-card" style="--c:#9B8CFF"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" stroke="#E8743B"/></svg></span><h3>AI agents and workflow automation</h3><p>Agents and automations that move work between the tools you already use.</p><a class="svc-go" href="projects.html#agents">Automation work →</a></li><li class="svc-card" style="--c:#D2B06A"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="15" height="20" rx="2"/><path d="M10 10h7M10 14h7M10 18h4"/><path d="M19 20l3 3 6-7" stroke="#E8743B"/></svg></span><h3>Document processing and extraction</h3><p>Invoices, CVs and reports turned into clean, structured data.</p><a class="svc-go" href="projects.html#recruitment">Document work →</a></li><li class="svc-card" style="--c:#47D7E6"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14M5 13h10M5 18h12"/><circle cx="23" cy="20" r="5" stroke="#E8743B"/><path d="M26.5 23.5L29 26" stroke="#E8743B"/></svg></span><h3>LLM apps and RAG</h3><p>Assistants that answer from your own documents and show the source.</p><a class="svc-go" href="projects.html#agents">LLM work →</a></li><li class="svc-card" style="--c:#8DB86A"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l3 7 7 1-5 5 1.5 7L16 20l-6.5 4L11 17l-5-5 7-1z" stroke="#E8743B"/></svg></span><h3>AI proof of concept</h3><p>A working prototype on your own data, with an honest evaluation.</p><a class="svc-go" href="contact.html#start">Start one →</a></li><li class="svc-card" style="--c:#8EA2E8"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13" stroke="#E8743B"/></svg></span><h3>Deployment and integration</h3><p>FastAPI services, Docker and dashboards your team can run.</p><a class="svc-go" href="projects.html">See deployed work →</a></li></ul>
+</div></section>
+<section id="how" class="proc" aria-labelledby="how-h"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">How we work</p><h2 id="how-h">From first call to a system you own.</h2></div>
+  <ol class="proc-line reveal"><li><span class="proc-n">01</span><h3>Discover</h3><p>Your problem, your data and what success looks like.</p></li><li><span class="proc-n">02</span><h3>Prototype</h3><p>A first working version on your own samples.</p></li><li><span class="proc-n">03</span><h3>Validate</h3><p>Tested on data the model has not seen, with real metrics.</p></li><li><span class="proc-n">04</span><h3>Deploy</h3><p>An API, app or workflow your team can run, with docs.</p></li><li><span class="proc-n">05</span><h3>Improve</h3><p>Tune on new cases and add what the team needs next.</p></li></ol>
 </div></section>
 <section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
-  <div style="display:grid;gap:20px"><p class="meta">Contact</p><h2 id="cta-h">Have a problem worth automating?</h2><p class="lead">Send a short description and what a good result looks like. I usually reply within a day.</p></div>
-  <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" data-book href="mailto:asadgulshair6767@gmail.com?subject=Meeting%20request%20-%20project%20discussion&body=Hi%20Asad%2C%0A%0AI%20would%20like%20to%20book%20a%20Google%20Meet%20call%20about%20a%20project.%0A%0APreferred%20times%20%282-3%20options%2C%20with%20your%20timezone%29%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AShort%20project%20summary%3A%0A%0A">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div>
+  <div style="display:grid;gap:20px"><p class="meta">Contact</p><h2 id="cta-h">Have a problem worth automating?</h2><p class="lead">Send a short description and what a good result looks like. I usually reply within a day.</p><ol class="cta-next"><li><b>I reply within a day</b><span>with a first view on whether it is feasible.</span></li><li><b>We check your sample data</b><span>before anything is built.</span></li><li><b>Fixed scope and milestones</b><span>agreed up front, handover included.</span></li></ol></div>
+  <div class="cta-side"><div class="lead-card" data-lead-form="compact"></div><div class="cta-row"><a class="btn btn-primary" data-book href="mailto:asadgulshair6767@gmail.com?subject=Meeting%20request%20-%20project%20discussion&body=Hi%20Asad%2C%0A%0AI%20would%20like%20to%20book%20a%20Google%20Meet%20call%20about%20a%20project.%0A%0APreferred%20times%20%282-3%20options%2C%20with%20your%20timezone%29%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AShort%20project%20summary%3A%0A%0A">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div></div>
 </div></section>
 </main>
 <footer class="ftr"><div class="wrap">

@@ -40,12 +40,14 @@ def head(fn, title, desc):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{desc}"><meta name="twitter:image" content="{SITE}assets/og.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css"><link rel="stylesheet" href="assets/css/fx.css">
 {data}{pre}
 <script type="application/ld+json">{json.dumps(ld)}</script>
 <script type="importmap">{{"imports":{{"three":"./assets/vendor/three.module.min.js"}}}}</script>
+<script>try{{if(sessionStorage.getItem('intro')||/[?&]capture/.test(location.search))document.documentElement.classList.add('no-intro');else sessionStorage.setItem('intro','1')}}catch(e){{document.documentElement.classList.add('no-intro')}}</script>
 </head>
 <body>
+<div class="intro" aria-hidden="true"><div class="intro-in"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.2"/><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg><span>Asad Gulshair</span><i></i></div></div>
 '''
 def header(active):
     def n(href, label, key):
@@ -68,8 +70,8 @@ FOOT = f'''<footer class="ftr"><div class="wrap">
 </div></footer>
 '''
 CTA_BAND = f'''<section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
-  <div style="display:grid;gap:20px"><p class="meta">Contact</p><h2 id="cta-h">Have a problem worth automating?</h2><p class="lead">Send a short description and what a good result looks like. I usually reply within a day.</p></div>
-  <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Start a project</a><a class="btn" data-book href="{MAIL_MEET}">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div>
+  <div style="display:grid;gap:20px"><p class="meta">Contact</p><h2 id="cta-h">Have a problem worth automating?</h2><p class="lead">Send a short description and what a good result looks like. I usually reply within a day.</p><ol class="cta-next"><li><b>I reply within a day</b><span>with a first view on whether it is feasible.</span></li><li><b>We check your sample data</b><span>before anything is built.</span></li><li><b>Fixed scope and milestones</b><span>agreed up front, handover included.</span></li></ol></div>
+  <div class="cta-side"><div class="lead-card" data-lead-form="compact"></div><div class="cta-row"><a class="btn btn-primary" data-book href="{MAIL_MEET}">Book a meeting</a><button class="btn" type="button" data-copy-email><span>Copy email</span></button></div></div>
 </div></section>
 '''
 # small line icons (32px grid, currentColor + one accent detail) for the "How it works" guide
@@ -88,15 +90,38 @@ STEPS = [
 IC_MAIL = ICON(f'<rect x="4" y="7" width="24" height="18" rx="2"/><path d="M5 9l11 8 11-8" {AC}/>')
 IC_CAL = ICON(f'<rect x="4" y="7" width="24" height="20" rx="2"/><path d="M4 13h24M10 4v6M22 4v6"/><path d="M12 20l3 3 5-6" {AC}/>')
 IC_CODE = ICON(f'<path d="M11 10l-6 6 6 6M21 10l6 6-6 6"/><path d="M18 7l-4 18" {AC}/>')
+FACTS = '''<section class="facts" aria-label="Track record"><div class="wrap"><ul>
+  <li><b data-count="17">17</b><span>projects across 5 areas</span></li>
+  <li><b data-count="2">2</b><span>systems in daily production use</span></li>
+  <li><b data-count="40" data-suffix="%">40%</b><span>less manual translation work, in production</span></li>
+  <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set)</span></li>
+</ul></div></section>
+'''
+RECRUITER = (ROOT / 'tools' / 'recruiter_section.html').read_text(encoding='utf-8') + (ROOT / 'tools' / 'scoring_section.html').read_text(encoding='utf-8')
 STACK = ['Python', 'PyTorch', 'TensorFlow', 'YOLOv8', 'OpenCV', 'FastAPI', 'LangChain', 'LangGraph', 'n8n', 'Whisper', 'Docker']
+SERVICES = [
+ (ICON(f'<rect x="4" y="9" width="19" height="15" rx="2"/><circle cx="13.5" cy="16.5" r="4"/><path d="M21 4h7v7M28 4l-9 9" {AC}/>'), 'Computer vision and quality inspection', 'Defect detection, counting and measurement on standard cameras.', 'projects.html#industrial', 'Inspection work', '#E8743B'),
+ (ICON(f'<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" {AC}/>'), 'AI agents and workflow automation', 'Agents and automations that move work between the tools you already use.', 'projects.html#agents', 'Automation work', '#9B8CFF'),
+ (ICON(f'<rect x="6" y="4" width="15" height="20" rx="2"/><path d="M10 10h7M10 14h7M10 18h4"/><path d="M19 20l3 3 6-7" {AC}/>'), 'Document processing and extraction', 'Invoices, CVs and reports turned into clean, structured data.', 'projects.html#recruitment', 'Document work', '#D2B06A'),
+ (ICON(f'<path d="M5 8h14M5 13h10M5 18h12"/><circle cx="23" cy="20" r="5" {AC}/><path d="M26.5 23.5L29 26" {AC}/>'), 'LLM apps and RAG', 'Assistants that answer from your own documents and show the source.', 'projects.html#agents', 'LLM work', '#47D7E6'),
+ (ICON(f'<path d="M16 4l3 7 7 1-5 5 1.5 7L16 20l-6.5 4L11 17l-5-5 7-1z" {AC}/>'), 'AI proof of concept', 'A working prototype on your own data, with an honest evaluation.', 'contact.html#start', 'Start one', '#8DB86A'),
+ (ICON(f'<path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13" {AC}/>'), 'Deployment and integration', 'FastAPI services, Docker and dashboards your team can run.', 'projects.html', 'See deployed work', '#8EA2E8'),
+]
+PROCESS = [
+ ('Discover', 'Your problem, your data and what success looks like.'),
+ ('Prototype', 'A first working version on your own samples.'),
+ ('Validate', 'Tested on data the model has not seen, with real metrics.'),
+ ('Deploy', 'An API, app or workflow your team can run, with docs.'),
+ ('Improve', 'Tune on new cases and add what the team needs next.'),
+]
 def page_index():
     return f'''<main id="main">
 <section class="hero" aria-labelledby="hero-h"><div class="wrap">
   <div class="hero-copy">
-    <p class="meta" data-site="hero.eyebrow">AI Engineer · Computer Vision · LLM Agents</p>
-    <h1 id="hero-h" data-site="hero.headline">Computer vision and AI agents that work in real operations.</h1>
-    <p class="lead" data-site="hero.subline">I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API.</p>
-    <div class="cta-row"><a class="btn btn-primary" href="#work" id="cta-work">View selected work</a><a class="btn" href="contact.html#start">Start a project</a><a class="tlink" data-book href="{MAIL_MEET}">Book a meeting</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
+    <p class="meta" data-site="hero.eyebrow">Asad Gulshair · AI Engineer</p>
+    <h1 id="hero-h" data-site="hero.headline">Turning complex problems into intelligent systems.</h1>
+    <p class="lead" data-site="hero.subline">I build computer vision, AI agents and automation that inspect products, read documents and take repetitive work off your team, from first prototype to a deployed system.</p>
+    <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Discuss a project</a><a class="btn" href="#work" id="cta-work">Explore my work</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <nav class="practice" aria-label="Practice areas">
       <a href="projects.html#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a>
@@ -105,30 +130,25 @@ def page_index():
       <a href="projects.html#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a>
     </nav>
   </div>
-  <div class="hero-media" id="hero-media" aria-hidden="true"><div class="hero-backdrop"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture"></canvas></div>
-</div></section>
-<div class="stack-strip" aria-label="Tools used in shipped or published work"><div class="wrap"><ul>{''.join(f'<li>{s}</li>' for s in STACK)}</ul></div></div>
+  <div class="hero-media" id="hero-media" aria-hidden="true"><div class="hero-backdrop"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture"></canvas><div class="guide-home" id="guide-home"></div></div>
+</div><a class="scroll-cue" href="#work" aria-label="Scroll to my work"><i></i><span>Scroll</span></a></section>
+{FACTS}<div class="stack-strip" aria-label="Tools used in shipped or published work"><div class="wrap"><ul>{''.join(f'<li>{s}</li>' for s in STACK)}</ul></div></div>
 <section id="work" aria-labelledby="work-h"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">Selected work</p><h2 id="work-h">Results, not mockups.</h2><p class="lead">Three projects with real model output. Every project on this site is labelled honestly: production, prototype, demo or research.</p></div>
-  <div class="proof" id="proof"></div>
+  <div class="sec-head reveal"><p class="meta">Selected work</p><h2 id="work-h">Pick an industry. See what I built.</h2></div>
+  <div class="ind reveal" id="ind">
+    <div class="ind-tabs" role="tablist" aria-label="Industries"><a class="ind-tab" href="projects.html#industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a><a class="ind-tab" href="projects.html#recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a><a class="ind-tab" href="projects.html#agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a><a class="ind-tab" href="projects.html#agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a><a class="ind-tab" href="projects.html#robotics"><span class="dot" style="background:var(--c-robotics)"></span>Robotics</a></div>
+    <div class="ind-panel" id="ind-panel" role="tabpanel"></div>
+  </div>
   <div class="pub reveal"><span class="meta">Peer-reviewed · IEEE Access · 2025</span><p><b style="color:var(--text);font-weight:500">AI-Driven Smart Agriculture:</b> an integrated approach for soil analysis, irrigation and crop-fertilizer recommendations. Co-author; built as my final-year project.</p><a class="tlink" href="https://ieeexplore.ieee.org/document/11104235" target="_blank" rel="noopener">Read the paper ↗</a></div>
   <p style="margin-top:32px"><a class="btn" href="projects.html">See all projects →</a></p>
 </div></section>
-<section aria-labelledby="areas-h" style="padding-top:0"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">Selected work by area</p><h2 id="areas-h">Four areas where I've designed, trained and deployed systems.</h2></div>
-  <div class="areas reveal" id="areas"></div>
+{RECRUITER}<section id="services" class="svc" aria-labelledby="svc-h"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">Services</p><h2 id="svc-h">What I can build for you.</h2><p class="lead">For manufacturers, HR teams and operations teams who want repetitive work done reliably by software.</p></div>
+  <ul class="svc-grid reveal">{''.join(f'<li class="svc-card" style="--c:{c}"><span class="svc-ic" aria-hidden="true">{ic}</span><h3>{t}</h3><p>{d}</p><a class="svc-go" href="{h}">{l} →</a></li>' for ic, t, d, h, l, c in SERVICES)}</ul>
 </div></section>
-<section id="how" aria-labelledby="how-h" style="padding-top:0"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">How it works</p><h2 id="how-h">Working together, in four steps.</h2><p class="lead">Clear scope, early results on your own data, and a handover you can run without me.</p></div>
-  <ol class="steps reveal">{''.join(f'<li class="step"><div class="step-top"><span class="step-ic" aria-hidden="true">{ic}</span><span class="meta">{n:02d}</span></div><h3>{t}</h3><p>{d}</p></li>' for n, (ic, t, d) in enumerate(STEPS, 1))}</ol>
-  <div class="deliver reveal"><div style="display:grid;gap:12px;align-content:start"><p class="meta">What you get</p><h3>Everything needed to run it without me.</h3></div>
-    <ul class="checks"><li>Source code in your repository</li><li>A REST API (FastAPI) or a workflow export</li><li>An evaluation report with real metrics</li><li>Setup and run documentation</li><li>A recorded walkthrough</li><li>Fixed scope and milestones agreed up front</li></ul></div>
-  <div class="connect reveal"><div class="conn-head"><p class="meta">How to connect</p><h3>Pick whichever is easiest for you.</h3></div>
-    <div class="conn">
-      <div><span class="step-ic" aria-hidden="true">{IC_MAIL}</span><h4>Email</h4><p class="v" data-email-text>{EMAIL}</p><div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn sm" data-mail="project" href="{MAIL_PROJECT}" title="Opens your default email app">Email me</a></div></div>
-      <div><span class="step-ic" aria-hidden="true">{IC_CAL}</span><h4>Book a meeting</h4><p>A short call to talk through your project. Share a few times that suit you.</p><div class="acts"><a class="btn sm" data-book href="{MAIL_MEET}">Book a meeting</a></div></div>
-      <div><span class="step-ic" aria-hidden="true">{IC_CODE}</span><h4>GitHub</h4><p>Code for the public projects on this site.</p><div class="acts"><a class="btn sm" href="{GH}" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
-    </div></div>
+<section id="how" class="proc" aria-labelledby="how-h"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">How we work</p><h2 id="how-h">From first call to a system you own.</h2></div>
+  <ol class="proc-line reveal">{''.join(f'<li><span class="proc-n">{n:02d}</span><h3>{t}</h3><p>{d}</p></li>' for n, (t, d) in enumerate(PROCESS, 1))}</ol>
 </div></section>
 {CTA_BAND}</main>
 '''
@@ -140,6 +160,7 @@ def page_projects():
   <li><a href="#recruitment" data-cat="recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a></li>
   <li><a href="#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a></li>
   <li><a href="#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a></li>
+  <li><a href="#robotics" data-cat="robotics"><span class="dot" style="background:var(--c-robotics)"></span>Robotics</a></li>
 <li class="bar" aria-hidden="true"></li></ul></div></nav>
 <div id="cats"></div>
 {CTA_BAND}</main>
@@ -187,7 +208,8 @@ def page_contact():
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <div class="panel"><p class="meta">Useful to include</p><ul class="checks" style="grid-template-columns:1fr"><li>What you want detected, measured or automated</li><li>A few sample images, videos or documents</li><li>Where it needs to run (line PC, cloud, existing tool)</li><li>Timeline and any fixed constraints</li></ul></div>
   </div>
-  <div class="ccards" id="start">
+  <div class="start-col" id="start"><div class="lead-card" data-lead-form="full"></div>
+  <div class="ccards">
     <div class="ccard"><div class="k"><span class="meta">Email</span><span class="v" data-email-text>{EMAIL}</span><span class="d">Best for project briefs and files. “Email me” opens your default mail app; or copy the address.</span></div>
       <div class="acts"><button class="btn sm" type="button" data-copy-email><span>Copy email</span></button><a class="btn btn-primary sm" data-mail="project" href="{MAIL_PROJECT}" title="Opens your default email app">Email me</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">Book a meeting</span><span class="d">A short call to talk through your project. Share a few times that suit you, with your timezone.</span></div>
@@ -198,7 +220,7 @@ def page_contact():
       <div class="acts"><a class="btn sm" href="{GH}" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">YouTube</span><span class="v">Ultra Vision</span><span class="d">Short computer-vision demos on real footage.</span></div>
       <div class="acts"><a class="btn sm" href="{YT}" data-yt target="_blank" rel="noopener">More demos on YouTube ↗</a></div></div>
-  </div>
+  </div></div>
 </div></section>
 </main>
 '''

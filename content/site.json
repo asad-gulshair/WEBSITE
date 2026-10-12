@@ -1,8 +1,8 @@
 {
   "hero": {
-    "eyebrow": "AI Engineer · Computer Vision · LLM Agents",
-    "headline": "Computer vision and AI agents that work in real operations.",
-    "subline": "I'm Asad Gulshair. I build visual inspection systems for production lines and LLM workflows that take repetitive document work off your team, from first prototype to a deployed API."
+    "eyebrow": "Asad Gulshair · AI Engineer",
+    "headline": "Turning complex problems into intelligent systems.",
+    "subline": "I build computer vision, AI agents and automation that inspect products, read documents and take repetitive work off your team, from first prototype to a deployed system."
   },
   "home": {
     "featuredProject": "tomato-ripeness-grading",
@@ -71,7 +71,8 @@
     "githubUrl": "https://github.com/asad-gulshair",
     "youtubeUrl": "https://www.youtube.com/@Ultra_Vison20",
     "bookingUrl": "",
-    "availability": "Available for new projects"
+    "availability": "Available for new projects",
+    "formEndpoint": ""
   },
   "recruitmentVideo": ""
 }

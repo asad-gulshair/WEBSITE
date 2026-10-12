@@ -10,7 +10,7 @@ if (CAPTURE) document.documentElement.classList.add('capture');
 
 // Contact settings. These defaults match the static HTML; content/site.json (edited in the admin panel) overrides them.
 export const S = { email: 'asadgulshair6767@gmail.com', linkedinUrl: 'https://www.linkedin.com/in/asad-gulshair', githubUrl: 'https://github.com/asad-gulshair',
-  youtubeUrl: 'https://www.youtube.com/@Ultra_Vison20', bookingUrl: '', availability: 'Available for new projects' };
+  youtubeUrl: 'https://www.youtube.com/@Ultra_Vison20', bookingUrl: '', availability: 'Available for new projects', formEndpoint: '' };
 export const mailto = (subject, body = '') => `mailto:${S.email}?subject=${encodeURIComponent(subject)}${body ? '&body=' + encodeURIComponent(body) : ''}`;
 export const mailProject = () => mailto('Project enquiry');
 export const mailMeeting = () => mailto('Meeting request - project discussion', 'Hi Asad,\n\nI would like to book a Google Meet call about a project.\n\nPreferred times (2-3 options, with your timezone):\n1. \n2. \n3. \n\nShort project summary:\n\n');
@@ -118,7 +118,7 @@ function showStart(smooth) {
   const y = Math.max(0, t.getBoundingClientRect().top + scrollY - (hdr ? hdr.offsetHeight : 0) - 24);
   scrollTo({ top: y, behavior: smooth && !REDUCED ? 'smooth' : 'auto' });
   t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true });
-  const cards = $$('.ccard', t); cards.forEach((c) => c.classList.add('hl'));
+  const cards = $$('.ccard, .lead-card', t); cards.forEach((c) => c.classList.add('hl'));
   clearTimeout(t._hl); t._hl = setTimeout(() => cards.forEach((c) => c.classList.remove('hl')), 2200);
 }
 if (location.hash === '#start') requestAnimationFrame(() => showStart(false));
@@ -146,4 +146,11 @@ if (!/contact\.html$/.test(location.pathname)) {
   const sync = () => bar.classList.toggle('on', near.size === 0 && scrollY > 200);
   if ('IntersectionObserver' in window) { const ob = new IntersectionObserver((es) => { es.forEach((e) => (e.isIntersecting ? near.add(e.target) : near.delete(e.target))); sync(); }); watch.forEach((w) => ob.observe(w)); }
   addEventListener('scroll', sync, { passive: true });
+}
+
+// 3D motion layer and the enquiry form load after first paint (the form straight away when the page has one).
+if (!CAPTURE) {
+  if ($('[data-lead-form]')) import('./leads.js');
+  const go = () => import('./fx.js').catch((err) => console.warn('Motion layer not loaded:', err));
+  if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 700 }); else setTimeout(go, 200);
 }

@@ -1,4 +1,24 @@
-# Asad Gulshair — AI Engineer portfolio (v2, "Calibrated, Mature")
+# Asad Gulshair — AI Engineer portfolio
+
+## 2026-10 redesign (what changed)
+- Hero: new positioning, "Discuss a project" / "Explore my work", scroll cue, and **Scout**, an original 3D robot guide (`assets/js/companion.js`, `assets/js/guide.js`).
+- Scout greets visitors, comments as sections arrive, and opens a guide panel: pick an interest, see the problem, the solution, related case studies and a "Discuss this" link that pre-fills the enquiry form (`contact.html?topic=…#start`).
+- Home: industry guide (5 tabs incl. Robotics), recruiter 3D screens, CV scoring demo (same robot), Services (6), Process (Discover → Prototype → Validate → Deploy → Improve), contact form.
+- New projects: TurtleBot3 mapping/navigation (Robotics), Invoice to Excel, Medicine recommendation. Re-framed project images.
+- Enquiry form: reply method + phone fields (also in `tools/lead-capture.gs`).
+- Intro curtain once per session; cyan/violet light accents.
+- Docs: `docs/PROJECT_INVENTORY.md`, `docs/ASSETS.md`, `docs/DESIGN.md`, `docs/GUIDE_AI_PROPOSAL.md`, `docs/VERIFY.md`, `docs/TEST_REPORT.md`.
+
+## Run locally
+    cd D:\WEBSITE
+    python -m http.server 8000      # then open http://localhost:8000
+or double-click `run-preview.bat`. Opening the HTML file directly (file://) will not work, because the pages fetch `content/*.json`.
+
+## Deploy (GitHub Pages)
+Commit and push to `main`; Pages serves the repository root. After editing copy in `tools/build_pages.py`, run `python tools/build_pages.py` to regenerate the five HTML files.
+
+---
+
 
 Static multi-page site: HTML/CSS, vanilla ES modules, Three.js r160 (home page only). No build step and no paid services.
 All paths are relative, so the same files work on GitHub Pages, flypod or any static host.
@@ -77,6 +97,27 @@ It appears above the recruitment cards on the Work page.
   (PRODUCTION, PROTOTYPE, CURRENT ROLE, DEMO, RESEARCH, PUBLISHED). `youtube` (id or link) adds a click-to-load "Watch demo"
   player to its case study; tick `youtubePortrait` for Shorts.
 - Home "Selected work": `site.json` → `home.featuredProject` and `home.highlightProjects` (project slugs).
+
+## 3D motion layer (v2.1)
+| File | What it does |
+|---|---|
+| `assets/css/fx.css` | Everything below: ambient canvas, hero entrance/aurora, marquee, tilt/glare, recruiter section, lightbox, enquiry form |
+| `assets/js/fx.js` | Loaded by `common.js` after first paint on every page: scroll progress bar, cursor spotlight, 3D tilt + glare on cards/panels, magnetic buttons, tech-stack marquee, starts the ambient field |
+| `assets/js/ambient.js` | Fixed WebGL background (Three.js, procedural): glass solids + particles, camera descends as you scroll, leans to the cursor, edge colour follows the section. Pauses in hidden tabs, lowers resolution then switches itself off on slow GPUs |
+| `assets/js/showcase3d.js` | Home page "AI recruiting platform" section: pinned scroll story, 4 screens in 3D depth, tabs, click-to-enlarge lightbox. Mobile, reduced motion and no-JS get a plain stacked layout |
+| `tools/recruiter_section.html` | Markup of that section (used by `build_pages.py`) |
+| `assets/media/hr-*.webp` | Redacted screens (company branding and candidate details removed): `hr-dashboard`, `hr-funnel`, `hr-scorecard`, `hr-tracker` (transparent window frames), `hr-card` and `hr-extra` (composites used by the project card / case study) |
+
+All motion is off for `prefers-reduced-motion`. `?capture=1` (video recorder) disables the new layer.
+`tools/build_pages.py` regenerates all five pages exactly as committed (it now includes the track-record bar, the recruiter section and the enquiry form).
+
+## Enquiry form (client capture)
+`assets/js/leads.js` renders the form into every `[data-lead-form]` (full form on `contact.html`, quick form in the contact band on Home, Work and About).
+- **Delivery:** POST of JSON to `contact.formEndpoint` in `content/site.json` (admin panel: Site settings > Contact > Enquiry form endpoint).
+  - *Google Apps Script (recommended, free, Sheet + email):* paste `tools/lead-capture.gs` into a new script at script.google.com, run `setup` once, deploy as Web app (Execute as: Me, Access: Anyone), paste the `/exec` URL into `formEndpoint`. Each enquiry becomes a row in a "Portfolio leads" Google Sheet, you get an email (reply-to = the visitor) and the visitor gets a short confirmation.
+  - *Formspree:* paste the form URL (`https://formspree.io/f/xxxx`) into `formEndpoint`.
+- **Empty endpoint (default) or a failed send:** the form opens a pre-filled email to you instead, and offers "copy the message", so an enquiry is never lost. It only says "Thanks" after a confirmed send.
+- **Spam:** hidden honeypot field, 2.5 s minimum fill time, 15 s cooldown per browser.
 
 ## Editing with the admin panel (Pages CMS)
 Free, GitHub login, no server. There is deliberately no admin button on the public site.

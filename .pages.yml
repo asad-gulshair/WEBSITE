@@ -230,6 +230,10 @@ content:
             label: Booking page URL
             description: 'Calendly / Cal.com / Google Calendar appointment page. Empty: "Book a Google Meet call" opens a pre-filled email asking for 2-3 times instead.'
             type: string
+          - name: formEndpoint
+            label: Enquiry form endpoint
+            description: 'Where the contact form sends enquiries: the Web app URL from tools/lead-capture.gs (Google Sheet + email), or a Formspree URL. Empty: the form opens a pre-filled email instead.'
+            type: string
           - name: availability
             label: Availability line
             description: The green line in the hero and on Contact. Empty hides it.

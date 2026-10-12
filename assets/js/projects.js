@@ -17,7 +17,7 @@ function render(rv) {
     const more = list.length > MAX ? `<button class="btn showall" type="button" data-showall aria-expanded="false">Show all (${list.length})</button>` : '';
     return `<section class="cat-sec" id="${c.id}" aria-labelledby="${c.id}-h" tabindex="-1"><div class="wrap">
     <div class="sec-head"><p class="meta eyebrow"><span class="dot" style="background:${esc(c.dot)}"></span>${esc(c.label)}</p><h2 id="${c.id}-h">${esc(c.h)}</h2><p class="lead">${esc(c.sub)}</p></div>
-    ${xpHTML(c.id)}${featuredHTML(feat)}${c.id === 'recruitment' && rv ? '<div id="rv-recruitment"></div>' : ''}${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}</div></section>`;
+    ${featuredHTML(feat)}${c.id === 'recruitment' && rv ? '<div id="rv-recruitment"></div>' : ''}${subf}<div class="grid-wrap"><div class="grid3">${rest.map((p, i) => cardHTML(p).replace('class="card"', `class="card${i >= MAX - 1 ? ' hide extra' : ''}"`)).join('')}</div></div>${more}${xpHTML(c.id) ? `<details class="xp-more"><summary>How this kind of system helps</summary>${xpHTML(c.id)}</details>` : ''}</div></section>`;
   }).join('');
   // category bar follows the data: labels from the file, categories without projects hidden
   $$('#catlist a').forEach((a) => { const c = used.find((x) => x.id === a.dataset.cat); a.parentElement.hidden = !c; if (c && a.lastChild.textContent !== c.label) a.lastChild.textContent = c.label; });
