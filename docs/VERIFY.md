@@ -3,7 +3,7 @@
 ## Checked against evidence
 | Claim on the site | Evidence | Status |
 |---|---|---|
-| 17 projects across 5 areas | `content/projects.json` (17 entries, 5 categories) | OK |
+| 18 projects across 5 areas | `content/projects.json` (18 entries, 5 categories) | OK |
 | ~90% mAP, weld defect detection (validation) | Weld-Defect-Detection repo README: "~90% on validation dataset" | OK, label now says "approx." |
 | Inspection platform: weld, coating, flange vs ASME, PASS/FAIL | End-to-End repo README | OK (company visuals replaced by original illustrations) |
 | Flange measurement ">90% precision" | Flange-Dimension-Compliance-System README | Not shown on the site (no evaluation method given) |

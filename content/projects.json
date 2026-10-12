@@ -65,6 +65,30 @@
       "extra": { "src": "", "caption": "" }
     },
     {
+      "slug": "parcel-counting",
+      "title": "Parcel counting on a conveyor",
+      "category": "industrial",
+      "subcategory": "detection",
+      "featured": false,
+      "status": "DEMO",
+      "year": "2026",
+      "role": "Detection, tracking and counting logic",
+      "summary": "Counts every parcel that crosses a line on a moving belt, with a live rate per hour and alerts when the belt runs empty.",
+      "problem": "Warehouses and packing lines need an accurate throughput count, and people miss parcels when the belt is busy.",
+      "approach": [
+        "Pretrained object detector finds each parcel in the camera view",
+        "Each parcel is tracked with an ID so it is counted once as it crosses the count line",
+        "Live rate per hour, a gap flag when the belt is empty for more than 2.5 s, and an event log of every count"
+      ],
+      "result": "Demo on real conveyor footage with an open, pretrained model. Not a client system. See the video.",
+      "stack": ["Object detection", "Tracking", "OpenCV", "Python"],
+      "links": [],
+      "media": { "type": "image", "src": "assets/media/parcel-count.webp", "poster": "", "illustration": "", "caption": "Frame from the demo: tracked parcels, the count line, live rate and event log.", "portrait": false },
+      "youtube": "3IUCS8Nltlc",
+      "youtubePortrait": true,
+      "extra": { "src": "", "caption": "" }
+    },
+    {
       "slug": "weld-defect-detection",
       "title": "Weld defect detection",
       "category": "industrial",

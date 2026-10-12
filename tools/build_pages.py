@@ -91,7 +91,7 @@ IC_MAIL = ICON(f'<rect x="4" y="7" width="24" height="18" rx="2"/><path d="M5 9l
 IC_CAL = ICON(f'<rect x="4" y="7" width="24" height="20" rx="2"/><path d="M4 13h24M10 4v6M22 4v6"/><path d="M12 20l3 3 5-6" {AC}/>')
 IC_CODE = ICON(f'<path d="M11 10l-6 6 6 6M21 10l6 6-6 6"/><path d="M18 7l-4 18" {AC}/>')
 FACTS = '''<section class="facts" aria-label="Track record"><div class="wrap"><ul>
-  <li><b data-count="17">17</b><span>projects across 5 areas</span></li>
+  <li><b data-count="18">18</b><span>projects across 5 areas</span></li>
   <li><b data-count="2">2</b><span>systems in daily production use</span></li>
   <li><b data-count="40" data-suffix="%">40%</b><span>less manual translation work, in production</span></li>
   <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set, approx.)</span></li>

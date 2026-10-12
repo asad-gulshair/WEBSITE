@@ -30,7 +30,7 @@ const TOPICS = [
   { k: 'mfg', label: 'Manufacturing and inspection', topic: 'Industrial vision', mood: 'ok',
     problem: 'Manual inspection misses small defects and changes from shift to shift.',
     answer: 'A camera and a trained detector flag defects and measure parts on every item, with results sent to your system through an API.',
-    work: ['weld-line-inspection', 'weld-defect-detection', 'flange-dimension-compliance'] },
+    work: ['weld-line-inspection', 'parcel-counting', 'weld-defect-detection'] },
   { k: 'hr', label: 'HR and recruitment', topic: 'Recruitment automation', mood: 'ok',
     problem: 'Recruiters spend hours reading CVs and chasing candidates between steps.',
     answer: 'Every CV is parsed and scored against the role with the reasons shown. A person decides, and interviews are tracked in one place.',

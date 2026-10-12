@@ -8,6 +8,7 @@ Status labels on the site: PRODUCTION, CURRENT ROLE, PUBLISHED, PROTOTYPE, DEMO,
 | # | Project | Category | Status | Evidence | Ownership |
 |---|---|---|---|---|---|
 | 1 | Weld line inspection system | Industrial | Prototype | Public repo with a recorded demo (now on the site), README | Own work (internship) |
+| 1a | Parcel counting on a conveyor | Industrial | Demo | YouTube Short on Ultra Vision (real footage, pretrained model, "not a client system") | Own work |
 | 1b | Weld defect detection | Industrial | Prototype | Public repo (3 stars), real model output image, ~90% mAP (validation) in README | Own work (internship) |
 | 2 | Flange and disk dimension check | Industrial | Prototype | 3 public repos, real output frame, YouTube demo | Own work (internship) |
 | 3 | Paint surface defect detection | Industrial | Prototype | Public repo, real output images | Own work |
@@ -26,7 +27,6 @@ Weld line inspection system, resume screening (research), RAG pipeline (research
 - Voice emotion detection, multi-input animal classification: research notebooks without a business problem stated.
 - PDF generator: utility, not AI.
 - stripsnap: work in progress (no README).
-- Box counting: not in the public repos. Needs a video link or files from Asad.
 
 ## Gaps to fill for stronger case studies
 - Real screenshots or screen recordings for: subtitle SaaS, n8n automations, RAG pipeline, invoice tool, smart farming app.

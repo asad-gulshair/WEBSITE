@@ -10,6 +10,7 @@
 | `insp-station/weld/flange/paint.webp` | Original 3D renders made for this site (Three.js, offline) with drawn detection boxes; no company photos or logos | Own work |
 | `potato-*.webp`, `orange-detect.webp` | Asad's model outputs | Own work |
 | `tomato-grading.webm` | WebM copy of the existing tomato video | as above |
+| `parcel-count.webp` | Frame from Asad's own YouTube Short (Ultra Vision, 3IUCS8Nltlc) framed with captions | Own work |
 | `robot-slam.webp` | Drawn from the real map file `turtlebot3-fleet-nav2/maps/warehouse_map.pgm` | Own work |
 | `hr-*.webp` | Recreated recruiter screens: own UI design rendered from HTML, made-up data; not screenshots of the employer's system | Own work |
 | SVG illustrations (`assets/js/illus.js`, `explain.js`) | Original, captioned "(Illustration)" on the site | Own work |
