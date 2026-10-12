@@ -7,7 +7,7 @@ const ON = !REDUCED && !CAPTURE && 'IntersectionObserver' in window;
 
 // targets that rise in, staggered among siblings
 const RISE = ['.sec-head', '.page-head .wrap > *', '.card', '.featured', '.areas a', '.step', '.deliver', '.pub', '.timeline li',
-  '.panel', '.ccard', '.caps > div', '.cta-band .wrap > *', '.stack-strip li', '.about-grid > *', '.contact-grid .left > *'].join(',');
+  '.panel', '.ccard', '.caps > div', '.cta-band .wrap > *', '.stack-strip li', '.facts li', '.about-grid > *', '.contact-grid .left > *'].join(',');
 const IRIS = `<svg viewBox="0 0 400 400" fill="none" stroke="currentColor"><circle cx="200" cy="200" r="196" stroke-opacity=".5"/>
 <circle cx="200" cy="200" r="168" stroke-dasharray="2 10" stroke-opacity=".7"/><circle cx="200" cy="200" r="120" stroke-opacity=".35"/>
 ${Array.from({ length: 12 }, (_, i) => `<path d="M200 82 A118 118 0 0 1 300 140" transform="rotate(${i * 30} 200 200)" stroke-opacity=".55"/>`).join('')}

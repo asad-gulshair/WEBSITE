@@ -135,3 +135,15 @@ document.addEventListener('click', (e) => {
   scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
   if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
 });
+
+// mobile action bar: after the hero, keep "Start a project" / "Book a meeting" in reach; hidden near the page's own CTAs
+if (!/contact\.html$/.test(location.pathname)) {
+  const bar = document.createElement('div'); bar.className = 'mcta'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Quick contact');
+  const book = $('[data-book]');
+  bar.innerHTML = `<a class="btn btn-primary sm" href="contact.html#start">Start a project</a><a class="btn sm" data-book href="${book ? book.getAttribute('href') : 'contact.html'}">Book a meeting</a>`;
+  document.body.append(bar);
+  const near = new Set(), watch = $$('.hero, .page-head, .cta-band, .ftr');
+  const sync = () => bar.classList.toggle('on', near.size === 0 && scrollY > 200);
+  if ('IntersectionObserver' in window) { const ob = new IntersectionObserver((es) => { es.forEach((e) => (e.isIntersecting ? near.add(e.target) : near.delete(e.target))); sync(); }); watch.forEach((w) => ob.observe(w)); }
+  addEventListener('scroll', sync, { passive: true });
+}
