@@ -53,10 +53,11 @@ async function boot() {
   const { createAperture } = await import('./aperture.js');
   ap = createAperture(canvas, { tier: t }); if (!ap) return;
   media.classList.add('gl'); const still = $('.fallback-still', media); if (still) still.style.display = 'none';
-  window.__site = { ap };
-  // practice index: hover/focus previews (150ms intent), click navigates (default link)
+  const { createHUD } = await import('./hud.js'); const hud = createHUD(media, ap);
+  window.__site = { ap, hud };
+  // practice index: hover/focus previews (150ms intent) and pause the auto demo; click navigates (default link)
   if (matchMedia('(hover: hover)').matches) $$('.practice a').forEach((a) => {
-    let tm; const on = () => { clearTimeout(tm); tm = setTimeout(() => ap.preview(a.dataset.cat), 150); }, off = () => { clearTimeout(tm); ap.preview(null); };
+    let tm; const on = () => { clearTimeout(tm); hud.hold(); tm = setTimeout(() => ap.preview(a.dataset.cat), 150); }, off = () => { clearTimeout(tm); ap.preview(null); hud.release(); };
     a.addEventListener('pointerenter', on); a.addEventListener('focus', on); a.addEventListener('pointerleave', off); a.addEventListener('blur', off);
   });
   const hero = $('.hero'); const onScroll = () => { const r = hero.getBoundingClientRect(); ap.setScroll(Math.max(0, -r.top) / (r.height * .8)); };

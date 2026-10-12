@@ -163,5 +163,10 @@ export function createAperture(canvas, { tier = 'high' } = {}) {
   setBlades(OPEN.idle, 0);
   onTick(frame);
   api.renderer = renderer; api.render = () => { dirty = true; };
+  // screen-space helpers for the HUD overlay (hud.js): particle-space point -> canvas px
+  const PV = new THREE.Vector3();
+  api.project = (x, y, z = 0, core = true) => { const k = core ? 1.55 : 1; PV.set(x * k, y * k, z * k + (core ? .1 : 0)).applyMatrix4(rig.matrixWorld).project(camera); return [(PV.x + 1) / 2 * W, (1 - PV.y) / 2 * H]; };
+  Object.defineProperty(api, 'active', { get: () => preview || state });
+  api.size = () => [W, H];
   return api;
 }

@@ -71,6 +71,23 @@ section{padding:160px 0}
 .practice{display:flex;flex-wrap:wrap;gap:8px;padding-top:8px;border-top:1px solid var(--border)}
 .practice a{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;color:var(--text-2);font-size:14px;transition:color .16s,background-color .16s}
 .practice a:hover,.practice a:focus-visible{color:var(--text);background:var(--surface-1)}
+.practice a.auto{color:var(--text);background:var(--surface-1)}
+/* hero vision HUD (hud.js): every piece is positioned per frame from the 3D lens */
+.hud{position:absolute;inset:0;pointer-events:none;--tint:var(--accent);font:500 11px/1 var(--mono);letter-spacing:.04em;z-index:1}
+.hud>div{position:absolute;left:0;top:0;will-change:transform,opacity}
+.hud-c{width:18px;height:18px;border:0 solid color-mix(in srgb,var(--tint) 70%,transparent);transition:border-color .6s}
+.hud-tl{border-width:1.5px 0 0 1.5px}.hud-tr{border-width:1.5px 1.5px 0 0;margin-left:-18px}.hud-bl{border-width:0 0 1.5px 1.5px;margin-top:-18px}.hud-br{border-width:0 1.5px 1.5px 0;margin:-18px 0 0 -18px}
+.hud-read{display:flex;align-items:center;gap:8px;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
+.hud-top{color:var(--text-2)}.hud-dot{width:6px;height:6px;border-radius:50%;background:var(--tint);box-shadow:0 0 8px var(--tint);font-style:normal}
+.hud-bot{justify-content:space-between}
+.hud-scan{border-radius:50%;overflow:hidden}
+.hud-scanline{position:absolute;left:0;right:0;top:-40px;height:40px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--tint) 14%,transparent));border-bottom:1.5px solid color-mix(in srgb,var(--tint) 85%,transparent);box-shadow:0 1px 12px color-mix(in srgb,var(--tint) 60%,transparent)}
+.hud-box{border:1.5px solid var(--tint);border-radius:3px;box-shadow:0 0 14px color-mix(in srgb,var(--tint) 35%,transparent),inset 0 0 14px color-mix(in srgb,var(--tint) 12%,transparent);opacity:0}
+.hud-box b{position:absolute;left:-1.5px;bottom:100%;margin-bottom:4px;background:var(--tint);color:#0A0B0D;font-weight:600;padding:4px 6px;border-radius:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hud-tag{padding:4px 7px;border-radius:999px;background:rgba(10,11,13,.82);border:1px solid color-mix(in srgb,var(--tint) 55%,transparent);color:var(--text);white-space:nowrap;opacity:0;transition:background-color .25s,color .25s}
+.hud-tag.on{background:var(--tint);color:#0A0B0D}
+.hud-below b{bottom:auto;top:100%;margin:4px 0 0}
+@media (max-width:640px){.hud{font-size:10px}.hud-box b,.hud-tag{padding:3px 5px}}
 .avail{display:inline-flex;align-items:center;gap:8px}
 .avail i{width:7px;height:7px;border-radius:50%;background:var(--positive);box-shadow:0 0 0 3px rgba(76,195,138,.15)}
 .stack-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:22px 0}
