@@ -70,6 +70,8 @@ if (!REDUCED) {
     const { createAmbient, AMBIENT_OK } = await import('./ambient.js');
     if (!AMBIENT_OK()) return;
     const mob = matchMedia('(max-width: 900px)').matches || (navigator.hardwareConcurrency || 8) <= 4;
+    // the home page already runs the lens and the robot; on phones and low-core machines skip the extra field there
+    if (mob && document.getElementById('hero-media')) return;
     window.__ambient = createAmbient({ tier: mob ? 'mid' : 'high' });
   };
   if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 }); else setTimeout(go, 400);

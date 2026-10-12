@@ -10,7 +10,7 @@ if (CAPTURE) document.documentElement.classList.add('capture');
 
 // Contact settings. These defaults match the static HTML; content/site.json (edited in the admin panel) overrides them.
 export const S = { email: 'asadgulshair6767@gmail.com', linkedinUrl: 'https://www.linkedin.com/in/asad-gulshair', githubUrl: 'https://github.com/asad-gulshair',
-  youtubeUrl: 'https://www.youtube.com/@Ultra_Vison20', bookingUrl: '', availability: 'Available for new projects', formEndpoint: '' };
+  youtubeUrl: 'https://www.youtube.com/@Ultra_Vison20', bookingUrl: '', availability: 'Available for new projects', formEndpoint: 'https://formsubmit.co/ajax/asadgulshair6767@gmail.com' };
 export const mailto = (subject, body = '') => `mailto:${S.email}?subject=${encodeURIComponent(subject)}${body ? '&body=' + encodeURIComponent(body) : ''}`;
 export const mailProject = () => mailto('Project enquiry');
 export const mailMeeting = () => mailto('Meeting request - project discussion', 'Hi Asad,\n\nI would like to book a Google Meet call about a project.\n\nPreferred times (2-3 options, with your timezone):\n1. \n2. \n3. \n\nShort project summary:\n\n');
@@ -90,12 +90,15 @@ const rv = $$('.reveal');
 if (CAPTURE || REDUCED || !('IntersectionObserver' in window)) rv.forEach((e) => e.classList.add('in'));
 else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' }); rv.forEach((e) => io.observe(e)); }
 // in-view autoplay for muted loops (>=50% visible, not reduced motion)
+// Every .mp4 in assets/media has a .webm twin: browsers without H.264 (some Linux/Firefox builds) get the WebM.
+const srcFor = (v) => { const s = v.dataset.src || ''; return s.endsWith('.mp4') && !v.canPlayType('video/mp4; codecs="avc1.42E01E"') ? s.replace(/\.mp4$/, '.webm') : s; };
 export function wireVideo(v) {
   if (v._wired) return; v._wired = true;
-  if (REDUCED) { v.removeAttribute('autoplay'); v.controls = true; return; }
-  if (CAPTURE) { v.preload = 'auto'; if (v.dataset.src && !v.src) v.src = v.dataset.src; return; }
+  // reduced motion: no autoplay, but the video still loads on demand with controls
+  if (REDUCED) { v.removeAttribute('autoplay'); v.controls = true; v.preload = 'none'; if (v.dataset.src && !v.src) v.src = srcFor(v); return; }
+  if (CAPTURE) { v.preload = 'auto'; if (v.dataset.src && !v.src) v.src = srcFor(v); return; }
   const io = new IntersectionObserver(([e]) => {
-    if (e.intersectionRatio >= .5) { if (!v.src && v.dataset.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (!v.paused) v.pause();
+    if (e.intersectionRatio >= .5) { if (!v.src && v.dataset.src) v.src = srcFor(v); v.play().catch(() => {}); } else if (!v.paused) v.pause();
   }, { threshold: [0, .5] }); io.observe(v);
   v.addEventListener('mouseenter', () => (v.controls = true)); v.addEventListener('focus', () => (v.controls = true));
 }

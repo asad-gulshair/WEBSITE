@@ -42,16 +42,16 @@
       "title": "Weld line inspection system",
       "category": "industrial",
       "subcategory": "detection",
-      "featured": false,
+      "featured": true,
       "status": "PROTOTYPE",
       "year": "2025",
       "role": "End-to-end: models, API, dashboard",
       "summary": "One dashboard for weld defects, coating defects and flange dimensions, served from a FastAPI backend.",
       "problem": "Weld, coating and dimension checks were separate manual steps. Inspectors needed one place to run them on images or a live camera and export a record.",
       "approach": [
-        "YOLOv8 detector for weld defects (porosity, spatter, undercut, lack of fusion, burn-through)",
-        "Second detector for coating defects such as orange peel",
-        "ArUco marker for real-world scale, plus monocular depth estimation, to measure flange OD/ID, bolt circle and holes against a standard table",
+        "YOLO detector for weld defects: cracks, porosity, undercut, slag, lack of fusion and burn-through",
+        "Second detector for coating defects such as orange peel, cracks and peeling",
+        "ArUco marker for real-world scale, plus monocular depth estimation, to measure flange OD/ID, bolt circle and holes, then compare them with ASME flange specifications for a PASS/FAIL result",
         "FastAPI service with a browser dashboard: upload, live camera, annotated downloads, CSV/Excel export"
       ],
       "result": "Working prototype demonstrated end to end on images and live camera input, with per-defect results and exportable reports. Code and a recorded walkthrough are in the repository.",
@@ -59,7 +59,7 @@
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/End-to-End-Complete-Inspection-system-for-Welding-Line" }
       ],
-      "media": { "type": "illustration", "src": "", "poster": "", "illustration": "weld", "caption": "Weld bead with flagged findings, drawn in the site style. (Illustration)", "portrait": false },
+      "media": { "type": "video", "src": "assets/media/inspection-demo.mp4", "poster": "assets/media/inspection-demo.webp", "illustration": "weld", "caption": "Screen recording of the platform: weld, coating and flange modules, including a live-camera flange measurement. Trimmed and sped up, no audio.", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }
@@ -69,7 +69,7 @@
       "title": "Weld defect detection",
       "category": "industrial",
       "subcategory": "detection",
-      "featured": true,
+      "featured": false,
       "status": "PROTOTYPE",
       "year": "2025",
       "role": "Dataset, training, API",

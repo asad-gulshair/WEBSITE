@@ -18,7 +18,7 @@ const el = (cls, parent, html = '') => { const d = document.createElement('div')
 const clamp = (v) => Math.max(0, Math.min(1, v));
 
 export function createHUD(media, ap) {
-  const root = el('hud', media);
+  const root = el('hud', media); root.setAttribute('aria-hidden', 'true');
   const scanWrap = el('hud-scan', root), scan = el('hud-scanline', scanWrap);
   const corners = ['tl', 'tr', 'bl', 'br'].map((c) => el('hud-c hud-' + c, root));
   const top = el('hud-read hud-top', root, '<i class="hud-dot"></i><span class="hud-task"></span>');

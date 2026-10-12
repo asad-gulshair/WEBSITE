@@ -13,7 +13,7 @@ MAIL_MEET = f"mailto:{EMAIL}?subject={quote('Meeting request - project discussio
 IRIS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.5"/><g stroke="#A3A7AB" stroke-width="1.3" stroke-linecap="round">' + ''.join(f'<path d="M12 12 L12 2.2" transform="rotate({a} 12 12) translate(3.2 0)"/>' for a in range(0, 360, 60)) + '</g><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg>'
 PAGES = {
  'index.html': ('Asad Gulshair, AI Engineer · Computer Vision & AI Agents', 'AI engineer building visual inspection systems for production lines and LLM workflows for document-heavy teams, from prototype to deployed API.', None),
- 'projects.html': ('Work · Asad Gulshair, AI Engineer', 'Case studies in industrial computer vision, recruitment automation, AI agents and agriculture, with honest status labels and real model output.', 'projects'),
+ 'projects.html': ('Work · Asad Gulshair, AI Engineer', 'Case studies in industrial computer vision, recruitment automation, AI agents, agriculture and robotics, with honest status labels and real model output.', 'projects'),
  'about.html': ('About · Asad Gulshair, AI Engineer', 'About Asad Gulshair: AI engineer, capabilities, experience, education and IEEE publication.', 'about'),
  'contact.html': ('Contact · Asad Gulshair, AI Engineer', 'Start a project or book a meeting with Asad Gulshair. Email, LinkedIn and GitHub.', 'contact'),
 }
@@ -33,7 +33,7 @@ def head(fn, title, desc):
 <meta name="description" content="{desc}">
 <meta name="author" content="Asad Gulshair">
 <meta name="theme-color" content="#0A0B0D">
-<link rel="canonical" href="{url}">
+{'<meta name="robots" content="noindex">' if fn == '404.html' else ''}<link rel="canonical" href="{url}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Asad Gulshair">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}assets/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -94,7 +94,7 @@ FACTS = '''<section class="facts" aria-label="Track record"><div class="wrap"><u
   <li><b data-count="17">17</b><span>projects across 5 areas</span></li>
   <li><b data-count="2">2</b><span>systems in daily production use</span></li>
   <li><b data-count="40" data-suffix="%">40%</b><span>less manual translation work, in production</span></li>
-  <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set)</span></li>
+  <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set, approx.)</span></li>
 </ul></div></section>
 '''
 RECRUITER = (ROOT / 'tools' / 'recruiter_section.html').read_text(encoding='utf-8') + (ROOT / 'tools' / 'scoring_section.html').read_text(encoding='utf-8')
@@ -130,7 +130,7 @@ def page_index():
       <a href="projects.html#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a>
     </nav>
   </div>
-  <div class="hero-media" id="hero-media" aria-hidden="true"><div class="hero-backdrop"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture"></canvas><div class="guide-home" id="guide-home"></div></div>
+  <div class="hero-media" id="hero-media"><div class="hero-backdrop" aria-hidden="true"></div><img class="fallback-still" src="assets/media/hero-still.webp" alt="" width="900" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"><canvas id="aperture" aria-hidden="true"></canvas><div class="guide-home" id="guide-home"></div></div>
 </div><a class="scroll-cue" href="#work" aria-label="Scroll to my work"><i></i><span>Scroll</span></a></section>
 {FACTS}<div class="stack-strip" aria-label="Tools used in shipped or published work"><div class="wrap"><ul>{''.join(f'<li>{s}</li>' for s in STACK)}</ul></div></div>
 <section id="work" aria-labelledby="work-h"><div class="wrap">

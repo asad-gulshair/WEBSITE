@@ -123,7 +123,9 @@ export function createCompanion(canvas, { size = 240, interactive = true, still 
   function setMood(m, secs = 0) { mood = m; clearTimeout(moodT); if (secs) moodT = setTimeout(() => { mood = 'idle'; }, secs * 1000); const c = { ok: COL.ok, warn: COL.gold, low: COL.red, think: COL.violet }[m]; S.glowT.setHex(c || COL.cyan); }
   // still mode (reduced motion): draw a settled pose once, and again only when something changes
   if (still) { S.intro = 1; }
-  const stop = still ? (() => {}) : onTick((t, dt) => { if (vis && !document.hidden) frame(t, dt); });
+  let lastT = 0;
+  const busy = () => S.intro < 1 || S.wave >= 0 || S.nod >= 0 || S.shake >= 0 || S.tilt >= 0 || S.scan;
+  const stop = still ? (() => {}) : onTick((t, dt) => { if (!vis || document.hidden) return; if (!busy() && t - lastT < 31) return; frame(t, t - lastT || dt); lastT = t; });
   frame(performance.now(), 16);
   const redraw = () => { if (still) requestAnimationFrame(() => frame(performance.now(), 16)); };
   return {

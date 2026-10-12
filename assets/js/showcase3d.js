@@ -26,7 +26,7 @@ export function initShowcase() {
   const sec = $('[data-rs]'); if (!sec) return;
   const pin = $('.rs-pin', sec), stage = $('.rs-stage', sec), scene = $('.rs-scene', sec);
   const wins = $$('.rs-win', sec), tabs = $$('.rs-tab', sec), N = wins.length;
-  wins.forEach((w) => { w.tabIndex = 0; w.setAttribute('role', 'button'); w.setAttribute('aria-label', `${w.dataset.title}: open full size`); });
+  wins.forEach((w) => { w.tabIndex = 0; w.setAttribute('role', 'button'); });
   sec.addEventListener('click', (e) => { const w = e.target.closest('.rs-win'); if (w && !(sec.classList.contains('rs-live') && !w.classList.contains('on'))) openLightbox(w); });
   sec.addEventListener('keydown', (e) => { const w = e.target.closest?.('.rs-win'); if (w && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLightbox(w); } });
 

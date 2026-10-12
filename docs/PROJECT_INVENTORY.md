@@ -7,7 +7,8 @@ Status labels on the site: PRODUCTION, CURRENT ROLE, PUBLISHED, PROTOTYPE, DEMO,
 ## Featured (home page industry guide, ranked by evidence + client demand)
 | # | Project | Category | Status | Evidence | Ownership |
 |---|---|---|---|---|---|
-| 1 | Weld defect detection | Industrial | Prototype | Public repo (3 stars), real model output image, 90% mAP stated (validation) | Own work (internship) |
+| 1 | Weld line inspection system | Industrial | Prototype | Public repo with a recorded demo (now on the site), README | Own work (internship) |
+| 1b | Weld defect detection | Industrial | Prototype | Public repo (3 stars), real model output image, ~90% mAP (validation) in README | Own work (internship) |
 | 2 | Flange and disk dimension check | Industrial | Prototype | 3 public repos, real output frame, YouTube demo | Own work (internship) |
 | 3 | Paint surface defect detection | Industrial | Prototype | Public repo, real output images | Own work |
 | 4 | HR recruitment and onboarding workflow | Recruitment | Current role | Sanitised screenshots of the platform | Built in current role; employer owns it, code private |

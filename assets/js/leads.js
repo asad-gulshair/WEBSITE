@@ -1,6 +1,6 @@
 // Client enquiry form (contact page + home CTA). Mounts into every [data-lead-form="full|compact"].
-// Delivery: POSTs JSON to contact.formEndpoint (content/site.json). Works with the Google Apps Script web app in
-// tools/lead-capture.gs (leads land in a Google Sheet + email) or Formspree. With no endpoint set, or if sending fails,
+// Delivery: POSTs to contact.formEndpoint (content/site.json): FormSubmit (https://formsubmit.co/ajax/<email>, emails each
+// enquiry), the Google Apps Script web app in tools/lead-capture.gs (Google Sheet + email) or Formspree. With no endpoint set, or if sending fails,
 // it opens a pre-filled email instead, so an enquiry is never silently lost.
 import { $, $$, S, site, esc, toast } from './common.js';
 
@@ -15,7 +15,7 @@ function formHTML(kind) {
   const id = 'lf' + ++uid, full = kind === 'full';
   const opts = (a) => a.map((v) => `<option>${esc(v)}</option>`).join('');
   return `<form class="lf" novalidate data-kind="${kind}" aria-labelledby="${id}-t">
-    <div class="lf-head"><p class="meta">${full ? 'Start a project' : 'Quick enquiry'}</p><h3 id="${id}-t">${full ? 'Tell me what you want to build.' : 'Send a short note.'}</h3>
+    <div class="lf-head"><p class="meta">${full ? 'Start a project' : 'Quick enquiry'}</p><h2 class="lf-t" id="${id}-t">${full ? 'Tell me what you want to build.' : 'Send a short note.'}</h2>
       ${full ? '<p class="lf-sub">A few lines are enough. I reply within a day, usually with a first view on feasibility.</p>' : ''}</div>
     <div class="lf-grid">
       <label class="lf-f"><span>Your name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" required maxlength="80" placeholder="Jane Doe"><em class="lf-err" aria-live="polite"></em></label>
@@ -43,11 +43,16 @@ const mailHref = (d) => `mailto:${S.email}?subject=${encodeURIComponent('Project
 async function deliver(d) {
   const ep = (S.formEndpoint || '').trim();
   if (!ep) return 'mailto';
-  const formspree = /formspree\.io/i.test(ep);
-  // Apps Script web apps accept a "simple" request (text/plain) without a CORS preflight; Formspree wants JSON.
-  const res = await fetch(ep, { method: 'POST', redirect: 'follow', headers: formspree ? { 'Content-Type': 'application/json', Accept: 'application/json' } : { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d) });
+  const formsubmit = /formsubmit\.co\/ajax\//i.test(ep), formspree = /formspree\.io/i.test(ep);
+  // FormSubmit and Formspree take JSON; an Apps Script web app takes a "simple" text/plain request (no CORS preflight).
+  const json = formsubmit || formspree;
+  const body = formsubmit ? { ...d, _subject: `Portfolio enquiry: ${d.name}${d.topic ? ' (' + d.topic + ')' : ''}`, _template: 'table', _captcha: 'false', _replyto: d.email } : d;
+  const res = await fetch(ep, { method: 'POST', redirect: 'follow', headers: json ? { 'Content-Type': 'application/json', Accept: 'application/json' } : { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
-  if (!formspree) { const j = await res.json().catch(() => null); if (!j || j.ok !== true) throw new Error((j && j.error) || 'not accepted'); }
+  const j = await res.json().catch(() => null);
+  // only report success when the service says it accepted the message
+  if (formsubmit && !(j && (j.success === true || j.success === 'true'))) throw new Error((j && j.message) || 'not accepted');
+  if (!json && !(j && j.ok === true)) throw new Error((j && j.error) || 'not accepted');
   return 'sent';
 }
 
