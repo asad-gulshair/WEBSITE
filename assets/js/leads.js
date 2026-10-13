@@ -4,7 +4,7 @@
 // it opens a pre-filled email instead, so an enquiry is never silently lost.
 import { $, $$, S, site, esc, toast } from './common.js';
 
-const TOPICS = ['Industrial vision', 'Recruitment automation', 'AI agent subscription', 'SaaS product', 'Custom automation', 'Something else'];
+const TOPICS = ['Computer vision inspection and detection', 'Recruitment and HR automation', 'Workflow automation', 'Document processing', 'AI agent for my business', 'Something else'];
 const BUDGETS = ['Not sure yet', 'Under $500', '$500 – $2,000', '$2,000 – $5,000', '$5,000+'];
 const TIMES = ['Flexible', 'Within a month', 'ASAP'];
 const REPLY = ['Email', 'WhatsApp', 'Phone call', 'LinkedIn'];
@@ -62,7 +62,9 @@ function mount(host) {
   host.innerHTML = formHTML(kind);
   const form = $('form', host), status = $('.lf-status', form), btn = $('button[type=submit]', form), t0 = Date.now();
   // ?topic=… (from the portfolio guide) pre-selects what the visitor needs
-  try { const tp = new URLSearchParams(location.search).get('topic'), sel = $('select[name=topic]', form); if (tp && sel && [...sel.options].some((o) => o.value === tp || o.text === tp)) sel.value = tp; } catch (_) {}
+  // older links used shorter topic names
+  const OLD = { 'Industrial vision': TOPICS[0], 'Recruitment automation': TOPICS[1], 'Custom automation': TOPICS[2], 'SaaS product': TOPICS[3], 'AI agent / workflow': TOPICS[4], 'AI agent subscription': TOPICS[4] };
+  try { const tq = new URLSearchParams(location.search).get('topic'), tp = OLD[tq] || tq, sel = $('select[name=topic]', form); if (tp && sel && [...sel.options].some((o) => o.value === tp || o.text === tp)) sel.value = tp; } catch (_) {}
   const setErr = (el, msg) => { const e = $('.lf-err', el.closest('.lf-f')); e.textContent = msg || ''; el.closest('.lf-f').classList.toggle('bad', !!msg); el.setAttribute('aria-invalid', msg ? 'true' : 'false'); };
   const check = (el) => {
     const v = el.value.trim(); let m = '';

@@ -27,23 +27,23 @@ const LINES = {
 };
 // interests: problem -> solution -> proof -> next step. Slugs must exist in content/projects.json (missing ones are skipped).
 const TOPICS = [
-  { k: 'mfg', label: 'Manufacturing and inspection', topic: 'Industrial vision', mood: 'ok',
+  { k: 'mfg', label: 'Manufacturing and inspection', topic: 'Computer vision inspection and detection', mood: 'ok',
     problem: 'Manual inspection misses small defects and changes from shift to shift.',
     answer: 'A camera and a trained detector flag defects and measure parts on every item, with results sent to your system through an API.',
     work: ['weld-line-inspection', 'parcel-counting', 'weld-defect-detection'] },
-  { k: 'hr', label: 'HR and recruitment', topic: 'Recruitment automation', mood: 'ok',
+  { k: 'hr', label: 'HR and recruitment', topic: 'Recruitment and HR automation', mood: 'ok',
     problem: 'Recruiters spend hours reading CVs and chasing candidates between steps.',
     answer: 'Every CV is parsed and scored against the role with the reasons shown. A person decides, and interviews are tracked in one place.',
     work: ['hr-workflow-automation', 'resume-screening'], jump: ['#scoring', 'See how a CV is scored'] },
-  { k: 'agent', label: 'AI agent on subscription', topic: 'AI agent subscription', mood: 'ok',
+  { k: 'agent', label: 'AI agent for my business', topic: 'AI agent for my business', mood: 'ok',
     problem: 'Routine work such as leads, reports, documents and follow-ups eats hours every week.',
     answer: 'An agent built around your workflow runs it every day. I set it up, monitor it and improve it every month, on subscription.',
     work: ['n8n-automations', 'invoice-to-excel', 'rag-pipeline'] },
-  { k: 'saas', label: 'Ready-to-use SaaS tool', topic: 'SaaS product', mood: 'happy',
+  { k: 'saas', label: 'Ready-to-use SaaS tool', topic: 'Document processing', mood: 'happy',
     problem: 'You need a tool that works now, not a long project.',
     answer: 'Start with a ready tool such as invoice to Excel, or get one adapted for your team and your data.',
     work: ['invoice-to-excel', 'subtitle-saas'], jump: ['#products', 'See products'] },
-  { k: 'docs', label: 'Document processing', topic: 'Custom automation', mood: 'ok',
+  { k: 'docs', label: 'Document processing', topic: 'Workflow automation', mood: 'ok',
     problem: 'People retype invoices, CVs and reports into spreadsheets. It is slow and errors slip in.',
     answer: 'Documents are read into clean, structured rows and sent where your team already works, such as Excel or your HR system.',
     work: ['invoice-to-excel', 'hr-workflow-automation', 'n8n-automations'] },
@@ -172,7 +172,7 @@ export function initGuide() {
     'n8n-automations': 'Reports that build and send themselves.',
     'rag-pipeline': 'Answers from your own documents, with the source.',
   };
-  const CATP = { industrial: ['Want this on your line? I’ll scope it for your parts.', 'Industrial vision', 'Build this for me →'], recruitment: ['Want this for your hiring?', 'Recruitment automation', 'Build this for me →'], agents: ['Want an agent like this for your team?', 'AI agent subscription', 'Get this for my team →'], agriculture: ['Grading and counting from ordinary cameras.', 'Custom automation', 'Talk about my project →'] };
+  const CATP = { industrial: ['Want this on your line? I’ll scope it for your parts.', 'Computer vision inspection and detection', 'Build this for me →'], recruitment: ['Want this for your hiring?', 'Recruitment and HR automation', 'Build this for me →'], agents: ['Want an agent like this for your team?', 'AI agent for my business', 'Get this for my team →'], agriculture: ['Grading and counting from ordinary cameras.', 'Computer vision inspection and detection', 'Talk about my project →'] };
   const SAAS = new Set(['invoice-to-excel', 'subtitle-saas']);
   let tipsOff = false; try { tipsOff = sessionStorage.getItem('scout-tips') === '0'; } catch (_) {}
   // Scout keeps one calm seat in the corner. He never chases the mouse: his eyes follow the cursor, and when the
@@ -196,7 +196,7 @@ export function initGuide() {
     const slug = card.dataset.slug;
     // each card once per visit, a few per visit at most: helpful, never nagging
     if (tipsOff || !followActive() || exitOn || pitched.has(slug) || pitched.size >= MAX_PITCH) return; pitched.add(slug);
-    const p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents, topic = SAAS.has(slug) ? 'SaaS product' : c[1];
+    const p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents, topic = SAAS.has(slug) ? 'Document processing' : c[1];
     pitchEl = card; bubble(PITCH[slug] || c[0], [SAAS.has(slug) ? 'Get this for my team →' : c[2], `contact.html?topic=${encodeURIComponent(topic)}#start`], 0);
     // turn toward the card and point at it
     const d = dock.getBoundingClientRect(), cr = card.getBoundingClientRect(), dx = (cr.left + cr.width / 2) - (d.left + d.width / 2), dy = (cr.top + cr.height / 2) - (d.top + d.height / 2);

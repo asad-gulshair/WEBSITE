@@ -101,16 +101,16 @@ RECRUITER = (ROOT / 'tools' / 'recruiter_section.html').read_text(encoding='utf-
 STACK = ['Python', 'PyTorch', 'TensorFlow', 'YOLOv8', 'OpenCV', 'FastAPI', 'LangChain', 'LangGraph', 'n8n', 'Whisper', 'Docker']
 SERVICES = [
  (ICON(f'<rect x="4" y="9" width="19" height="15" rx="2"/><circle cx="13.5" cy="16.5" r="4"/><path d="M21 4h7v7M28 4l-9 9" {AC}/>'), 'Computer vision and quality inspection', 'Defect detection, counting and measurement on standard cameras, built for your parts and line.', 'projects.html#industrial', 'Inspection work', '#E8743B'),
- (ICON(f'<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" {AC}/>'), 'AI agents on subscription', 'An agent set up for your workflow that runs every day, monitored and improved monthly.', 'contact.html?topic=AI%20agent%20subscription#start', 'Get an agent', '#9B8CFF'),
+ (ICON(f'<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" {AC}/>'), 'AI agents on subscription', 'An agent set up for your workflow that runs every day, monitored and improved monthly.', 'contact.html?topic=AI%20agent%20for%20my%20business#start', 'Get an agent', '#9B8CFF'),
  (ICON(f'<rect x="4" y="6" width="24" height="18" rx="2"/><path d="M4 11h24M9 16h8M9 20h5"/><circle cx="23" cy="19" r="3" {AC}/>'), 'SaaS products', 'Ready-to-use AI tools your team can sign in to, such as invoice to Excel.', '#products', 'See products', '#8EA2E8'),
  (ICON(f'<rect x="6" y="4" width="15" height="20" rx="2"/><path d="M10 10h7M10 14h7M10 18h4"/><path d="M19 20l3 3 6-7" {AC}/>'), 'Document processing and extraction', 'Invoices, CVs and reports turned into clean, structured data.', 'projects.html#recruitment', 'Document work', '#D2B06A'),
  (ICON(f'<path d="M5 8h14M5 13h10M5 18h12"/><circle cx="23" cy="20" r="5" {AC}/><path d="M26.5 23.5L29 26" {AC}/>'), 'LLM apps and RAG', 'Assistants that answer from your own documents and show the source.', 'projects.html#agents', 'LLM work', '#47D7E6'),
  (ICON(f'<path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13" {AC}/>'), 'Custom build and deployment', 'From a prototype on your data to an API, app or dashboard your team runs.', 'contact.html#start', 'Start a project', '#8DB86A'),
 ]
 PRODUCTS = [
- ('SaaS · Live', 'Invoice to Excel', 'Upload invoices, get one clean Excel sheet. No more retyping by hand.', [('Open the app ↗', 'https://invoice-to-excel-tool.streamlit.app/', True), ('Ask about a team plan', 'contact.html?topic=SaaS%20product#start', False)], '#8EA2E8'),
- ('SaaS · Built for a media team', 'Subtitles and translation', 'Multilingual subtitles, transcription and translation in one tool, used in production.', [('Get one for your team', 'contact.html?topic=SaaS%20product#start', False), ('Case study →', 'projects.html#/work/subtitle-saas', False)], '#47D7E6'),
- ('Subscription', 'Your own AI agent', 'Leads, reports, documents or follow-ups: an agent built around your workflow, running and maintained every month.', [('Tell me your workflow', 'contact.html?topic=AI%20agent%20subscription#start', False)], '#9B8CFF'),
+ ('SaaS · Live', 'Invoice to Excel', 'Upload invoices, get one clean Excel sheet. No more retyping by hand.', [('Open the app ↗', 'https://invoice-to-excel-tool.streamlit.app/', True), ('Ask about a team plan', 'contact.html?topic=Document%20processing#start', False)], '#8EA2E8'),
+ ('SaaS · Built for a media team', 'Subtitles and translation', 'Multilingual subtitles, transcription and translation in one tool, used in production.', [('Get one for your team', 'contact.html?topic=Document%20processing#start', False), ('Case study →', 'projects.html#/work/subtitle-saas', False)], '#47D7E6'),
+ ('Subscription', 'Your own AI agent', 'Leads, reports, documents or follow-ups: an agent built around your workflow, running and maintained every month.', [('Tell me your workflow', 'contact.html?topic=AI%20agent%20for%20my%20business#start', False)], '#9B8CFF'),
 ]
 PROCESS = [
  ('Discover', 'Your problem, your data and what success looks like.'),
