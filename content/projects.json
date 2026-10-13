@@ -68,7 +68,7 @@
       ],
       "media": {
         "type": "image",
-        "src": "assets/media/insp-station.webp",
+        "src": "assets/media/insp-station.webp?v=2",
         "poster": "",
         "illustration": "",
         "caption": "3D illustration of a pipeline inspection station, with a real crack detection in the corner.",
@@ -77,7 +77,7 @@
       "youtube": "",
       "youtubePortrait": false,
       "extra": {
-        "src": "assets/media/crack-detect.webp",
+        "src": "assets/media/crack-detect.webp?v=2",
         "caption": "Real crack detection on a pipe weld: the model boxes the crack running across the weld bead."
       }
     },
@@ -151,7 +151,7 @@
       ],
       "media": {
         "type": "image",
-        "src": "assets/media/insp-weld.webp",
+        "src": "assets/media/insp-weld.webp?v=2",
         "poster": "",
         "illustration": "",
         "caption": "3D illustration of a weld seam with porosity and undercut marked, with a real porosity detection in the corner.",
@@ -160,7 +160,7 @@
       "youtube": "",
       "youtubePortrait": false,
       "extra": {
-        "src": "assets/media/porosity-detect.webp",
+        "src": "assets/media/porosity-detect.webp?v=2",
         "caption": "Real porosity detection on a weld bead: the model boxes the row of gas pores (confidence 0.70)."
       }
     },
