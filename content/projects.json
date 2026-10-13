@@ -83,7 +83,7 @@
       "result": "Demo on real conveyor footage with an open, pretrained model. Not a client system. See the video.",
       "stack": ["Object detection", "Tracking", "OpenCV", "Python"],
       "links": [],
-      "media": { "type": "image", "src": "assets/media/parcel-count.webp", "poster": "", "illustration": "", "caption": "Frame from the demo: tracked parcels, the count line, live rate and event log.", "portrait": false },
+      "media": { "type": "video", "src": "assets/media/parcel-count.mp4", "poster": "assets/media/parcel-count.webp", "illustration": "", "caption": "Demo reel: tracked parcels, the count line, live rate, gap flags and event log. No audio.", "portrait": false },
       "youtube": "3IUCS8Nltlc",
       "youtubePortrait": true,
       "extra": { "src": "", "caption": "" }
