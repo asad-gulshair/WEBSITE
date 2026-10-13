@@ -88,7 +88,7 @@ export function initGuide() {
     if (bot.sleeping) bot.sleep(false);
     if (docked && !['hello', 'sent', 'wake'].includes(key)) bot.point(1, 1.4);
     // lines only where they cannot cover content: in the hero, or docked on very wide screens
-    if (!muted && followActive() && ['contact', 'sent', 'exit'].includes(key)) { bubble(l[0], key === 'exit' ? ['Start a project →', 'contact.html#start'] : null, key === 'exit' ? 9000 : 5200); bot.setMood(l[1], 2.4); if (key === 'exit') bot.wave(); return; }
+    if (!muted && followActive() && ['sent', 'exit'].includes(key)) { bubble(l[0], key === 'exit' ? ['Start a project →', 'contact.html#start'] : null, key === 'exit' ? 9000 : 5200); bot.setMood(l[1], 2.4); if (key === 'exit') bot.wave(); return; }
     if (muted || (docked && !roomy.matches) || (!docked && !state.hero)) { bot.setMood(l[1], 2); if (l[1] === 'ok') bot.nod(); return; }
     $('span', say).textContent = l[0]; say.classList.add('show'); bot.setMood(l[1], 2.4); if (l[1] === 'ok') bot.nod();
     clearTimeout(hideT); hideT = setTimeout(() => say.classList.remove('show'), 5200);
