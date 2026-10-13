@@ -39,27 +39,26 @@
   "projects": [
     {
       "slug": "weld-line-inspection",
-      "title": "Weld line inspection system",
+      "title": "Pipeline defect detection system",
       "category": "industrial",
       "subcategory": "detection",
       "featured": true,
       "status": "PROTOTYPE",
       "year": "2025",
-      "role": "End-to-end: models, API, dashboard",
-      "summary": "One dashboard for weld defects, cracks, coating defects and flange dimensions, served from a FastAPI backend.",
-      "problem": "Weld, coating and dimension checks were separate manual steps. Inspectors needed one place to run them on images or a live camera and export a record.",
+      "role": "Models, API and dashboard",
+      "summary": "Finds cracks and weld defects on pipelines from camera images and flags them for the inspector.",
+      "problem": "Pipeline welds are checked by eye. Small cracks and defects are easy to miss, and every inspector judges a little differently.",
       "approach": [
-        "YOLO detector for weld defects: cracks, porosity, undercut, slag, lack of fusion and burn-through",
-        "Second detector for coating defects such as orange peel, cracks and peeling",
-        "ArUco marker for real-world scale, plus monocular depth estimation, to measure flange OD/ID, bolt circle and holes, then compare them with ASME flange specifications for a PASS/FAIL result",
-        "FastAPI service with a browser dashboard: upload, live camera, annotated downloads, CSV/Excel export"
+        "A detection model marks cracks and weld defects on each image or live camera frame",
+        "Every finding gets a box and a confidence score, so the inspector can confirm it quickly",
+        "Results are saved as a report the team can export"
       ],
-      "result": "Working prototype demonstrated end to end on images and live camera input, with per-defect results and exportable reports. Code and a recorded walkthrough are in the repository.",
-      "stack": ["YOLOv8", "OpenCV", "ArUco", "FastAPI"],
+      "result": "Working prototype, shown on images and a live camera. Code is in the repository.",
+      "stack": ["YOLOv8", "OpenCV", "FastAPI"],
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/End-to-End-Complete-Inspection-system-for-Welding-Line" }
       ],
-      "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "3D illustration of the inspection station (weld, coating, crack and flange checks), with a real crack detection from the system in the corner.", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "3D illustration of a pipeline inspection station, with a real crack detection in the corner.", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }
