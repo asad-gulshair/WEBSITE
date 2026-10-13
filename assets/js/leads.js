@@ -46,7 +46,7 @@ async function deliver(d) {
   const formsubmit = /formsubmit\.co\/ajax\//i.test(ep), formspree = /formspree\.io/i.test(ep);
   // FormSubmit and Formspree take JSON; an Apps Script web app takes a "simple" text/plain request (no CORS preflight).
   const json = formsubmit || formspree;
-  const body = formsubmit ? { ...d, _subject: `Portfolio enquiry: ${d.name}${d.topic ? ' (' + d.topic + ')' : ''}`, _template: 'table', _captcha: 'false', _replyto: d.email } : d;
+  const body = formsubmit ? { ...d, _subject: `New project enquiry: ${d.name}${d.topic ? ' (' + d.topic + ')' : ''}`, _template: 'table', _captcha: 'false', _replyto: d.email, _autoresponse: `Hi ${(d.name || '').split(/\s+/)[0] || 'there'},\n\nThank you for getting in touch. I have received your enquiry${d.topic ? ' about ' + d.topic.toLowerCase() : ''} and will reply within one working day.\n\nIf you have sample images, documents or details that would help, simply reply to this email.\n\nBest regards,\nAsad Gulshair\nAI Engineer · asad-gulshair.github.io` } : d;
   const res = await fetch(ep, { method: 'POST', redirect: 'follow', headers: json ? { 'Content-Type': 'application/json', Accept: 'application/json' } : { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   const j = await res.json().catch(() => null);
