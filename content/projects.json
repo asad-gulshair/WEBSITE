@@ -46,7 +46,7 @@
       "status": "PROTOTYPE",
       "year": "2025",
       "role": "End-to-end: models, API, dashboard",
-      "summary": "One dashboard for weld defects, coating defects and flange dimensions, served from a FastAPI backend.",
+      "summary": "One dashboard for weld defects, cracks, coating defects and flange dimensions, served from a FastAPI backend.",
       "problem": "Weld, coating and dimension checks were separate manual steps. Inspectors needed one place to run them on images or a live camera and export a record.",
       "approach": [
         "YOLO detector for weld defects: cracks, porosity, undercut, slag, lack of fusion and burn-through",
@@ -59,7 +59,7 @@
       "links": [
         { "type": "code", "label": "View code ↗", "url": "https://github.com/asad-gulshair/End-to-End-Complete-Inspection-system-for-Welding-Line" }
       ],
-      "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "Inspection station with a camera over the weld seam; the platform runs weld, coating and flange checks. (Illustration)", "portrait": false },
+      "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "3D illustration of the inspection station (weld, coating, crack and flange checks), with a real crack detection from the system in the corner.", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
       "extra": { "src": "", "caption": "" }
