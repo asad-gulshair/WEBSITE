@@ -130,7 +130,7 @@ def page_index():
   <div class="hero-copy">
     <p class="meta" data-site="hero.eyebrow">Asad Gulshair · AI Engineer</p>
     <h1 id="hero-h" data-site="hero.headline">AI that takes the repetitive work off your team.</h1>
-    <p class="lead" data-site="hero.subline">Custom computer vision for factories, AI agents that run on subscription, and ready-to-use SaaS tools. Tell me the problem and I'll scope the right fit, built around your process.</p>
+    <p class="lead" data-site="hero.subline">I build custom computer vision and automation for factories, warehouses and HR teams. Tell me the problem and I'll design a solution around your process and your data.</p>
     <div class="cta-row"><a class="btn btn-primary" href="contact.html#start" data-cta="hero">Get a free consultation</a><a class="btn" href="#work" id="cta-work">See real results</a></div>
     <a class="proof" href="#work" data-proof aria-label="Real output from my models: see the work"><span class="proof-th"><img src="assets/media/crack-detect.webp?v=2" alt="" width="64" height="40" loading="eager"><img src="assets/media/porosity-detect.webp?v=2" alt="" width="64" height="40" loading="eager"><img src="assets/media/parcel-count.webp" alt="" width="64" height="40" loading="eager"></span><span class="proof-t"><b>Real output from my models</b><span>Crack, porosity and parcel detection</span></span></a>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
