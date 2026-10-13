@@ -9,7 +9,7 @@ import { initGuide } from './guide.js';
 // ---- industry guide: pick an industry, see its outcomes and best projects (from content/projects.json) ----
 const OUT = {
   industrial: ['Catches defects the eye misses', 'Counts and measures parts automatically', 'Same pass or fail standard on every part'],
-  recruitment: ['Every CV scored on evidence', 'A person makes the final call', 'Screening, interviews and hiring in one place'],
+  recruitment: ['Screening and shortlisting, scored on evidence', 'Candidates compared, interviews scheduled', 'Onboarding managed in the same system'],
   agents: ['AI agents that run your routine work on subscription', 'Ready-to-use SaaS tools, such as invoice to Excel', 'About 40% less manual translation work, in production'],
   agriculture: ['Grades ripeness and flags disease early', 'Counts and monitors from ordinary camera footage', 'Peer-reviewed in IEEE Access, 2025'],
 };

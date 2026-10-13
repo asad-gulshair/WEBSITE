@@ -473,3 +473,8 @@ html:not(.no-intro) .hero-copy>*{animation-delay:calc(var(--d,0s) + 1.05s)}
 .guide-pitch.typing>p,.guide-pitch.typing>a{visibility:hidden;height:0;margin:0;padding:0;overflow:hidden}
 .guide-pitch.typing::before{content:"";width:34px;height:10px;background:radial-gradient(circle,var(--cyan) 45%,transparent 50%) 0 50%/11px 10px repeat-x;animation:scoutType 1s steps(3) infinite;opacity:.85}
 @keyframes scoutType{0%{clip-path:inset(0 66% 0 0)}50%{clip-path:inset(0 33% 0 0)}100%{clip-path:inset(0 0 0 0)}}
+/* hero lens readout sits to the right, clear of Scout */
+.hud-bot{justify-content:flex-end;gap:18px}
+/* Scout's seat on laptop widths: smaller, tucked into the corner */
+@media (max-width:1419px){.buddy-on .guide-dock{width:78px;height:82px;left:8px;bottom:10px}.buddy-on .guide-panel{bottom:104px}}
+.guide-ask{white-space:nowrap}

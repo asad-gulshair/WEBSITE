@@ -18,7 +18,7 @@ const LINES = {
   how: ['Five steps, from first call to a system you own.', 'idle'],
   contact: ['Have a problem worth solving? Send a short note.', 'happy'],
   industrial: ['Cameras that catch defects people miss.', 'ok'],
-  recruitment: ['CVs scored on evidence. People decide.', 'ok'],
+  recruitment: ['Screening to onboarding, in one system.', 'ok'],
   agents: ['AI agents and SaaS tools that run for you.', 'ok'],
   agriculture: ['Models for crops and farms.', 'ok'],
   exit: ['Before you go: what would you like to automate? I reply within a day.', 'happy'],
@@ -59,7 +59,7 @@ export function initGuide() {
   const wide = matchMedia('(min-width: 1420px)'), roomy = matchMedia('(min-width: 1940px)');
   // desktop with a mouse: after the hero, Scout follows the cursor and pitches the project you are looking at
   const fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)');
-  const follows = () => fine.matches && !REDUCED, canDock = () => wide.matches || follows();
+  const follows = () => fine.matches, canDock = () => wide.matches || follows();
   if (window.__adFor?.hello) LINES.hello = [window.__adFor.hello, 'happy'];
   const canvas = document.createElement('canvas'); canvas.className = 'guide-bot'; canvas.setAttribute('aria-hidden', 'true');
   const say = document.createElement('div'); say.className = 'guide-say'; say.setAttribute('role', 'status'); say.setAttribute('aria-live', 'polite');
@@ -148,8 +148,8 @@ export function initGuide() {
   function update() {
     place(canDock() && (open || !state.hero));
     const away = blockers.size > 0 && !open; dock.classList.toggle('away', away); launch.classList.toggle('on', !canDock() && !state.hero && !away);
-    const f = follows(); document.documentElement.classList.toggle('buddy-on', f); dock.classList.toggle('follow', f);
-    if (!f) { dock.style.transform = ''; hideBubble(true); } else if (followActive()) { kick(); setTimeout(hint, 900); } else hideBubble(true);
+    document.documentElement.classList.toggle('buddy-on', follows());
+    if (followActive()) setTimeout(hint, 900); else hideBubble(true);
   }
   new IntersectionObserver(([e]) => { state.hero = e.isIntersecting; update(); }, { threshold: .12 }).observe(hero);
   ['#recruiter', '#scoring'].forEach((s) => { const el = $(s); if (el) new IntersectionObserver(([e]) => { e.isIntersecting ? blockers.add(s) : blockers.delete(s); update(); }, { threshold: .05 }).observe(el); });
@@ -175,52 +175,19 @@ export function initGuide() {
   const CATP = { industrial: ['Want this on your line? I’ll scope it for your parts.', 'Industrial vision', 'Build this for me →'], recruitment: ['Want this for your hiring?', 'Recruitment automation', 'Build this for me →'], agents: ['Want an agent like this for your team?', 'AI agent subscription', 'Get this for my team →'], agriculture: ['Grading and counting from ordinary cameras.', 'Custom automation', 'Talk about my project →'] };
   const SAAS = new Set(['invoice-to-excel', 'subtitle-saas']);
   let tipsOff = false; try { tipsOff = sessionStorage.getItem('scout-tips') === '0'; } catch (_) {}
-  // Scout trails the mouse while it moves, then steps aside into the page margin when the visitor stops to read,
-  // so he never sits on text. He only comes forward to pitch the project card being looked at.
-  const BW = 116, BH = 122;
-  let sc = 1, w = BW, h = BH, fx = 18, fy = innerHeight - BH - 18, mx = -1, my = -1, moved = 0, safe = false, raf = 0, last = 0, pitchEl = null, bubbleT = 0, leaveT = 0, parkT = 0, exitOn = false, shown = false;
+  // Scout keeps one calm seat in the corner. He never chases the mouse: his eyes follow the cursor, and when the
+  // visitor rests on a project he turns to it, points and says what it can do for their business, from his seat.
+  let pitchEl = null, bubbleT = 0, leaveT = 0, exitOn = false, shown = false;
   const pitched = new Set(), MAX_PITCH = 4;
-  const clampX = (x) => Math.max(8, Math.min(innerWidth - w - 8, x)), clampY = (y) => Math.max(72, Math.min(innerHeight - h - 8, y));
   function followActive() { return follows() && docked && !open && dock.classList.contains('on') && !dock.classList.contains('away'); }
-  function park() {
-    // the margin beside the content column, on the side nearer the cursor; a small corner seat when there is no margin
-    const col = $('main .wrap'), b = col ? col.getBoundingClientRect() : { left: 0, right: innerWidth }, cs = col ? getComputedStyle(col) : null;
-    const r = { left: b.left + (cs ? parseFloat(cs.paddingLeft) : 0), right: b.right - (cs ? parseFloat(cs.paddingRight) : 0) }, need = BW + 16;
-    const L = r.left, R = innerWidth - r.right, y = clampY((my < 0 ? innerHeight * .6 : my) - BH / 2);
-    const left = mx < innerWidth / 2;
-    if ((left ? L : R) >= need) return [left ? (L - BW) / 2 : r.right + (R - BW) / 2, y, 1];
-    if ((left ? R : L) >= need) return [left ? r.right + (R - BW) / 2 : (L - BW) / 2, y, 1];
-    return [12, innerHeight - BH * .62 - 12, .62];
-  }
-  function goal() {
-    if (pitchEl) { const r = pitchEl.getBoundingClientRect(); if (r.bottom < 60 || r.top > innerHeight) { endPitch(); } else return [clampX(r.right - BW * .7), clampY(r.top - BH * .45), 1]; }
-    if (exitOn) return [clampX(innerWidth - BW - 40), 84, 1];
-    if (mx < 0 || safe || performance.now() - moved > 900) return park();
-    const x = mx + 30 + BW > innerWidth - 8 ? mx - BW - 18 : mx + 30;
-    return [clampX(x), clampY(my + 24), .9];
-  }
-  function tick(t) {
-    raf = 0; if (!followActive()) return;
-    const dt = Math.min(.05, ((t - last) || 16) / 1000); last = t;
-    const [tx, ty, ts] = goal(), k = 1 - Math.exp(-dt * 4.2), dx = tx - fx;
-    fx += dx * k; fy += (ty - fy) * k; sc += (ts - sc) * k; w = BW * sc; h = BH * sc;
-    dock.style.transform = `translate3d(${fx.toFixed(1)}px,${fy.toFixed(1)}px,0) scale(${sc.toFixed(3)})`;
-    bot.lean(Math.max(-1, Math.min(1, -dx / 260)));
-    const still = Math.abs(dx) < .6 && Math.abs(ty - fy) < .6 && Math.abs(ts - sc) < .004;
-    dock.classList.toggle('rest', still || !!pitchEl || exitOn);
-    if (shown) placeBubble();
-    if (!still || pitchEl || exitOn || shown) raf = requestAnimationFrame(tick);
-  }
-  function kick() { if (!raf && followActive()) { last = performance.now(); raf = requestAnimationFrame(tick); } }
   function placeBubble() {
-    const bw = pitch.offsetWidth, bh = pitch.offsetHeight, right = fx + w / 2 < innerWidth / 2;
-    const x = right ? fx + w + 4 : fx - bw - 4, y = Math.max(72, Math.min(innerHeight - bh - 8, fy + 6));
-    pitch.style.transform = `translate3d(${Math.max(8, Math.min(innerWidth - bw - 8, x)).toFixed(1)}px,${y.toFixed(1)}px,0)`;
+    const r = dock.getBoundingClientRect(), bh = pitch.offsetHeight;
+    pitch.style.transform = `translate3d(${Math.round(r.right + 4)}px,${Math.round(Math.max(72, r.top + r.height * .1 - bh * .35))}px,0)`;
   }
   function bubble(text, cta, ms) {
     $('p', pitch).textContent = text; const a = $('a', pitch);
     if (cta) { a.textContent = cta[0]; a.href = cta[1]; a.hidden = false; } else a.hidden = true;
-    shown = true; pitch.classList.add('typing'); placeBubble(); pitch.classList.add('show'); kick();
+    shown = true; pitch.classList.add('typing'); placeBubble(); pitch.classList.add('show');
     clearTimeout(pitch._ty); pitch._ty = setTimeout(() => { pitch.classList.remove('typing'); placeBubble(); }, REDUCED ? 0 : 420);
     clearTimeout(bubbleT); if (ms) bubbleT = setTimeout(() => { exitOn = false; hideBubble(); }, ms);
   }
@@ -231,39 +198,35 @@ export function initGuide() {
     if (tipsOff || !followActive() || exitOn || pitched.has(slug) || pitched.size >= MAX_PITCH) return; pitched.add(slug);
     const p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents, topic = SAAS.has(slug) ? 'SaaS product' : c[1];
     pitchEl = card; bubble(PITCH[slug] || c[0], [SAAS.has(slug) ? 'Get this for my team →' : c[2], `contact.html?topic=${encodeURIComponent(topic)}#start`], 0);
-    bot.setMood('ok', 2.4); bot.nod(); setTimeout(() => bot.point(fx + w / 2 > card.getBoundingClientRect().left + card.offsetWidth / 2 ? -1 : 1, 1.4), 450);
+    // turn toward the card and point at it
+    const d = dock.getBoundingClientRect(), cr = card.getBoundingClientRect(), dx = (cr.left + cr.width / 2) - (d.left + d.width / 2), dy = (cr.top + cr.height / 2) - (d.top + d.height / 2);
+    bot.look(Math.max(-.7, Math.min(.7, dx / 900)), Math.max(-.3, Math.min(.3, dy / 1400))); bot.setMood('ok', 2.4); bot.nod(); setTimeout(() => bot.point(1, 1.4), 350);
   }
-  function endPitch() { pitchEl = null; hideBubble(); kick(); }
-  // first time he joins the visitor, one line on how he helps
+  function endPitch() { pitchEl = null; hideBubble(); bot.look(); }
+  // the first time he docks, one line on how he helps
   let hinted = false; try { hinted = sessionStorage.getItem('scout-hint') === '1'; } catch (_) {}
   function hint() {
     if (hinted || tipsOff || !followActive()) return; hinted = true; try { sessionStorage.setItem('scout-hint', '1'); } catch (_) {}
     bubble('Rest on any project and I’ll tell you what it can do for your business.', null, 5000); bot.wave();
   }
   let hover = null, dwellT = 0;
-  document.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse') return; mx = e.clientX; my = e.clientY; moved = performance.now();
-    safe = !!e.target.closest?.('input,textarea,select,.lf,.lead-card,.hdr,.guide-panel,.guide-pitch,dialog');
-    kick(); clearTimeout(parkT); parkT = setTimeout(kick, 950);
-  }, { passive: true });
   document.addEventListener('pointerover', (e) => {
     if (e.pointerType !== 'mouse' || !follows()) return;
-    if (pitch.contains(e.target)) { clearTimeout(leaveT); return; }
+    if (pitch.contains(e.target)) { clearTimeout(leaveT); clearTimeout(dwellT); hover = null; return; }
     const card = e.target.closest?.('.card[data-slug],.featured[data-slug]');
     if (card === hover) { if (card) clearTimeout(leaveT); return; }
     hover = card; clearTimeout(dwellT);
-    if (card) { clearTimeout(leaveT); if (card !== pitchEl) dwellT = setTimeout(() => startPitch(card), 650); }
-    else if (pitchEl) { clearTimeout(leaveT); leaveT = setTimeout(endPitch, 900); }
+    if (card) { clearTimeout(leaveT); if (card !== pitchEl) dwellT = setTimeout(() => startPitch(card), 900); }
+    else if (pitchEl) { clearTimeout(leaveT); leaveT = setTimeout(endPitch, 2600); }
   });
   $('.gpi-x', pitch).addEventListener('click', () => { tipsOff = true; try { sessionStorage.setItem('scout-tips', '0'); } catch (_) {} endPitch(); exitOn = false; });
   $('a', pitch).addEventListener('pointerenter', () => { bot.hop(); bot.setMood('happy', 1.4); });
-  addEventListener('scroll', () => { if (followActive()) kick(); }, { passive: true });
-  addEventListener('resize', () => { if (followActive()) kick(); });
+  addEventListener('resize', () => { if (shown) placeBubble(); });
   const born = performance.now(); let exitDone = false; try { exitDone = sessionStorage.getItem('scout-exit') === '1'; } catch (_) {}
   document.addEventListener('mouseout', (e) => {
     if (e.relatedTarget || e.clientY > 6 || exitDone || open || tipsOff || !fine.matches || performance.now() - born < 12000) return;
     exitDone = true; try { sessionStorage.setItem('scout-exit', '1'); } catch (_) {}
-    if (followActive()) { pitchEl = null; exitOn = true; } speak('exit', true);
+    if (followActive()) { endPitch(); exitOn = true; } speak('exit', true);
   });
 
   // ---- section lines ----
