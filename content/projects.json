@@ -61,7 +61,7 @@
       "media": { "type": "image", "src": "assets/media/insp-station.webp", "poster": "", "illustration": "", "caption": "3D illustration of a pipeline inspection station, with a real crack detection in the corner.", "portrait": false },
       "youtube": "",
       "youtubePortrait": false,
-      "extra": { "src": "", "caption": "" }
+      "extra": { "src": "assets/media/crack-detect.webp", "caption": "Real crack detection on a pipe weld: the model boxes the crack running across the weld bead." }
     },
     {
       "slug": "parcel-counting",
