@@ -468,3 +468,8 @@ html:not(.no-intro) .hero-copy>*{animation-delay:calc(var(--d,0s) + 1.05s)}
 .guide-pitch .btn{justify-self:start}
 @media (prefers-reduced-motion:reduce){.guide-pitch{transition:none}}
 .guide-panel[hidden]{display:none}.guide-panel:not(.show){pointer-events:none}
+.guide-pitch [hidden]{display:none!important}
+/* Scout "types" for a moment before he speaks */
+.guide-pitch.typing>p,.guide-pitch.typing>a{visibility:hidden;height:0;margin:0;padding:0;overflow:hidden}
+.guide-pitch.typing::before{content:"";width:34px;height:10px;background:radial-gradient(circle,var(--cyan) 45%,transparent 50%) 0 50%/11px 10px repeat-x;animation:scoutType 1s steps(3) infinite;opacity:.85}
+@keyframes scoutType{0%{clip-path:inset(0 66% 0 0)}50%{clip-path:inset(0 33% 0 0)}100%{clip-path:inset(0 0 0 0)}}

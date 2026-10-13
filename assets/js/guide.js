@@ -149,7 +149,7 @@ export function initGuide() {
     place(canDock() && (open || !state.hero));
     const away = blockers.size > 0 && !open; dock.classList.toggle('away', away); launch.classList.toggle('on', !canDock() && !state.hero && !away);
     const f = follows(); document.documentElement.classList.toggle('buddy-on', f); dock.classList.toggle('follow', f);
-    if (!f) { dock.style.transform = ''; hideBubble(true); } else if (followActive()) kick(); else hideBubble(true);
+    if (!f) { dock.style.transform = ''; hideBubble(true); } else if (followActive()) { kick(); setTimeout(hint, 900); } else hideBubble(true);
   }
   new IntersectionObserver(([e]) => { state.hero = e.isIntersecting; update(); }, { threshold: .12 }).observe(hero);
   ['#recruiter', '#scoring'].forEach((s) => { const el = $(s); if (el) new IntersectionObserver(([e]) => { e.isIntersecting ? blockers.add(s) : blockers.delete(s); update(); }, { threshold: .05 }).observe(el); });
@@ -175,27 +175,41 @@ export function initGuide() {
   const CATP = { industrial: ['Want this on your line? I’ll scope it for your parts.', 'Industrial vision', 'Build this for me →'], recruitment: ['Want this for your hiring?', 'Recruitment automation', 'Build this for me →'], agents: ['Want an agent like this for your team?', 'AI agent subscription', 'Get this for my team →'], agriculture: ['Grading and counting from ordinary cameras.', 'Custom automation', 'Talk about my project →'] };
   const SAAS = new Set(['invoice-to-excel', 'subtitle-saas']);
   let tipsOff = false; try { tipsOff = sessionStorage.getItem('scout-tips') === '0'; } catch (_) {}
-  const BW = 116, BH = 122, SC = 1, w = BW * SC, h = BH * SC;
-  let fx = 18, fy = innerHeight - h - 18, mx = -1, my = -1, safe = false, raf = 0, last = 0, pitchEl = null, bubbleT = 0, leaveT = 0, exitOn = false, shown = false;
+  // Scout trails the mouse while it moves, then steps aside into the page margin when the visitor stops to read,
+  // so he never sits on text. He only comes forward to pitch the project card being looked at.
+  const BW = 116, BH = 122;
+  let sc = 1, w = BW, h = BH, fx = 18, fy = innerHeight - BH - 18, mx = -1, my = -1, moved = 0, safe = false, raf = 0, last = 0, pitchEl = null, bubbleT = 0, leaveT = 0, parkT = 0, exitOn = false, shown = false;
+  const pitched = new Set(), MAX_PITCH = 4;
   const clampX = (x) => Math.max(8, Math.min(innerWidth - w - 8, x)), clampY = (y) => Math.max(72, Math.min(innerHeight - h - 8, y));
   function followActive() { return follows() && docked && !open && dock.classList.contains('on') && !dock.classList.contains('away'); }
+  function park() {
+    // the margin beside the content column, on the side nearer the cursor; a small corner seat when there is no margin
+    const col = $('main .wrap'), b = col ? col.getBoundingClientRect() : { left: 0, right: innerWidth }, cs = col ? getComputedStyle(col) : null;
+    const r = { left: b.left + (cs ? parseFloat(cs.paddingLeft) : 0), right: b.right - (cs ? parseFloat(cs.paddingRight) : 0) }, need = BW + 16;
+    const L = r.left, R = innerWidth - r.right, y = clampY((my < 0 ? innerHeight * .6 : my) - BH / 2);
+    const left = mx < innerWidth / 2;
+    if ((left ? L : R) >= need) return [left ? (L - BW) / 2 : r.right + (R - BW) / 2, y, 1];
+    if ((left ? R : L) >= need) return [left ? r.right + (R - BW) / 2 : (L - BW) / 2, y, 1];
+    return [12, innerHeight - BH * .62 - 12, .62];
+  }
   function goal() {
-    if (pitchEl) { const r = pitchEl.getBoundingClientRect(); if (r.bottom < 60 || r.top > innerHeight) { endPitch(); } else return [clampX(r.right - w * .7), clampY(r.top - h * .45)]; }
-    if (exitOn) return [clampX(innerWidth - w - 40), 84];
-    if (mx < 0 || safe) return [18, innerHeight - h - 18];
-    const x = mx + 30 + w > innerWidth - 8 ? mx - w - 18 : mx + 30;
-    return [clampX(x), clampY(my + 24)];
+    if (pitchEl) { const r = pitchEl.getBoundingClientRect(); if (r.bottom < 60 || r.top > innerHeight) { endPitch(); } else return [clampX(r.right - BW * .7), clampY(r.top - BH * .45), 1]; }
+    if (exitOn) return [clampX(innerWidth - BW - 40), 84, 1];
+    if (mx < 0 || safe || performance.now() - moved > 900) return park();
+    const x = mx + 30 + BW > innerWidth - 8 ? mx - BW - 18 : mx + 30;
+    return [clampX(x), clampY(my + 24), .9];
   }
   function tick(t) {
     raf = 0; if (!followActive()) return;
     const dt = Math.min(.05, ((t - last) || 16) / 1000); last = t;
-    const [tx, ty] = goal(), k = 1 - Math.exp(-dt * 4.2), dx = tx - fx;
-    fx += dx * k; fy += (ty - fy) * k;
-    dock.style.transform = `translate3d(${fx.toFixed(1)}px,${fy.toFixed(1)}px,0) scale(${SC})`;
+    const [tx, ty, ts] = goal(), k = 1 - Math.exp(-dt * 4.2), dx = tx - fx;
+    fx += dx * k; fy += (ty - fy) * k; sc += (ts - sc) * k; w = BW * sc; h = BH * sc;
+    dock.style.transform = `translate3d(${fx.toFixed(1)}px,${fy.toFixed(1)}px,0) scale(${sc.toFixed(3)})`;
     bot.lean(Math.max(-1, Math.min(1, -dx / 260)));
-    const atRest = !pitchEl && !exitOn && (mx < 0 || safe); dock.classList.toggle('rest', atRest || !!pitchEl || exitOn);
+    const still = Math.abs(dx) < .6 && Math.abs(ty - fy) < .6 && Math.abs(ts - sc) < .004;
+    dock.classList.toggle('rest', still || !!pitchEl || exitOn);
     if (shown) placeBubble();
-    if (Math.abs(dx) > .4 || Math.abs(ty - fy) > .4 || pitchEl || exitOn || shown) raf = requestAnimationFrame(tick);
+    if (!still || pitchEl || exitOn || shown) raf = requestAnimationFrame(tick);
   }
   function kick() { if (!raf && followActive()) { last = performance.now(); raf = requestAnimationFrame(tick); } }
   function placeBubble() {
@@ -206,22 +220,31 @@ export function initGuide() {
   function bubble(text, cta, ms) {
     $('p', pitch).textContent = text; const a = $('a', pitch);
     if (cta) { a.textContent = cta[0]; a.href = cta[1]; a.hidden = false; } else a.hidden = true;
-    shown = true; placeBubble(); pitch.classList.add('show'); kick();
+    shown = true; pitch.classList.add('typing'); placeBubble(); pitch.classList.add('show'); kick();
+    clearTimeout(pitch._ty); pitch._ty = setTimeout(() => { pitch.classList.remove('typing'); placeBubble(); }, REDUCED ? 0 : 420);
     clearTimeout(bubbleT); if (ms) bubbleT = setTimeout(() => { exitOn = false; hideBubble(); }, ms);
   }
   function hideBubble(now) { shown = false; pitch.classList.remove('show'); clearTimeout(bubbleT); if (now) { pitchEl = null; exitOn = false; } }
   function startPitch(card) {
-    if (tipsOff || !followActive() || exitOn) return;
-    const slug = card.dataset.slug, p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents;
-    const topic = SAAS.has(slug) ? 'SaaS product' : c[1];
+    const slug = card.dataset.slug;
+    // each card once per visit, a few per visit at most: helpful, never nagging
+    if (tipsOff || !followActive() || exitOn || pitched.has(slug) || pitched.size >= MAX_PITCH) return; pitched.add(slug);
+    const p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents, topic = SAAS.has(slug) ? 'SaaS product' : c[1];
     pitchEl = card; bubble(PITCH[slug] || c[0], [SAAS.has(slug) ? 'Get this for my team →' : c[2], `contact.html?topic=${encodeURIComponent(topic)}#start`], 0);
     bot.setMood('ok', 2.4); bot.nod(); setTimeout(() => bot.point(fx + w / 2 > card.getBoundingClientRect().left + card.offsetWidth / 2 ? -1 : 1, 1.4), 450);
   }
   function endPitch() { pitchEl = null; hideBubble(); kick(); }
+  // first time he joins the visitor, one line on how he helps
+  let hinted = false; try { hinted = sessionStorage.getItem('scout-hint') === '1'; } catch (_) {}
+  function hint() {
+    if (hinted || tipsOff || !followActive()) return; hinted = true; try { sessionStorage.setItem('scout-hint', '1'); } catch (_) {}
+    bubble('Rest on any project and I’ll tell you what it can do for your business.', null, 5000); bot.wave();
+  }
   let hover = null, dwellT = 0;
   document.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse') return; mx = e.clientX; my = e.clientY;
-    safe = !!e.target.closest?.('input,textarea,select,.lf,.lead-card,.hdr,.guide-panel,.guide-pitch,dialog'); kick();
+    if (e.pointerType !== 'mouse') return; mx = e.clientX; my = e.clientY; moved = performance.now();
+    safe = !!e.target.closest?.('input,textarea,select,.lf,.lead-card,.hdr,.guide-panel,.guide-pitch,dialog');
+    kick(); clearTimeout(parkT); parkT = setTimeout(kick, 950);
   }, { passive: true });
   document.addEventListener('pointerover', (e) => {
     if (e.pointerType !== 'mouse' || !follows()) return;
