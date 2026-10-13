@@ -10,10 +10,28 @@ import { initGuide } from './guide.js';
 const OUT = {
   industrial: ['Catches defects the eye misses', 'Counts and measures parts automatically', 'Same pass or fail standard on every part'],
   recruitment: ['Every CV scored on evidence', 'A person makes the final call', 'Screening, interviews and hiring in one place'],
-  agents: ['Documents in, answers and actions out', 'Reports and updates run on a schedule', 'About 40% less manual translation work, in production'],
+  agents: ['AI agents that run your routine work on subscription', 'Ready-to-use SaaS tools, such as invoice to Excel', 'About 40% less manual translation work, in production'],
   agriculture: ['Grades ripeness and flags disease early', 'Counts and monitors from ordinary camera footage', 'Peer-reviewed in IEEE Access, 2025'],
-  robotics: ['Maps a space with SLAM', 'Plans a path and drives to a goal with Nav2', 'Flags obstacles within 1 metre from LiDAR'],
 };
+// ---- ad / post links: ?for=factory|warehouse|hr|agents|saas lands each audience on its own headline and industry ----
+const FOR = {
+  factory: { cat: 'industrial', topic: 'Industrial vision', h: 'Catch every defect on your line with AI inspection.', s: 'Custom computer vision for cracks, weld defects, coating and dimension checks on standard cameras, built around your parts and your line.', hello: 'Inspection on your line? Let me show you.' },
+  warehouse: { cat: 'industrial', first: 'parcel-counting', topic: 'Industrial vision', h: 'Count every parcel automatically, live.', s: 'Camera-based counting for conveyors and docks: a live rate per hour, empty-belt alerts and a log your team can trust.', hello: 'Counting parcels? Here’s how it works.' },
+  hr: { cat: 'recruitment', topic: 'Recruitment automation', h: 'Screen every CV in minutes. A person still decides.', s: 'AI scores each CV against the role with the reasons shown, then tracks interviews through to hire.', hello: 'Hiring? Let me show you the CV scoring.' },
+  agents: { cat: 'agents', topic: 'AI agent subscription', h: 'An AI agent that does the routine work, every day.', s: 'Agents built around your workflow (leads, reports, documents, follow-ups), running on subscription and maintained every month.', hello: 'Want an agent for your workflow?' },
+  saas: { cat: 'agents', topic: 'SaaS product', h: 'AI tools your team can use today.', s: 'Ready-to-use SaaS such as invoice to Excel, plus custom tools built around your workflow.', hello: 'Looking for a ready-made tool?' },
+};
+const ALIAS = { manufacturing: 'factory', inspection: 'factory', logistics: 'warehouse', recruitment: 'hr', automation: 'agents', agent: 'agents', tools: 'saas' };
+const AD = (() => { try { const k = (new URLSearchParams(location.search).get('for') || '').toLowerCase(); return FOR[ALIAS[k] || k] || null; } catch (_) { return null; } })();
+function applyAd() {
+  if (!AD) return; window.__adFor = AD;
+  const h = $('#hero-h'), l = $('.hero .lead'), c = $('[data-cta="hero"]');
+  if (h) { h.removeAttribute('data-site'); h.textContent = AD.h; } if (l) { l.removeAttribute('data-site'); l.textContent = AD.s; }
+  if (c) c.href = `contact.html?topic=${encodeURIComponent(AD.topic)}#start`;
+}
+applyAd();
+// "Real output" strip in the hero opens the industry tab with those projects
+$('[data-proof]')?.addEventListener('click', (e) => { if (e.button !== 0 || e.metaKey || e.ctrlKey) return; e.preventDefault(); $('.ind-tab[data-cat="industrial"]')?.click(); const hh = $('.hdr').offsetHeight; scrollTo({ top: $('#work').getBoundingClientRect().top + scrollY - hh - 12, behavior: REDUCED ? 'auto' : 'smooth' }); });
 const RANK = { PRODUCTION: 0, 'CURRENT ROLE': 0, PUBLISHED: 1, DEMO: 2, PROTOTYPE: 3, RESEARCH: 4 };
 const best = (list) => list.map((p, i) => ({ p, k: [p.media.type === 'illus' ? 1 : 0, p.featured ? 0 : 1, RANK[p.badge] ?? 5, i] }))
   .sort((x, y) => { for (let j = 0; j < 4; j++) if (x.k[j] !== y.k[j]) return x.k[j] - y.k[j]; return 0; }).map((x) => x.p);
@@ -23,7 +41,7 @@ function render() {
   const tabs = $('.ind-tabs', host), panel = $('#ind-panel', host);
   tabs.innerHTML = cats.map((c, i) => `<button class="ind-tab" type="button" role="tab" id="it-${c.id}" aria-selected="${i === 0}" aria-controls="ind-panel" tabindex="${i === 0 ? 0 : -1}" data-cat="${c.id}"><span class="dot" style="background:${esc(c.dot)}"></span>${esc(c.label)}</button>`).join('');
   const show = (id, focus) => {
-    const c = cats.find((x) => x.id === id) || cats[0], all = PROJECTS.filter((p) => p.cat === c.id), top = best(all).slice(0, 3);
+    const c = cats.find((x) => x.id === id) || cats[0], all = PROJECTS.filter((p) => p.cat === c.id), ranked = best(all), fi = AD?.first ? ranked.findIndex((p) => p.slug === AD.first) : -1; if (fi > 0) ranked.unshift(...ranked.splice(fi, 1)); const top = ranked.slice(0, 3);
     $$('.ind-tab', tabs).forEach((b) => { const on = b.dataset.cat === c.id; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
     panel.setAttribute('aria-labelledby', 'it-' + c.id); panel.style.setProperty('--cat', c.dot);
     panel.innerHTML = `<div class="ind-head"><h3>${esc(c.h)}</h3><ul class="ind-out">${(OUT[c.id] || []).map((o) => `<li>${esc(o)}</li>`).join('')}</ul></div>
@@ -36,7 +54,7 @@ function render() {
     const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; e.preventDefault();
     const i = cats.findIndex((c) => c.id === $('.ind-tab[aria-selected="true"]', tabs).dataset.cat); show(cats[(i + k + cats.length) % cats.length].id, true);
   });
-  show(cats[0].id);
+  show(AD && cats.some((c) => c.id === AD.cat) ? AD.cat : cats[0].id);
   $$('.practice a').forEach((a) => { const c = CATS.find((x) => x.id === a.dataset.cat); if (c && a.lastChild.textContent !== c.label) a.lastChild.textContent = c.label; });
   // the hero's practice links jump to the matching tab instead of leaving the page
   $$('.practice a').forEach((a) => a.addEventListener('click', (e) => {

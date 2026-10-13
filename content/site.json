@@ -1,12 +1,15 @@
 {
   "hero": {
     "eyebrow": "Asad Gulshair · AI Engineer",
-    "headline": "Turning complex problems into intelligent systems.",
-    "subline": "I build computer vision, AI agents and automation that inspect products, read documents and take repetitive work off your team, from first prototype to a deployed system."
+    "headline": "AI that takes the repetitive work off your team.",
+    "subline": "Custom computer vision for factories, AI agents that run on subscription, and ready-to-use SaaS tools. Tell me the problem and I'll scope the right fit, built around your process."
   },
   "home": {
     "featuredProject": "tomato-ripeness-grading",
-    "highlightProjects": ["flange-dimension-compliance", "potato-disease-cnn"]
+    "highlightProjects": [
+      "flange-dimension-compliance",
+      "potato-disease-cnn"
+    ]
   },
   "about": {
     "headline": "AI engineer where models meet operations.",

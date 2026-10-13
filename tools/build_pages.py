@@ -12,8 +12,8 @@ MAIL_PROJECT = f"mailto:{EMAIL}?subject={quote('Project enquiry')}"
 MAIL_MEET = f"mailto:{EMAIL}?subject={quote('Meeting request - project discussion')}&body={quote('Hi Asad,\n\nI would like to book a Google Meet call about a project.\n\nPreferred times (2-3 options, with your timezone):\n1. \n2. \n3. \n\nShort project summary:\n\n')}"
 IRIS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#EDEBE6" stroke-width="1.5"/><g stroke="#A3A7AB" stroke-width="1.3" stroke-linecap="round">' + ''.join(f'<path d="M12 12 L12 2.2" transform="rotate({a} 12 12) translate(3.2 0)"/>' for a in range(0, 360, 60)) + '</g><circle cx="12" cy="12" r="2.6" fill="#E8743B"/></svg>'
 PAGES = {
- 'index.html': ('Asad Gulshair, AI Engineer · Computer Vision & AI Agents', 'AI engineer building visual inspection systems for production lines and LLM workflows for document-heavy teams, from prototype to deployed API.', None),
- 'projects.html': ('Work · Asad Gulshair, AI Engineer', 'Case studies in industrial computer vision, recruitment automation, AI agents, agriculture and robotics, with honest status labels and real model output.', 'projects'),
+ 'index.html': ('Asad Gulshair, AI Engineer · Computer Vision & AI Agents', 'Custom AI systems, subscription AI agents and SaaS tools: computer vision inspection for factories, CV screening for HR and automation for operations teams.', None),
+ 'projects.html': ('Work · Asad Gulshair, AI Engineer', 'Case studies in industrial computer vision, recruitment automation, AI agents, SaaS tools and agriculture, with honest status labels and real model output.', 'projects'),
  'about.html': ('About · Asad Gulshair, AI Engineer', 'About Asad Gulshair: AI engineer, capabilities, experience, education and IEEE publication.', 'about'),
  'contact.html': ('Contact · Asad Gulshair, AI Engineer', 'Start a project or book a meeting with Asad Gulshair. Email, LinkedIn and GitHub.', 'contact'),
 }
@@ -91,7 +91,7 @@ IC_MAIL = ICON(f'<rect x="4" y="7" width="24" height="18" rx="2"/><path d="M5 9l
 IC_CAL = ICON(f'<rect x="4" y="7" width="24" height="20" rx="2"/><path d="M4 13h24M10 4v6M22 4v6"/><path d="M12 20l3 3 5-6" {AC}/>')
 IC_CODE = ICON(f'<path d="M11 10l-6 6 6 6M21 10l6 6-6 6"/><path d="M18 7l-4 18" {AC}/>')
 FACTS = '''<section class="facts" aria-label="Track record"><div class="wrap"><ul>
-  <li><b data-count="18">18</b><span>projects across 5 areas</span></li>
+  <li><b data-count="17">17</b><span>projects across 4 areas</span></li>
   <li><b data-count="2">2</b><span>systems in daily production use</span></li>
   <li><b data-count="40" data-suffix="%">40%</b><span>less manual translation work, in production</span></li>
   <li><b data-count="90" data-suffix="%">90%</b><span>mAP on weld defect detection (validation set, approx.)</span></li>
@@ -100,12 +100,17 @@ FACTS = '''<section class="facts" aria-label="Track record"><div class="wrap"><u
 RECRUITER = (ROOT / 'tools' / 'recruiter_section.html').read_text(encoding='utf-8') + (ROOT / 'tools' / 'scoring_section.html').read_text(encoding='utf-8')
 STACK = ['Python', 'PyTorch', 'TensorFlow', 'YOLOv8', 'OpenCV', 'FastAPI', 'LangChain', 'LangGraph', 'n8n', 'Whisper', 'Docker']
 SERVICES = [
- (ICON(f'<rect x="4" y="9" width="19" height="15" rx="2"/><circle cx="13.5" cy="16.5" r="4"/><path d="M21 4h7v7M28 4l-9 9" {AC}/>'), 'Computer vision and quality inspection', 'Defect detection, counting and measurement on standard cameras.', 'projects.html#industrial', 'Inspection work', '#E8743B'),
- (ICON(f'<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" {AC}/>'), 'AI agents and workflow automation', 'Agents and automations that move work between the tools you already use.', 'projects.html#agents', 'Automation work', '#9B8CFF'),
+ (ICON(f'<rect x="4" y="9" width="19" height="15" rx="2"/><circle cx="13.5" cy="16.5" r="4"/><path d="M21 4h7v7M28 4l-9 9" {AC}/>'), 'Computer vision and quality inspection', 'Defect detection, counting and measurement on standard cameras, built for your parts and line.', 'projects.html#industrial', 'Inspection work', '#E8743B'),
+ (ICON(f'<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h6M16 16l6-7M16 16l6 7" {AC}/>'), 'AI agents on subscription', 'An agent set up for your workflow that runs every day, monitored and improved monthly.', 'contact.html?topic=AI%20agent%20subscription#start', 'Get an agent', '#9B8CFF'),
+ (ICON(f'<rect x="4" y="6" width="24" height="18" rx="2"/><path d="M4 11h24M9 16h8M9 20h5"/><circle cx="23" cy="19" r="3" {AC}/>'), 'SaaS products', 'Ready-to-use AI tools your team can sign in to, such as invoice to Excel.', '#products', 'See products', '#8EA2E8'),
  (ICON(f'<rect x="6" y="4" width="15" height="20" rx="2"/><path d="M10 10h7M10 14h7M10 18h4"/><path d="M19 20l3 3 6-7" {AC}/>'), 'Document processing and extraction', 'Invoices, CVs and reports turned into clean, structured data.', 'projects.html#recruitment', 'Document work', '#D2B06A'),
  (ICON(f'<path d="M5 8h14M5 13h10M5 18h12"/><circle cx="23" cy="20" r="5" {AC}/><path d="M26.5 23.5L29 26" {AC}/>'), 'LLM apps and RAG', 'Assistants that answer from your own documents and show the source.', 'projects.html#agents', 'LLM work', '#47D7E6'),
- (ICON(f'<path d="M16 4l3 7 7 1-5 5 1.5 7L16 20l-6.5 4L11 17l-5-5 7-1z" {AC}/>'), 'AI proof of concept', 'A working prototype on your own data, with an honest evaluation.', 'contact.html#start', 'Start one', '#8DB86A'),
- (ICON(f'<path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13" {AC}/>'), 'Deployment and integration', 'FastAPI services, Docker and dashboards your team can run.', 'projects.html', 'See deployed work', '#8EA2E8'),
+ (ICON(f'<path d="M16 4l11 5.5v13L16 28 5 22.5v-13z"/><path d="M5 9.5L16 15l11-5.5M16 15v13" {AC}/>'), 'Custom build and deployment', 'From a prototype on your data to an API, app or dashboard your team runs.', 'contact.html#start', 'Start a project', '#8DB86A'),
+]
+PRODUCTS = [
+ ('SaaS · Live', 'Invoice to Excel', 'Upload invoices, get one clean Excel sheet. No more retyping by hand.', [('Open the app ↗', 'https://invoice-to-excel-tool.streamlit.app/', True), ('Ask about a team plan', 'contact.html?topic=SaaS%20product#start', False)], '#8EA2E8'),
+ ('SaaS · Built for a media team', 'Subtitles and translation', 'Multilingual subtitles, transcription and translation in one tool, used in production.', [('Get one for your team', 'contact.html?topic=SaaS%20product#start', False), ('Case study →', 'projects.html#/work/subtitle-saas', False)], '#47D7E6'),
+ ('Subscription', 'Your own AI agent', 'Leads, reports, documents or follow-ups: an agent built around your workflow, running and maintained every month.', [('Tell me your workflow', 'contact.html?topic=AI%20agent%20subscription#start', False)], '#9B8CFF'),
 ]
 PROCESS = [
  ('Discover', 'Your problem, your data and what success looks like.'),
@@ -115,18 +120,24 @@ PROCESS = [
  ('Improve', 'Tune on new cases and add what the team needs next.'),
 ]
 def page_index():
+    PRODUCTS_HTML = f'''<section id="products" class="prod" aria-labelledby="prod-h"><div class="wrap">
+  <div class="sec-head reveal"><p class="meta">Products</p><h2 id="prod-h">Ready-to-use tools and AI agents on subscription.</h2><p class="lead">No project needed. Start with a tool that works today, or an agent set up for your workflow.</p></div>
+  <ul class="prod-grid reveal">{''.join(f'<li class="prod-card" style="--c:{c}"><span class="meta">{tag}</span><h3>{t}</h3><p>{d}</p><div class="prod-acts">' + ''.join(f'<a class="{"btn btn-primary sm" if i == 0 else "tlink"}" href="{h}"' + (' target="_blank" rel="noopener"' if ext else '') + f' data-cta="product">{l}</a>' for i, (l, h, ext) in enumerate(acts)) + '</div></li>' for tag, t, d, acts, c in PRODUCTS)}</ul>
+</div></section>
+'''
     return f'''<main id="main">
 <section class="hero" aria-labelledby="hero-h"><div class="wrap">
   <div class="hero-copy">
     <p class="meta" data-site="hero.eyebrow">Asad Gulshair · AI Engineer</p>
-    <h1 id="hero-h" data-site="hero.headline">Turning complex problems into intelligent systems.</h1>
-    <p class="lead" data-site="hero.subline">I build computer vision, AI agents and automation that inspect products, read documents and take repetitive work off your team, from first prototype to a deployed system.</p>
-    <div class="cta-row"><a class="btn btn-primary" href="contact.html#start">Discuss a project</a><a class="btn" href="#work" id="cta-work">Explore my work</a><a class="tlink" href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></div>
+    <h1 id="hero-h" data-site="hero.headline">AI that takes the repetitive work off your team.</h1>
+    <p class="lead" data-site="hero.subline">Custom computer vision for factories, AI agents that run on subscription, and ready-to-use SaaS tools. Tell me the problem and I'll scope the right fit, built around your process.</p>
+    <div class="cta-row"><a class="btn btn-primary" href="contact.html#start" data-cta="hero">Get a free consultation</a><a class="btn" href="#work" id="cta-work">See real results</a></div>
+    <a class="proof" href="#work" data-proof aria-label="Real output from my models: see the work"><span class="proof-th"><img src="assets/media/crack-detect.webp?v=2" alt="" width="64" height="40" loading="eager"><img src="assets/media/porosity-detect.webp?v=2" alt="" width="64" height="40" loading="eager"><img src="assets/media/parcel-count.webp" alt="" width="64" height="40" loading="eager"></span><span class="proof-t"><b>Real output from my models</b><span>Crack, porosity and parcel detection</span></span></a>
     <p class="meta avail" data-avail><i></i><span>Available for new projects</span></p>
     <nav class="practice" aria-label="Practice areas">
       <a href="projects.html#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a>
       <a href="projects.html#recruitment" data-cat="recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a>
-      <a href="projects.html#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a>
+      <a href="projects.html#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; SaaS</a>
       <a href="projects.html#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a>
     </nav>
   </div>
@@ -136,17 +147,17 @@ def page_index():
 <section id="work" aria-labelledby="work-h"><div class="wrap">
   <div class="sec-head reveal"><p class="meta">Selected work</p><h2 id="work-h">Pick an industry. See what I built.</h2></div>
   <div class="ind reveal" id="ind">
-    <div class="ind-tabs" role="tablist" aria-label="Industries"><a class="ind-tab" href="projects.html#industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a><a class="ind-tab" href="projects.html#recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a><a class="ind-tab" href="projects.html#agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a><a class="ind-tab" href="projects.html#agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a><a class="ind-tab" href="projects.html#robotics"><span class="dot" style="background:var(--c-robotics)"></span>Robotics</a></div>
+    <div class="ind-tabs" role="tablist" aria-label="Industries"><a class="ind-tab" href="projects.html#industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a><a class="ind-tab" href="projects.html#recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a><a class="ind-tab" href="projects.html#agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; SaaS</a><a class="ind-tab" href="projects.html#agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a></div>
     <div class="ind-panel" id="ind-panel" role="tabpanel"></div>
   </div>
   <div class="pub reveal"><span class="meta">Peer-reviewed · IEEE Access · 2025</span><p><b style="color:var(--text);font-weight:500">AI-Driven Smart Agriculture:</b> an integrated approach for soil analysis, irrigation and crop-fertilizer recommendations. Co-author; built as my final-year project.</p><a class="tlink" href="https://ieeexplore.ieee.org/document/11104235" target="_blank" rel="noopener">Read the paper ↗</a></div>
   <p style="margin-top:32px"><a class="btn" href="projects.html">See all projects →</a></p>
 </div></section>
 {RECRUITER}<section id="services" class="svc" aria-labelledby="svc-h"><div class="wrap">
-  <div class="sec-head reveal"><p class="meta">Services</p><h2 id="svc-h">What I can build for you.</h2><p class="lead">For manufacturers, HR teams and operations teams who want repetitive work done reliably by software.</p></div>
+  <div class="sec-head reveal"><p class="meta">Services</p><h2 id="svc-h">What I can do for you.</h2><p class="lead">Different businesses need different things: a custom system, an agent on subscription, or a tool that is ready today.</p></div>
   <ul class="svc-grid reveal">{''.join(f'<li class="svc-card" style="--c:{c}"><span class="svc-ic" aria-hidden="true">{ic}</span><h3>{t}</h3><p>{d}</p><a class="svc-go" href="{h}">{l} →</a></li>' for ic, t, d, h, l, c in SERVICES)}</ul>
 </div></section>
-<section id="how" class="proc" aria-labelledby="how-h"><div class="wrap">
+{PRODUCTS_HTML}<section id="how" class="proc" aria-labelledby="how-h"><div class="wrap">
   <div class="sec-head reveal"><p class="meta">How we work</p><h2 id="how-h">From first call to a system you own.</h2></div>
   <ol class="proc-line reveal">{''.join(f'<li><span class="proc-n">{n:02d}</span><h3>{t}</h3><p>{d}</p></li>' for n, (t, d) in enumerate(PROCESS, 1))}</ol>
 </div></section>
@@ -158,9 +169,8 @@ def page_projects():
 <nav class="catnav" aria-label="Work categories"><div class="wrap" style="position:relative"><ul id="catlist">
   <li><a href="#industrial" data-cat="industrial"><span class="dot" style="background:var(--c-industrial)"></span>Industrial Vision</a></li>
   <li><a href="#recruitment" data-cat="recruitment"><span class="dot" style="background:var(--c-recruitment)"></span>Recruitment Automation</a></li>
-  <li><a href="#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; Automation</a></li>
+  <li><a href="#agents" data-cat="agents"><span class="dot" style="background:var(--c-agents)"></span>AI Agents &amp; SaaS</a></li>
   <li><a href="#agriculture" data-cat="agriculture"><span class="dot" style="background:var(--c-agriculture)"></span>Agriculture</a></li>
-  <li><a href="#robotics" data-cat="robotics"><span class="dot" style="background:var(--c-robotics)"></span>Robotics</a></li>
 <li class="bar" aria-hidden="true"></li></ul></div></nav>
 <div id="cats"></div>
 {CTA_BAND}</main>

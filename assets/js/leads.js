@@ -4,7 +4,7 @@
 // it opens a pre-filled email instead, so an enquiry is never silently lost.
 import { $, $$, S, site, esc, toast } from './common.js';
 
-const TOPICS = ['Industrial vision', 'Recruitment automation', 'AI agent / workflow', 'Something else'];
+const TOPICS = ['Industrial vision', 'Recruitment automation', 'AI agent subscription', 'SaaS product', 'Custom automation', 'Something else'];
 const BUDGETS = ['Not sure yet', 'Under $500', '$500 – $2,000', '$2,000 – $5,000', '$5,000+'];
 const TIMES = ['Flexible', 'Within a month', 'ASAP'];
 const REPLY = ['Email', 'WhatsApp', 'Phone call', 'LinkedIn'];
@@ -26,7 +26,7 @@ function formHTML(kind) {
       <label class="lf-f"><span>Timeline</span><select name="timeline">${opts(TIMES)}</select></label>
       <label class="lf-f"><span>How should I reply?</span><select name="reply">${opts(REPLY)}</select></label>
       <label class="lf-f"><span>Phone or WhatsApp <small>optional</small></span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="+92 300 0000000"></label>` : ''}
-      <label class="lf-f lf-wide"><span>${full ? 'Project details' : 'Message'} <i aria-hidden="true">*</i></span><textarea name="message" rows="${full ? 5 : 3}" required minlength="15" maxlength="3000" placeholder="${full ? 'What should be detected, measured or automated? What does a good result look like? Any sample data?' : 'What are you trying to automate?'}"></textarea><em class="lf-err" aria-live="polite"></em></label>
+      <label class="lf-f lf-wide"><span>${full ? 'Project details' : 'Message'} <i aria-hidden="true">*</i></span><textarea name="message" rows="${full ? 5 : 3}" required minlength="15" maxlength="3000" placeholder="${full ? 'What do you want detected, automated or handled by an agent? What does a good result look like?' : 'What are you trying to automate?'}"></textarea><em class="lf-err" aria-live="polite"></em></label>
       <label class="lf-hp" aria-hidden="true">Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label>
     </div>
     <div class="lf-foot">

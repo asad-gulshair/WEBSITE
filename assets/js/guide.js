@@ -19,9 +19,9 @@ const LINES = {
   contact: ['Have a problem worth solving? Send a short note.', 'happy'],
   industrial: ['Cameras that catch defects people miss.', 'ok'],
   recruitment: ['CVs scored on evidence. People decide.', 'ok'],
-  agents: ['Manual workflows, automated.', 'ok'],
+  agents: ['AI agents and SaaS tools that run for you.', 'ok'],
   agriculture: ['Models for crops and farms.', 'ok'],
-  robotics: ['A robot that maps, plans and avoids obstacles.', 'ok'],
+  exit: ['Before you go: what would you like to automate? I reply within a day.', 'happy'],
   sent: ['Thanks! Asad will reply within a day.', 'happy'],
   wake: ['Oh, hello again.', 'happy'],
 };
@@ -35,24 +35,32 @@ const TOPICS = [
     problem: 'Recruiters spend hours reading CVs and chasing candidates between steps.',
     answer: 'Every CV is parsed and scored against the role with the reasons shown. A person decides, and interviews are tracked in one place.',
     work: ['hr-workflow-automation', 'resume-screening'], jump: ['#scoring', 'See how a CV is scored'] },
-  { k: 'docs', label: 'Document processing', topic: 'AI agent / workflow', mood: 'ok',
+  { k: 'agent', label: 'AI agent on subscription', topic: 'AI agent subscription', mood: 'ok',
+    problem: 'Routine work such as leads, reports, documents and follow-ups eats hours every week.',
+    answer: 'An agent built around your workflow runs it every day. I set it up, monitor it and improve it every month, on subscription.',
+    work: ['n8n-automations', 'invoice-to-excel', 'rag-pipeline'] },
+  { k: 'saas', label: 'Ready-to-use SaaS tool', topic: 'SaaS product', mood: 'happy',
+    problem: 'You need a tool that works now, not a long project.',
+    answer: 'Start with a ready tool such as invoice to Excel, or get one adapted for your team and your data.',
+    work: ['invoice-to-excel', 'subtitle-saas'], jump: ['#products', 'See products'] },
+  { k: 'docs', label: 'Document processing', topic: 'Custom automation', mood: 'ok',
     problem: 'People retype invoices, CVs and reports into spreadsheets. It is slow and errors slip in.',
     answer: 'Documents are read into clean, structured rows and sent where your team already works, such as Excel or your HR system.',
     work: ['invoice-to-excel', 'hr-workflow-automation', 'n8n-automations'] },
-  { k: 'llm', label: 'LLM apps and RAG', topic: 'AI agent / workflow', mood: 'think',
-    problem: 'Answers are buried in PDFs, manuals and old emails.',
-    answer: 'An assistant searches your own documents and answers with the source, so people can check it. I also build speech and translation pipelines.',
-    work: ['rag-pipeline', 'subtitle-saas'] },
   { k: 'custom', label: 'Something custom', topic: 'Something else', mood: 'happy',
     problem: 'Not sure if AI can solve it, or where to start?',
-    answer: 'Send a few samples. I check feasibility first, then build a prototype on your data and report honest metrics before anything is deployed.',
-    work: ['tomato-ripeness-grading', 'turtlebot3-navigation', 'smart-farming-ieee'] },
+    answer: 'Tell me the problem. I check what is possible, agree the scope with you, then build it around your process and data.',
+    work: ['weld-line-inspection', 'tomato-ripeness-grading', 'smart-farming-ieee'] },
 ];
 
 export function initGuide() {
   const home = $('#guide-home'), hero = $('.hero'); if (!home || !hero) return;
   // dock only where the left gutter can hold the robot without covering content; narrower screens get the small launcher
   const wide = matchMedia('(min-width: 1420px)'), roomy = matchMedia('(min-width: 1940px)');
+  // desktop with a mouse: after the hero, Scout follows the cursor and pitches the project you are looking at
+  const fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)');
+  const follows = () => fine.matches && !REDUCED, canDock = () => wide.matches || follows();
+  if (window.__adFor?.hello) LINES.hello = [window.__adFor.hello, 'happy'];
   const canvas = document.createElement('canvas'); canvas.className = 'guide-bot'; canvas.setAttribute('aria-hidden', 'true');
   const say = document.createElement('div'); say.className = 'guide-say'; say.setAttribute('role', 'status'); say.setAttribute('aria-live', 'polite');
   say.innerHTML = '<span></span><button type="button" class="guide-x" aria-label="Hide guide messages">×</button>';
@@ -80,6 +88,7 @@ export function initGuide() {
     if (bot.sleeping) bot.sleep(false);
     if (docked && !['hello', 'sent', 'wake'].includes(key)) bot.point(1, 1.4);
     // lines only where they cannot cover content: in the hero, or docked on very wide screens
+    if (!muted && followActive() && ['contact', 'sent', 'exit'].includes(key)) { bubble(l[0], key === 'exit' ? ['Start a project →', 'contact.html#start'] : null, key === 'exit' ? 9000 : 5200); bot.setMood(l[1], 2.4); if (key === 'exit') bot.wave(); return; }
     if (muted || (docked && !roomy.matches) || (!docked && !state.hero)) { bot.setMood(l[1], 2); if (l[1] === 'ok') bot.nod(); return; }
     $('span', say).textContent = l[0]; say.classList.add('show'); bot.setMood(l[1], 2.4); if (l[1] === 'ok') bot.nod();
     clearTimeout(hideT); hideT = setTimeout(() => say.classList.remove('show'), 5200);
@@ -117,7 +126,7 @@ export function initGuide() {
     if (open) return close(); open = true; opener = from || document.activeElement;
     menu(); panel.hidden = false; requestAnimationFrame(() => panel.classList.add('show'));
     say.classList.remove('show'); setExpanded(true); document.documentElement.classList.add('guide-open');
-    if (wide.matches) place(true); if (bot.sleeping) bot.sleep(false); bot.setMood('happy', 1.6); bot.look(.4, .1); bot.hop();
+    if (canDock()) place(true); if (bot.sleeping) bot.sleep(false); bot.setMood('happy', 1.6); bot.look(.4, .1); bot.hop();
     setTimeout(() => $('.gp-chips button', panel)?.focus(), 30);
   }
   function close() {
@@ -137,12 +146,102 @@ export function initGuide() {
     (toDock ? dock : home).prepend(figure, say); dock.classList.toggle('on', toDock); bot.resize();
   }
   function update() {
-    place(wide.matches && (open || !state.hero));
-    const away = blockers.size > 0 && !open; dock.classList.toggle('away', away); launch.classList.toggle('on', !wide.matches && !state.hero && !away);
+    place(canDock() && (open || !state.hero));
+    const away = blockers.size > 0 && !open; dock.classList.toggle('away', away); launch.classList.toggle('on', !canDock() && !state.hero && !away);
+    const f = follows(); document.documentElement.classList.toggle('buddy-on', f); dock.classList.toggle('follow', f);
+    if (!f) { dock.style.transform = ''; hideBubble(true); } else if (followActive()) kick(); else hideBubble(true);
   }
   new IntersectionObserver(([e]) => { state.hero = e.isIntersecting; update(); }, { threshold: .12 }).observe(hero);
   ['#recruiter', '#scoring'].forEach((s) => { const el = $(s); if (el) new IntersectionObserver(([e]) => { e.isIntersecting ? blockers.add(s) : blockers.delete(s); update(); }, { threshold: .05 }).observe(el); });
-  wide.addEventListener('change', update);
+  wide.addEventListener('change', update); fine.addEventListener('change', update);
+
+  // ---- follow the cursor, pitch the project under it, catch the visitor before they leave ----
+  const pitch = document.createElement('div'); pitch.className = 'guide-pitch'; pitch.setAttribute('role', 'status'); pitch.setAttribute('aria-live', 'polite');
+  pitch.innerHTML = '<p></p><a class="btn btn-primary sm" data-cta="scout"></a><button type="button" class="gpi-x" aria-label="Hide Scout tips">×</button>';
+  document.body.append(pitch);
+  const PITCH = {
+    'weld-line-inspection': 'Cracks missed by eye? This flags them for your inspector.',
+    'parcel-counting': 'Need exact counts per hour on your belt?',
+    'weld-defect-detection': 'Porosity and undercut, caught on every seam.',
+    'flange-dimension-compliance': 'One camera, every part measured, pass or fail.',
+    'wall-paint-defects': 'Coating defects found before your customer sees them.',
+    'hr-workflow-automation': 'Too many CVs? Every one scored, a person decides.',
+    'resume-screening': 'Shortlist faster, with the reasons shown.',
+    'invoice-to-excel': 'Still retyping invoices? This tool does it for you.',
+    'subtitle-saas': 'Subtitles in many languages, without the manual work.',
+    'n8n-automations': 'Reports that build and send themselves.',
+    'rag-pipeline': 'Answers from your own documents, with the source.',
+  };
+  const CATP = { industrial: ['Want this on your line? I’ll scope it for your parts.', 'Industrial vision', 'Build this for me →'], recruitment: ['Want this for your hiring?', 'Recruitment automation', 'Build this for me →'], agents: ['Want an agent like this for your team?', 'AI agent subscription', 'Get this for my team →'], agriculture: ['Grading and counting from ordinary cameras.', 'Custom automation', 'Talk about my project →'] };
+  const SAAS = new Set(['invoice-to-excel', 'subtitle-saas']);
+  let tipsOff = false; try { tipsOff = sessionStorage.getItem('scout-tips') === '0'; } catch (_) {}
+  const BW = 116, BH = 122, SC = 1, w = BW * SC, h = BH * SC;
+  let fx = 18, fy = innerHeight - h - 18, mx = -1, my = -1, safe = false, raf = 0, last = 0, pitchEl = null, bubbleT = 0, leaveT = 0, exitOn = false, shown = false;
+  const clampX = (x) => Math.max(8, Math.min(innerWidth - w - 8, x)), clampY = (y) => Math.max(72, Math.min(innerHeight - h - 8, y));
+  function followActive() { return follows() && docked && !open && dock.classList.contains('on') && !dock.classList.contains('away'); }
+  function goal() {
+    if (pitchEl) { const r = pitchEl.getBoundingClientRect(); if (r.bottom < 60 || r.top > innerHeight) { endPitch(); } else return [clampX(r.right - w * .7), clampY(r.top - h * .45)]; }
+    if (exitOn) return [clampX(innerWidth - w - 40), 84];
+    if (mx < 0 || safe) return [18, innerHeight - h - 18];
+    const x = mx + 30 + w > innerWidth - 8 ? mx - w - 18 : mx + 30;
+    return [clampX(x), clampY(my + 24)];
+  }
+  function tick(t) {
+    raf = 0; if (!followActive()) return;
+    const dt = Math.min(.05, ((t - last) || 16) / 1000); last = t;
+    const [tx, ty] = goal(), k = 1 - Math.exp(-dt * 4.2), dx = tx - fx;
+    fx += dx * k; fy += (ty - fy) * k;
+    dock.style.transform = `translate3d(${fx.toFixed(1)}px,${fy.toFixed(1)}px,0) scale(${SC})`;
+    bot.lean(Math.max(-1, Math.min(1, -dx / 260)));
+    const atRest = !pitchEl && !exitOn && (mx < 0 || safe); dock.classList.toggle('rest', atRest || !!pitchEl || exitOn);
+    if (shown) placeBubble();
+    if (Math.abs(dx) > .4 || Math.abs(ty - fy) > .4 || pitchEl || exitOn || shown) raf = requestAnimationFrame(tick);
+  }
+  function kick() { if (!raf && followActive()) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  function placeBubble() {
+    const bw = pitch.offsetWidth, bh = pitch.offsetHeight, right = fx + w / 2 < innerWidth / 2;
+    const x = right ? fx + w + 4 : fx - bw - 4, y = Math.max(72, Math.min(innerHeight - bh - 8, fy + 6));
+    pitch.style.transform = `translate3d(${Math.max(8, Math.min(innerWidth - bw - 8, x)).toFixed(1)}px,${y.toFixed(1)}px,0)`;
+  }
+  function bubble(text, cta, ms) {
+    $('p', pitch).textContent = text; const a = $('a', pitch);
+    if (cta) { a.textContent = cta[0]; a.href = cta[1]; a.hidden = false; } else a.hidden = true;
+    shown = true; placeBubble(); pitch.classList.add('show'); kick();
+    clearTimeout(bubbleT); if (ms) bubbleT = setTimeout(() => { exitOn = false; hideBubble(); }, ms);
+  }
+  function hideBubble(now) { shown = false; pitch.classList.remove('show'); clearTimeout(bubbleT); if (now) { pitchEl = null; exitOn = false; } }
+  function startPitch(card) {
+    if (tipsOff || !followActive() || exitOn) return;
+    const slug = card.dataset.slug, p = PROJECTS.find((x) => x.slug === slug), c = CATP[p?.cat] || CATP.agents;
+    const topic = SAAS.has(slug) ? 'SaaS product' : c[1];
+    pitchEl = card; bubble(PITCH[slug] || c[0], [SAAS.has(slug) ? 'Get this for my team →' : c[2], `contact.html?topic=${encodeURIComponent(topic)}#start`], 0);
+    bot.setMood('ok', 2.4); bot.nod(); setTimeout(() => bot.point(fx + w / 2 > card.getBoundingClientRect().left + card.offsetWidth / 2 ? -1 : 1, 1.4), 450);
+  }
+  function endPitch() { pitchEl = null; hideBubble(); kick(); }
+  let hover = null, dwellT = 0;
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return; mx = e.clientX; my = e.clientY;
+    safe = !!e.target.closest?.('input,textarea,select,.lf,.lead-card,.hdr,.guide-panel,.guide-pitch,dialog'); kick();
+  }, { passive: true });
+  document.addEventListener('pointerover', (e) => {
+    if (e.pointerType !== 'mouse' || !follows()) return;
+    if (pitch.contains(e.target)) { clearTimeout(leaveT); return; }
+    const card = e.target.closest?.('.card[data-slug],.featured[data-slug]');
+    if (card === hover) { if (card) clearTimeout(leaveT); return; }
+    hover = card; clearTimeout(dwellT);
+    if (card) { clearTimeout(leaveT); if (card !== pitchEl) dwellT = setTimeout(() => startPitch(card), 650); }
+    else if (pitchEl) { clearTimeout(leaveT); leaveT = setTimeout(endPitch, 900); }
+  });
+  $('.gpi-x', pitch).addEventListener('click', () => { tipsOff = true; try { sessionStorage.setItem('scout-tips', '0'); } catch (_) {} endPitch(); exitOn = false; });
+  $('a', pitch).addEventListener('pointerenter', () => { bot.hop(); bot.setMood('happy', 1.4); });
+  addEventListener('scroll', () => { if (followActive()) kick(); }, { passive: true });
+  addEventListener('resize', () => { if (followActive()) kick(); });
+  const born = performance.now(); let exitDone = false; try { exitDone = sessionStorage.getItem('scout-exit') === '1'; } catch (_) {}
+  document.addEventListener('mouseout', (e) => {
+    if (e.relatedTarget || e.clientY > 6 || exitDone || open || tipsOff || !fine.matches || performance.now() - born < 12000) return;
+    exitDone = true; try { sessionStorage.setItem('scout-exit', '1'); } catch (_) {}
+    if (followActive()) { pitchEl = null; exitOn = true; } speak('exit', true);
+  });
 
   // ---- section lines ----
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (!e.isIntersecting) return; const k = e.target.dataset.guide; speak(k); if (!open) k === 'contact' ? bot.look(.55, .12) : bot.look(); }), { threshold: .35 });

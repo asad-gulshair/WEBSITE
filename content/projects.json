@@ -16,10 +16,10 @@
     },
     {
       "id": "agents",
-      "label": "AI Agents & Automation",
+      "label": "AI Agents & SaaS",
       "color": "#8EA2E8",
-      "headline": "LLM apps and workflow automation.",
-      "subline": "LLM, speech and workflow automation connected to the tools your team already uses: Whisper, OpenAI, LangChain, n8n."
+      "headline": "AI agents and SaaS tools that run for you.",
+      "subline": "Subscription AI agents and ready-to-use SaaS tools for documents, reports, speech and translation, connected to the tools your team already uses."
     },
     {
       "id": "agriculture",
@@ -27,13 +27,6 @@
       "color": "#8DB86A",
       "headline": "Crop grading and plant health.",
       "subline": "Image models that grade ripeness and flag disease early, plus the peer-reviewed smart-farming system."
-    },
-    {
-      "id": "robotics",
-      "label": "Robotics",
-      "color": "#47D7E6",
-      "headline": "Robots that map, navigate and avoid obstacles.",
-      "subline": "ROS 2 work on TurtleBot3: SLAM mapping, Nav2 navigation and LiDAR obstacle detection, in simulation."
     }
   ],
   "projects": [
@@ -726,57 +719,6 @@
         "poster": "",
         "illustration": "meds",
         "caption": "Patient input to ranked options, with a database lookup and API fallback. (Illustration)",
-        "portrait": false
-      },
-      "youtube": "",
-      "youtubePortrait": false,
-      "extra": {
-        "src": "",
-        "caption": ""
-      }
-    },
-    {
-      "slug": "turtlebot3-navigation",
-      "title": "TurtleBot3 mapping, navigation and obstacle detection",
-      "category": "robotics",
-      "subcategory": "",
-      "featured": true,
-      "status": "PROTOTYPE",
-      "year": "2026",
-      "role": "ROS 2 packages, mapping and navigation setup",
-      "summary": "Builds a map with SLAM, drives to a goal on its own with Nav2, and flags obstacles within 1 metre from LiDAR.",
-      "problem": "Warehouse robots must know the space, plan a path and stop before they hit something. This is the base for an autonomous logistics fleet.",
-      "approach": [
-        "Mapped a simulated world with SLAM Toolbox while driving by teleop, then saved the map with map_saver_cli",
-        "Nav2 with the saved map: set the start pose, give a goal pose, and the robot plans and drives there around obstacles",
-        "A ROS 2 Python node reads LiDAR /scan, drops invalid readings and reports the nearest obstacle inside 1 metre",
-        "Runs on Ubuntu 22.04 with ROS 2 Humble and Gazebo, set up on WSL2"
-      ],
-      "result": "Working in Gazebo simulation. Part of a larger autonomous fleet project; not yet run on a physical robot.",
-      "stack": [
-        "ROS 2 Humble",
-        "Nav2",
-        "SLAM Toolbox",
-        "Gazebo",
-        "Python"
-      ],
-      "links": [
-        {
-          "type": "code",
-          "label": "Obstacle detector code",
-          "url": "https://github.com/asad-gulshair/turtlebot3-obstacle-detector"
-        },
-        {
-          "label": "Nav2 and map files",
-          "url": "https://github.com/asad-gulshair/turtlebot3-fleet-nav2"
-        }
-      ],
-      "media": {
-        "type": "image",
-        "src": "assets/media/robot-slam.webp",
-        "poster": "",
-        "illustration": "",
-        "caption": "SLAM map saved from the simulation (0.05 m per cell), drawn from the real map file in the repository.",
         "portrait": false
       },
       "youtube": "",
