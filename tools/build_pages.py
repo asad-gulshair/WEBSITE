@@ -42,6 +42,7 @@ def head(fn, title, desc):
 <link rel="preload" href="assets/fonts/geist-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css"><link rel="stylesheet" href="assets/css/fx.css">
 {data}{pre}
+<script data-goatcounter="https://asadgulshair.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <script type="application/ld+json">{json.dumps(ld)}</script>
 <script type="importmap">{{"imports":{{"three":"./assets/vendor/three.module.min.js"}}}}</script>
 <script>try{{if(sessionStorage.getItem('intro')||/[?&]capture/.test(location.search))document.documentElement.classList.add('no-intro');else sessionStorage.setItem('intro','1')}}catch(e){{document.documentElement.classList.add('no-intro')}}</script>
