@@ -5,7 +5,6 @@ SITE = "https://asad-gulshair.github.io/"
 # Contact defaults baked into the HTML (work without JS). The live values come from content/site.json (admin panel).
 EMAIL = "asadgulshair6767@gmail.com"
 GH = "https://github.com/asad-gulshair"
-YT = "https://www.youtube.com/@Ultra_Vison20"
 LI = "https://www.linkedin.com/in/asad-gulshair"
 from urllib.parse import quote
 MAIL_PROJECT = f"mailto:{EMAIL}?subject={quote('Project enquiry')}"
@@ -19,7 +18,7 @@ PAGES = {
 }
 def head(fn, title, desc):
     url = SITE + ('' if fn == 'index.html' else fn)
-    ld = {"@context": "https://schema.org", "@type": "Person", "name": "Asad Gulshair", "jobTitle": "AI Engineer", "url": SITE, "email": "mailto:" + EMAIL, "sameAs": [GH, YT, LI]}
+    ld = {"@context": "https://schema.org", "@type": "Person", "name": "Asad Gulshair", "jobTitle": "AI Engineer", "url": SITE, "email": "mailto:" + EMAIL, "sameAs": [GH, LI]}
     pre = '<link rel="modulepreload" href="assets/js/home.js">' if fn == 'index.html' else ''
     # content files are fetched by the page scripts; preloading starts them with the HTML
     data = '<link rel="preload" href="content/site.json" as="fetch" crossorigin>'
@@ -67,7 +66,7 @@ def header(active):
 '''
 FOOT = f'''<footer class="ftr"><div class="wrap">
   <span>© <span data-year>2026</span> Asad Gulshair</span>
-  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{LI}" data-li target="_blank" rel="noopener">LinkedIn ↗</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a><a href="{YT}" data-yt target="_blank" rel="noopener">YouTube demos ↗</a></nav>
+  <nav aria-label="Footer"><a href="mailto:{EMAIL}" data-mail="plain">{EMAIL}</a><a href="{LI}" data-li target="_blank" rel="noopener">LinkedIn ↗</a><a href="{GH}" data-gh target="_blank" rel="noopener">GitHub ↗</a></nav>
 </div></footer>
 '''
 CTA_BAND = f'''<section class="cta-band" aria-labelledby="cta-h"><div class="wrap">
@@ -229,8 +228,6 @@ def page_contact():
       <div class="acts"><a class="btn sm" href="{LI}" data-li target="_blank" rel="noopener">Open LinkedIn ↗</a></div></div>
     <div class="ccard"><div class="k"><span class="meta">GitHub</span><span class="v">github.com/asad-gulshair</span><span class="d">Code for the public projects on this site.</span></div>
       <div class="acts"><a class="btn sm" href="{GH}" data-gh target="_blank" rel="noopener">Open GitHub ↗</a></div></div>
-    <div class="ccard"><div class="k"><span class="meta">YouTube</span><span class="v">Ultra Vision</span><span class="d">Short computer-vision demos on real footage.</span></div>
-      <div class="acts"><a class="btn sm" href="{YT}" data-yt target="_blank" rel="noopener">More demos on YouTube ↗</a></div></div>
   </div></div>
 </div></section>
 </main>

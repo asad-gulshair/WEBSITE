@@ -10,7 +10,7 @@ if (CAPTURE) document.documentElement.classList.add('capture');
 
 // Contact settings. These defaults match the static HTML; content/site.json (edited in the admin panel) overrides them.
 export const S = { email: 'asadgulshair6767@gmail.com', linkedinUrl: 'https://www.linkedin.com/in/asad-gulshair', githubUrl: 'https://github.com/asad-gulshair',
-  youtubeUrl: 'https://www.youtube.com/@Ultra_Vison20', bookingUrl: '', availability: 'Available for new projects', formEndpoint: 'https://formsubmit.co/ajax/asadgulshair6767@gmail.com' };
+  youtubeUrl: '', bookingUrl: '', availability: 'Available for new projects', formEndpoint: 'https://formsubmit.co/ajax/asadgulshair6767@gmail.com' };
 export const mailto = (subject, body = '') => `mailto:${S.email}?subject=${encodeURIComponent(subject)}${body ? '&body=' + encodeURIComponent(body) : ''}`;
 export const mailProject = () => mailto('Project enquiry');
 export const mailMeeting = () => mailto('Meeting request - project discussion', 'Hi Asad,\n\nI would like to book a Google Meet call about a project.\n\nPreferred times (2-3 options, with your timezone):\n1. \n2. \n3. \n\nShort project summary:\n\n');
